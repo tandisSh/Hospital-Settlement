@@ -44,6 +44,6 @@ Route::prefix('Panel')->group(function () {
         //Speciality edit
         Route::post('/Edit{id}', [SpecialityController::class, "Update"])->name('Update.Speciality');
         //Speciality delete
-        // Route::get('/Delete{id}', [UserController::class, "DeleteUser"])->name('DeleteUser');
+        Route::get('/Delete{id}', [SpecialityController::class, "Delete"])->name('Delete.Speciality');
     });
 });

@@ -43,7 +43,7 @@ class SpecialityController extends Controller
     public function Edit($id)
     {
         $Speciality = Speciality::find($id);
-        return view('Panel.Speciality.EditSpeciality' , compact('Speciality'));
+        return view('Panel.Speciality.EditSpeciality', compact('Speciality'));
     }
     public function Update(Request $request, $id)
     {
@@ -54,12 +54,11 @@ class SpecialityController extends Controller
         Alert::success('موفق!', 'تخصص با موفقیت ویرایش شد.');
         return redirect()->route('Show.Speciality');
     }
-    // public function DeleteUser(Request $request, $id)
-    // {
-    //     $user = User::find($id);
+    public function Delete(Request $request, $id)
+    {
+        $Speciality = Speciality::find($id);
 
-    //     $user->delete();
-    //     // Alert::success('موفق!', 'کاربر با موفقیت حذف شد.');
-    //     return redirect()->route('Show.Users')->with('success', 'کاربر با موفقیت حذف شد.');
-    // }
+        $Speciality->delete();
+        return redirect()->route('Show.Speciality')->with('success', 'کاربر با موفقیت حذف شد.');
+    }
 }

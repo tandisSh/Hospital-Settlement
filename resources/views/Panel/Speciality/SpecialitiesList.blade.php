@@ -45,9 +45,11 @@
                                                             class="btn btn-warning btn-sm px-2" title="ویرایش">
                                                             <i class="fa fa-pen text-dark"></i>
                                                         </a>
-                                                        <a href="#" class="btn btn-danger btn-sm px-2" title="حذف">
+                                                        <button
+                                                            onclick="confirmAction('{{ route('Delete.Speciality', $speciality->id) }}')"
+                                                            class="btn btn-danger btn-sm px-2" title="حذف">
                                                             <i class="fa fa-trash text-dark"></i>
-                                                        </a>
+                                                        </button>
                                                     </div>
                                                 </td>
                                             </tr>
