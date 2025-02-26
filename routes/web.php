@@ -19,16 +19,16 @@ Route::namespace('Auth')->group(function () {
 Route::prefix('Panel')->group(function () {
 
     Route::prefix('User')->group(function () {
+        //Users list
+        Route::get('/List', [UserController::class, "Users"])->name('Show.Users');
         //show add user page
         Route::get('/Create', [UserController::class, "Create"])->name('User.Create.Form');
         //add User
         Route::post('/Create', [UserController::class, "Store"])->name('User.Store');
-        //Users list
-        Route::get('/List', [UserController::class, "Users"])->name('Show.Users');
         //User edit page
-        Route::get('/Edit', [UserController::class, "EditUser"])->name('EditUser');
+        Route::get('/Edit{id}', [UserController::class, "EditUser"])->name('EditUser');
         //User edit
-        // Route::post('/Edit{id}', [UserController::class, "UpdateUser"])->name('UpdateUser');
+        Route::post('/Edit{id}', [UserController::class, "UpdateUser"])->name('UpdateUser');
         //User delete
         // Route::get('/Delete{id}', [UserController::class, "DeleteUser"])->name('DeleteUser');
     });

@@ -9,21 +9,22 @@
                 <div class="card-header bg-warning text-black d-flex justify-content-center align-items-center">
                     <h3 class="card-title mb-0">ویرایش کاربر </h3>
                 </div>
-                <form class="needs-validation" novalidate>
+                <form action="{{ route('UpdateUser' , $user->id) }}" method="POST" class="needs-validation" novalidate>
+                    @csrf
                     <div class="card-body">
                         <div class="mb-3 row">
                             <label for="name" class="col-sm-3 col-form-label">اسم:</label>
                             <div class="col-sm-9">
-                                <input name="name" type="text" class="form-control form-control-lg" id="name" required />
+                                <input name="name" type="text" class="form-control form-control-lg" id="name" value="{{ $user->name }}" required />
                                 <div class="invalid-feedback">
-                                    لطفاً نام خود را وارد کنید.
+                                    لطفاً نام را وارد کنید.
                                 </div>
                             </div>
                         </div>
                         <div class="mb-3 row">
                             <label for="email" class="col-sm-3 col-form-label">ایمیل:</label>
                             <div class="col-sm-9">
-                                <input name="email" type="email" class="form-control form-control-lg" id="email" required />
+                                <input name="email" type="email" class="form-control form-control-lg" id="email" value="{{ $user->email }}" required />
                                 <div class="invalid-feedback">
                                     لطفاً یک ایمیل معتبر وارد کنید.
                                 </div>
@@ -32,9 +33,9 @@
                         <div class="mb-3 row">
                             <label for="phone" class="col-sm-3 col-form-label">شماره تلفن:</label>
                             <div class="col-sm-9">
-                                <input name="phone" type="text" class="form-control form-control-lg" id="phone" required />
+                                <input name="phone" type="text" class="form-control form-control-lg" id="phone"  value="{{ $user->phone }}" required />
                                 <div class="invalid-feedback">
-                                    لطفاً شماره تلفن خود را وارد کنید.
+                                    لطفاً شماره تلفن  را وارد کنید.
                                 </div>
                             </div>
                         </div>
@@ -43,7 +44,7 @@
                             <div class="col-sm-9">
                                 <input type="password" class="form-control form-control-lg" id="password" required />
                                 <div class="invalid-feedback">
-                                    لطفاً رمز عبور خود را وارد کنید.
+                                    لطفاً رمز عبور  را وارد کنید.
                                 </div>
                             </div>
                         </div>

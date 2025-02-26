@@ -12,7 +12,8 @@ class UserController extends Controller
 {
     public function Users()
     {
-        return view('Panel.User.UsersList');
+        $users=User::all();
+        return view('Panel.User.UsersList',compact('users'));
     }
     public function Create()
     {
@@ -44,9 +45,18 @@ class UserController extends Controller
             return redirect()->route("User.Create.Form");
         }
     }
-    public function EditUser()
+    public function EditUser($id)
     {
-        // $user = User::find($id);
-        return view('Panel.User.EditUser');
+        $user = User::find($id);
+        return view('Panel.User.EditUser' , compact('user'));
+    }
+    public function UpdateUser(Request $request, $id)
+    {
+        $user = User::find($id);
+        $dataform = $request->all();
+        $user->update($dataform);
+
+        Alert::success('موفق!', 'کاربر با موفقیت ویرایش شد.');
+        return redirect()->route('Show.Users');
     }
 }

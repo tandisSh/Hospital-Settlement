@@ -27,7 +27,7 @@
                                     <input name="name" type="text" class="form-control form-control-lg" id="name"
                                         required />
                                     <div class="invalid-feedback">
-                                        لطفاً نام خود را وارد کنید.
+                                        لطفاً نام  را وارد کنید.
                                     </div>
                                 </div>
                             </div>
@@ -47,7 +47,7 @@
                                     <input name="phone" type="text" class="form-control form-control-lg" id="phone"
                                         required />
                                     <div class="invalid-feedback">
-                                        لطفاً شماره تلفن خود را وارد کنید.
+                                        لطفاً شماره تلفن  را وارد کنید.
                                     </div>
                                 </div>
                             </div>
@@ -57,7 +57,7 @@
                                     <input name="password" type="password" class="form-control form-control-lg"
                                         id="password" required />
                                     <div class="invalid-feedback">
-                                        لطفاً رمز عبور خود را وارد کنید.
+                                        لطفاً رمز عبور  را وارد کنید.
                                     </div>
                                 </div>
                             </div>
