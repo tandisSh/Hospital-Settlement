@@ -50,6 +50,10 @@
                                                             class="btn btn-danger btn-sm px-2" title="حذف">
                                                             <i class="fa fa-trash text-dark"></i>
                                                         </button>
+                                                        <form id="delete-form" method="POST" style="display: none;">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                        </form>
                                                     </div>
                                                 </td>
                                             </tr>

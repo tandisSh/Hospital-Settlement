@@ -9,7 +9,8 @@
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-center mb-4">
                                 <h4 class="mb-0">لیست نقش‌های پزشک</h4>
-                                <a href="{{ route('DoctorRole.Create') }}" class="btn btn-warning btn-sm px-3">افزودن نقش جدید +</a>
+                                <a href="{{ route('DoctorRole.Create') }}" class="btn btn-warning btn-sm px-3">افزودن نقش جدید
+                                    +</a>
                             </div>
 
                             <div class="table-responsive">
@@ -56,6 +57,10 @@
                                                             class="btn btn-danger btn-sm px-2" title="حذف">
                                                             <i class="fa fa-trash text-dark"></i>
                                                         </button>
+                                                        <form id="delete-form" method="POST" style="display: none;">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                        </form>
                                                     </div>
                                                 </td>
                                             </tr>

@@ -22,4 +22,9 @@ class DoctorRole extends Model
         'required' => 'boolean',
         'status' => 'boolean',
     ];
+
+    public function doctors()
+    {
+        return $this->belongsToMany(Doctor::class, 'doctor_role_assignments', 'doctor_role_id', 'doctor_id');
+    }
 }

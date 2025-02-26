@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Panel\DoctorController;
 use App\Http\Controllers\Panel\DoctorRoleController;
+use App\Http\Controllers\Panel\InsuranceController;
 use App\Http\Controllers\Panel\SpecialityController;
 use App\Http\Controllers\Panel\UserController;
 use Illuminate\Support\Facades\Route;
@@ -32,7 +33,7 @@ Route::prefix('Panel')->group(function () {
         //User edit
         Route::post('/Edit{id}', [UserController::class, "Update"])->name('UpdateUser');
         //User delete
-        Route::get('/Delete{id}', [UserController::class, "Delete"])->name('DeleteUser');
+        Route::delete('/Delete{id}', [UserController::class, "Delete"])->name('DeleteUser');
     });
     Route::prefix('Speciality')->group(function () {
         //list
@@ -46,7 +47,7 @@ Route::prefix('Panel')->group(function () {
         //Speciality edit
         Route::post('/Edit{id}', [SpecialityController::class, "Update"])->name('Update.Speciality');
         //Speciality delete
-        Route::get('/Delete{id}', [SpecialityController::class, "Delete"])->name('Delete.Speciality');
+        Route::delete('/Delete{id}', [SpecialityController::class, "Delete"])->name('Delete.Speciality');
     });
     Route::prefix('DoctorRole')->group(function () {
         //list
@@ -60,20 +61,23 @@ Route::prefix('Panel')->group(function () {
         //Speciality edit
         Route::post('/Edit{id}', [DoctorRoleController::class, "Update"])->name('DoctorRole.Update');
         //Speciality delete
-        Route::get('/Delete{id}', [DoctorRoleController::class, "Delete"])->name('DoctorRole.Delete');
+        Route::delete('/Delete{id}', [DoctorRoleController::class, "Delete"])->name('DoctorRole.Delete');
     });
     Route::prefix('Doctor')->group(function () {
-        //list
+
         Route::get('/List', [DoctorController::class, "List"])->name('Doctors');
-        //show add page
         Route::get('/Create', [DoctorController::class, "Create"])->name('Doctor.Create');
-        //add Speciality
         Route::post('/Create', [DoctorController::class, "Store"])->name('Doctor.Store');
-        //Speciality edit page
         Route::get('/Edit{id}', [DoctorController::class, "Edit"])->name('Doctor.Edit');
-        //Speciality edit
         Route::post('/Edit{id}', [DoctorController::class, "Update"])->name('Doctor.Update');
-        //Speciality delete
-        Route::get('/Delete{id}', [DoctorController::class, "Delete"])->name('Doctor.Delete');
+        Route::delete('/Delete{id}', [DoctorController::class, "Delete"])->name('Doctor.Delete');
+    });
+    Route::prefix('Insurances')->group(function () {
+        Route::get('/List', [InsuranceController::class, 'List'])->name('insurances');
+        Route::get('/create', [InsuranceController::class, 'create'])->name('insurances.create');
+        Route::post('/store', [InsuranceController::class, 'store'])->name('insurances.store');
+        Route::get('/edit/{id}', [InsuranceController::class, 'edit'])->name('insurances.edit');
+        Route::post('/update/{id}', [InsuranceController::class, 'update'])->name('insurances.update');
+        Route::delete('/delete/{id}', [InsuranceController::class, 'delete'])->name('insurances.delete');
     });
 });

@@ -42,7 +42,9 @@
                 cancelButtonText: "لغو"
             }).then((result) => {
                 if (result.isConfirmed) {
-                    window.location.href = url;
+                    let form = document.querySelector('#delete-form');
+                    form.action = url;
+                    form.submit();
                 }
             });
         }
