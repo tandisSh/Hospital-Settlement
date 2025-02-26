@@ -32,18 +32,18 @@ Route::prefix('Panel')->group(function () {
         //User delete
         Route::get('/Delete{id}', [UserController::class, "DeleteUser"])->name('DeleteUser');
     });
-    // Route::prefix('Speciality')->group(function () {
-    //     //show add user page
-    //     Route::get('/Create', [SpecialityController::class, "Create"])->name('Speciality.Create.Form');
-    //     //add User
-    //     // Route::post('/Create', [UserController::class, "Store"])->name('User.Store');
-    //     //Users list
-    //     Route::get('/List', [SpecialityController::class, "List"])->name('Show.Speciality');
-    //     //User edit page
-    //     Route::get('/Edit', [SpecialityController::class, "Edit"])->name('EditSpeciality');
-    //     //User edit
-    //     // Route::post('/Edit{id}', [UserController::class, "UpdateUser"])->name('UpdateUser');
-    //     //User delete
-    //     // Route::get('/Delete{id}', [UserController::class, "DeleteUser"])->name('DeleteUser');
-    // });
+    Route::prefix('Speciality')->group(function () {
+        //list
+        Route::get('/List', [SpecialityController::class, "List"])->name('Show.Speciality');
+        //show add page
+        Route::get('/Create', [SpecialityController::class, "Create"])->name('Speciality.Create.Form');
+        //add Speciality
+        Route::post('/Create', [SpecialityController::class, "Store"])->name('Speciality.Store');
+        //Speciality edit page
+        Route::get('/Edit', [SpecialityController::class, "Edit"])->name('EditSpeciality');
+        //Speciality edit
+        // Route::post('/Edit{id}', [UserController::class, "UpdateUser"])->name('UpdateUser');
+        //Speciality delete
+        // Route::get('/Delete{id}', [UserController::class, "DeleteUser"])->name('DeleteUser');
+    });
 });
