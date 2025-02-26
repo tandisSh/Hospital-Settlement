@@ -8,9 +8,8 @@
                     <div class="card shadow-lg">
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-center mb-4">
-                                <h4 class="mb-0">لیست کاربران</h4>
-                                <a href="{{ route('User.Create.Form') }}" class="btn btn-warning btn-sm px-3">ثبت کاربر جدید
-                                    +</a>
+                                <h4 class="mb-0">لیست نقش‌های پزشک</h4>
+                                <a href="{{ route('DoctorRole.Create') }}" class="btn btn-warning btn-sm px-3">افزودن نقش جدید +</a>
                             </div>
 
                             <div class="table-responsive">
@@ -19,31 +18,41 @@
                                         <tr>
                                             <th class="text-center">ردیف</th>
                                             <th class="text-center">شناسه</th>
-                                            <th class="text-center">نام کاربر</th>
-                                            <th class="text-center d-none d-md-table-cell">تلفن</th>
-                                            <th class="text-center d-none d-md-table-cell">ایمیل</th>
+                                            <th class="text-center">عنوان</th>
+                                            <th class="text-center d-none d-md-table-cell">اجباری</th>
+                                            <th class="text-center d-none d-md-table-cell">سهمیه</th>
+                                            <th class="text-center">وضعیت</th>
                                             <th class="text-center">عملیات</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($users as $index => $user)
+                                        @foreach ($roles as $index => $role)
                                             <tr>
                                                 <td class="text-center">{{ $index + 1 }}</td>
-                                                <td class="text-center">{{ $user->id }}</td>
-                                                <td class="text-center">{{ $user->name }}</td>
-                                                <td class="text-center d-none d-md-table-cell">{{ $user->phone }}</td>
-                                                <td class="text-center d-none d-md-table-cell">{{ $user->email }}</td>
+                                                <td class="text-center">{{ $role->id }}</td>
+                                                <td class="text-center">{{ $role->title }}</td>
+                                                <td class="text-center d-none d-md-table-cell">
+                                                    {{ $role->required ? 'بله' : 'خیر' }}
+                                                </td>
+                                                <td class="text-center d-none d-md-table-cell">
+                                                    {{ $role->quota }}%
+                                                </td>
+                                                <td class="text-center">
+                                                    <span class="badge {{ $role->status ? 'bg-success' : 'bg-danger' }}">
+                                                        {{ $role->status ? 'فعال' : 'غیرفعال' }}
+                                                    </span>
+                                                </td>
                                                 <td class="text-center">
                                                     <div class="d-flex gap-2 justify-content-center">
                                                         <a href="#" class="btn btn-info btn-sm px-2" title="مشاهده">
                                                             <i class="fa fa-eye text-dark"></i>
                                                         </a>
-                                                        <a href="{{ route('EditUser', $user->id) }}"
+                                                        <a href="{{ route('DoctorRole.Edit', $role->id) }}"
                                                             class="btn btn-warning btn-sm px-2" title="ویرایش">
                                                             <i class="fa fa-pen text-dark"></i>
                                                         </a>
                                                         <button
-                                                            onclick="confirmAction('{{ route('DeleteUser', $user->id) }}')"
+                                                            onclick="confirmAction('{{ route('DoctorRole.Delete', $role->id) }}')"
                                                             class="btn btn-danger btn-sm px-2" title="حذف">
                                                             <i class="fa fa-trash text-dark"></i>
                                                         </button>
@@ -52,9 +61,9 @@
                                             </tr>
                                         @endforeach
 
-                                        @if ($users->isEmpty())
+                                        @if ($roles->isEmpty())
                                             <tr>
-                                                <td colspan="5" class="text-center text-muted">هیچ تخصصی یافت نشد!</td>
+                                                <td colspan="7" class="text-center text-muted">هیچ نقشی یافت نشد!</td>
                                             </tr>
                                         @endif
                                     </tbody>
