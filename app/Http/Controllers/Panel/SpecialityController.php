@@ -28,7 +28,7 @@ class SpecialityController extends Controller
         $title = Speciality::where("title", $request->title)->first();
 
         if (!$title) {
-            $user = Speciality::create([
+            $Speciality = Speciality::create([
                 'title' => $request->title,
                 'status' => $request->status,
             ]);
@@ -40,9 +40,26 @@ class SpecialityController extends Controller
             return redirect()->route("Speciality.Create.Form");
         }
     }
-    public function Edit()
+    public function Edit($id)
     {
-        // $user = User::find($id);
-        return view('Panel.Speciality.EditSpeciality');
+        $Speciality = Speciality::find($id);
+        return view('Panel.Speciality.EditSpeciality' , compact('Speciality'));
     }
+    public function Update(Request $request, $id)
+    {
+        $Speciality = Speciality::find($id);
+        $dataform = $request->all();
+        $Speciality->update($dataform);
+
+        Alert::success('موفق!', 'تخصص با موفقیت ویرایش شد.');
+        return redirect()->route('Show.Speciality');
+    }
+    // public function DeleteUser(Request $request, $id)
+    // {
+    //     $user = User::find($id);
+
+    //     $user->delete();
+    //     // Alert::success('موفق!', 'کاربر با موفقیت حذف شد.');
+    //     return redirect()->route('Show.Users')->with('success', 'کاربر با موفقیت حذف شد.');
+    // }
 }

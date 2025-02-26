@@ -45,12 +45,12 @@ class UserController extends Controller
             return redirect()->route("User.Create.Form");
         }
     }
-    public function EditUser($id)
+    public function Edit($id)
     {
         $user = User::find($id);
         return view('Panel.User.EditUser', compact('user'));
     }
-    public function UpdateUser(Request $request, $id)
+    public function Update(Request $request, $id)
     {
         $user = User::find($id);
         $dataform = $request->all();
@@ -59,7 +59,7 @@ class UserController extends Controller
         Alert::success('موفق!', 'کاربر با موفقیت ویرایش شد.');
         return redirect()->route('Show.Users');
     }
-    public function DeleteUser(Request $request, $id)
+    public function Delete(Request $request, $id)
     {
         $user = User::find($id);
 

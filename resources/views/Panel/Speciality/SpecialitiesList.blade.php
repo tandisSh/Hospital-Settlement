@@ -41,8 +41,8 @@
                                                         <a href="#" class="btn btn-info btn-sm px-2" title="مشاهده">
                                                             <i class="fa fa-eye text-dark"></i>
                                                         </a>
-                                                        <a href="#" class="btn btn-warning btn-sm px-2"
-                                                            title="ویرایش">
+                                                        <a href="{{ route('Speciality.Edit', $speciality->id) }}"
+                                                            class="btn btn-warning btn-sm px-2" title="ویرایش">
                                                             <i class="fa fa-pen text-dark"></i>
                                                         </a>
                                                         <a href="#" class="btn btn-danger btn-sm px-2" title="حذف">
