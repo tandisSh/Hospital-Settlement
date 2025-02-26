@@ -13,11 +13,35 @@
                      <a href="#" class="nav-link">
                          <i class="nav-icon bi bi-speedometer"></i>
                          <p>
-                             Dashboard
+                             مدیریت
                              <i class="nav-arrow bi bi-chevron-right"></i>
                          </p>
                      </a>
-                     <ul class="nav nav-treeview">
+                     <ul >
+                        <li class="nav-item">
+                            <a href="{{route('Show.Users')}}" class="nav-link">
+                                <i class="nav-icon bi bi-circle"></i>
+                                <p>کاربران</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{route('Doctors')}}" class="nav-link">
+                                <i class="nav-icon bi bi-circle"></i>
+                                <p>دکترها</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{route('Show.DoctorRole')}}" class="nav-link">
+                                <i class="nav-icon bi bi-circle"></i>
+                                <p>نقش دکترها </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{route('Show.Speciality')}}" class="nav-link">
+                                <i class="nav-icon bi bi-circle"></i>
+                                <p>تخصص ها </p>
+                            </a>
+                        </li>
                          <li class="nav-item">
                              <a href="{{route('insurances')}}" class="nav-link">
                                  <i class="nav-icon bi bi-circle"></i>
@@ -25,15 +49,15 @@
                              </a>
                          </li>
                          <li class="nav-item">
-                             <a href="../index2.html" class="nav-link">
+                             <a href="{{route('operations')}}" class="nav-link">
                                  <i class="nav-icon bi bi-circle"></i>
-                                 <p>Dashboard v2</p>
+                                 <p>عمل ها</p>
                              </a>
                          </li>
                          <li class="nav-item">
                              <a href="../index3.html" class="nav-link">
                                  <i class="nav-icon bi bi-circle"></i>
-                                 <p>Dashboard v3</p>
+                                 <p>عمل های جراحی</p>
                              </a>
                          </li>
                      </ul>

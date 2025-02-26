@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Panel\DoctorController;
 use App\Http\Controllers\Panel\DoctorRoleController;
 use App\Http\Controllers\Panel\InsuranceController;
+use App\Http\Controllers\Panel\OperationsController;
 use App\Http\Controllers\Panel\SpecialityController;
 use App\Http\Controllers\Panel\UserController;
 use Illuminate\Support\Facades\Route;
@@ -79,5 +80,13 @@ Route::prefix('Panel')->group(function () {
         Route::get('/edit/{id}', [InsuranceController::class, 'edit'])->name('insurances.edit');
         Route::post('/update/{id}', [InsuranceController::class, 'update'])->name('insurances.update');
         Route::delete('/delete/{id}', [InsuranceController::class, 'delete'])->name('insurances.delete');
+    });
+    Route::prefix('operations')->group(function () {
+        Route::get('/List', [OperationsController::class, 'List'])->name('operations');
+        Route::get('/create', [OperationsController::class, 'create'])->name('operations.create');
+        Route::post('/store', [OperationsController::class, 'store'])->name('operations.store');
+        Route::get('/edit/{id}', [OperationsController::class, 'edit'])->name('operations.edit');
+        Route::post('/update/{id}', [OperationsController::class, 'update'])->name('operations.update');
+        Route::delete('/delete/{id}', [OperationsController::class, 'delete'])->name('operations.delete');
     });
 });
