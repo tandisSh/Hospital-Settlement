@@ -18,4 +18,9 @@ class Speciality extends Model
     protected $casts = [
         'status' => 'boolean',
     ];
+
+    public function Doctor()
+    {
+        return $this->hasMany(Doctor::class);
+    }
 }

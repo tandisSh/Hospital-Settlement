@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Panel\DoctorController;
 use App\Http\Controllers\Panel\DoctorRoleController;
 use App\Http\Controllers\Panel\SpecialityController;
 use App\Http\Controllers\Panel\UserController;
@@ -60,5 +61,19 @@ Route::prefix('Panel')->group(function () {
         Route::post('/Edit{id}', [DoctorRoleController::class, "Update"])->name('DoctorRole.Update');
         //Speciality delete
         Route::get('/Delete{id}', [DoctorRoleController::class, "Delete"])->name('DoctorRole.Delete');
+    });
+    Route::prefix('Doctor')->group(function () {
+        //list
+        Route::get('/List', [DoctorController::class, "List"])->name('Doctors');
+        //show add page
+        Route::get('/Create', [DoctorController::class, "Create"])->name('Doctor.Create');
+        //add Speciality
+        Route::post('/Create', [DoctorController::class, "Store"])->name('Doctor.Store');
+        //Speciality edit page
+        Route::get('/Edit{id}', [DoctorController::class, "Edit"])->name('Doctor.Edit');
+        //Speciality edit
+        Route::post('/Edit{id}', [DoctorController::class, "Update"])->name('Doctor.Update');
+        //Speciality delete
+        Route::get('/Delete{id}', [DoctorController::class, "Delete"])->name('Doctor.Delete');
     });
 });
