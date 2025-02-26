@@ -30,7 +30,7 @@ Route::prefix('Panel')->group(function () {
         //User edit
         Route::post('/Edit{id}', [UserController::class, "UpdateUser"])->name('UpdateUser');
         //User delete
-        // Route::get('/Delete{id}', [UserController::class, "DeleteUser"])->name('DeleteUser');
+        Route::get('/Delete{id}', [UserController::class, "DeleteUser"])->name('DeleteUser');
     });
     // Route::prefix('Speciality')->group(function () {
     //     //show add user page

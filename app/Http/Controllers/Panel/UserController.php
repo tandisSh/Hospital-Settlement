@@ -12,8 +12,8 @@ class UserController extends Controller
 {
     public function Users()
     {
-        $users=User::all();
-        return view('Panel.User.UsersList',compact('users'));
+        $users = User::all();
+        return view('Panel.User.UsersList', compact('users'));
     }
     public function Create()
     {
@@ -48,7 +48,7 @@ class UserController extends Controller
     public function EditUser($id)
     {
         $user = User::find($id);
-        return view('Panel.User.EditUser' , compact('user'));
+        return view('Panel.User.EditUser', compact('user'));
     }
     public function UpdateUser(Request $request, $id)
     {
@@ -58,5 +58,13 @@ class UserController extends Controller
 
         Alert::success('موفق!', 'کاربر با موفقیت ویرایش شد.');
         return redirect()->route('Show.Users');
+    }
+    public function DeleteUser(Request $request, $id)
+    {
+        $user = User::find($id);
+
+        $user->delete();
+        // Alert::success('موفق!', 'کاربر با موفقیت حذف شد.');
+        return redirect()->route('Show.Users')->with('success', 'کاربر با موفقیت حذف شد.');
     }
 }

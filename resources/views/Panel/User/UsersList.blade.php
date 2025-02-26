@@ -9,7 +9,8 @@
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-center mb-4">
                                 <h4 class="mb-0">لیست کاربران</h4>
-                                <a href="#" class="btn btn-warning btn-sm px-3">ثبت کاربر جدید +</a>
+                                <a href="{{ route('User.Create.Form') }}" class="btn btn-warning btn-sm px-3">ثبت کاربر جدید
+                                    +</a>
                             </div>
 
                             <div class="table-responsive">
@@ -37,12 +38,15 @@
                                                         <a href="#" class="btn btn-info btn-sm px-2" title="مشاهده">
                                                             <i class="fa fa-eye text-dark"></i>
                                                         </a>
-                                                        <a href="{{route('EditUser',$user->id)}}" class="btn btn-warning btn-sm px-2" title="ویرایش">
+                                                        <a href="{{ route('EditUser', $user->id) }}"
+                                                            class="btn btn-warning btn-sm px-2" title="ویرایش">
                                                             <i class="fa fa-pen text-dark"></i>
                                                         </a>
-                                                        <a href="#" class="btn btn-danger btn-sm px-2" title="حذف">
+                                                        <button
+                                                            onclick="confirmAction('{{ route('DeleteUser', $user->id) }}')"
+                                                            class="btn btn-danger btn-sm px-2" title="حذف">
                                                             <i class="fa fa-trash text-dark"></i>
-                                                        </a>
+                                                        </button>
                                                     </div>
                                                 </td>
                                             </tr>
