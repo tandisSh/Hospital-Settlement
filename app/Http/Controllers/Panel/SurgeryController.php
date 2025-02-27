@@ -14,7 +14,7 @@ class SurgeryController extends Controller
 {
     public function List()
     {
-        $surgeries = Surgery::with(['basicInsurance', 'suppInsurance', 'doctors', 'operations'])->get();;
+        $surgeries = Surgery::with(['basicInsurance', 'suppInsurance', 'doctors', 'operations'])->orderBy('created_at', 'desc')->get();
         return view('Panel.surgery.List', compact('surgeries'));
     }
     public function create()

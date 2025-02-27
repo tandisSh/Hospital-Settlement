@@ -11,7 +11,7 @@ class OperationsController extends Controller
 {
     public function List()
     {
-        $operations = Operation::all();
+        $operations = Operation::orderBy('created_at', 'desc')->get();
         return view('Panel.Operation.List', compact('operations'));
     }
     public function create()

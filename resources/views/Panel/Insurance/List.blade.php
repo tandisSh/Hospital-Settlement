@@ -18,6 +18,8 @@
                                 <table class="table table-hover table-bordered">
                                     <thead class="table-primary">
                                         <tr>
+
+                                            <th class="text-center">ردیف</th>
                                             <th class="text-center">شناسه</th>
                                             <th class="text-center">نام</th>
                                             <th class="text-center">نوع</th>
@@ -27,8 +29,9 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($insurances as $insurance)
+                                        @foreach ($insurances as $index => $insurance)
                                             <tr>
+                                                <td class="text-center">{{ $index + 1 }}</td>
                                                 <td class="text-center">{{ $insurance->id }}</td>
                                                 <td class="text-center">{{ $insurance->name }}</td>
                                                 <td class="text-center">

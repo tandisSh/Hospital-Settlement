@@ -11,7 +11,7 @@ class SpecialityController extends Controller
 {
     public function List()
     {
-        $specialities = Speciality::all();
+        $specialities = Speciality::orderBy('created_at', 'desc')->get();
         return view('Panel.Speciality.SpecialitiesList', compact('specialities'));
     }
     public function Create()

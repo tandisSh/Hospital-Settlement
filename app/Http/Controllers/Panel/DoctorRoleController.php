@@ -10,7 +10,7 @@ class DoctorRoleController extends Controller
 {
     public function List()
     {
-        $roles = DoctorRole::all();
+        $roles = DoctorRole::orderBy('created_at', 'desc')->get();
         return view('Panel.DoctorRole.DoctorRoleList', compact('roles'));
     }
     public function Create()

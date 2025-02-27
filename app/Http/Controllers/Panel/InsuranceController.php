@@ -11,7 +11,7 @@ class InsuranceController extends Controller
 {
     public function List()
     {
-        $insurances = Insurance::all();
+        $insurances = Insurance::orderBy('created_at', 'desc')->get();;
         return view('Panel.Insurance.List', compact('insurances'));
     }
     public function create()

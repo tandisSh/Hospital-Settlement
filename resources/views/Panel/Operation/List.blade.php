@@ -18,6 +18,7 @@
                                 <table class="table table-hover table-bordered">
                                     <thead class="table-primary">
                                         <tr>
+                                            <th class="text-center">ردیف</th>
                                             <th class="text-center">شناسه</th>
                                             <th class="text-center">نام</th>
                                             <th class="text-center">مبلغ (تومان)</th>
@@ -26,8 +27,9 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($operations as $operation)
+                                        @foreach ($operations as $index => $operation)
                                             <tr>
+                                                <td class="text-center">{{ $index + 1 }}</td>
                                                 <td class="text-center">{{ $operation->id }}</td>
                                                 <td class="text-center">{{ $operation->name }}</td>
                                                 <td class="text-center">{{ number_format($operation->price) }}</td>

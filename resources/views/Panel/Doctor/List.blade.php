@@ -17,6 +17,7 @@
                                 <table class="table table-hover table-bordered">
                                     <thead class="table-primary">
                                         <tr>
+                                            <th class="text-center">ردیف</th>
                                             <th class="text-center">شناسه</th>
                                             <th class="text-center">نام</th>
                                             <th class="text-center">تخصص</th>
@@ -28,8 +29,9 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($doctors as $doctor)
+                                        @foreach ($doctors as $index => $doctor)
                                             <tr>
+                                                <td class="text-center">{{ $index + 1 }}</td>
                                                 <td class="text-center">{{ $doctor->id }}</td>
                                                 <td class="text-center">{{ $doctor->name }}</td>
                                                 <td class="text-center">{{ $doctor->speciality->title }}</td>

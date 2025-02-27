@@ -13,7 +13,7 @@ class DoctorController extends Controller
 {
     public function List()
     {
-        $doctors = Doctor::with('speciality')->get();
+        $doctors = Doctor::with('speciality')->orderBy('created_at', 'desc')->get();
         return view('Panel.Doctor.List', compact('doctors'));
     }
     public function Create()
