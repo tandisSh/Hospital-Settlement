@@ -7,27 +7,21 @@
     </div>
     <div class="card">
       <div class="card-body login-card-body">
-        <p class="login-box-msg">Sign in to start your session</p>
+        <p class="login-box-msg">فرم ورود</p>
         <form action="{{route('Login')}}" method="post">
             @csrf
           <div class="input-group mb-3">
-            <input name="phone" type="text" class="form-control" placeholder="phone" />
+            <input name="phone" type="text" class="form-control" placeholder="شماره تماس" />
             <div class="input-group-text"><span class="bi bi-envelope"></span></div>
           </div>
           <div class="input-group mb-3">
-            <input name="password" type="password" class="form-control" placeholder="Password" />
+            <input name="password" type="password" class="form-control" placeholder="رمز عبور" />
             <div class="input-group-text"><span class="bi bi-lock-fill"></span></div>
           </div>
           <div class="row">
-            <div class="col-8">
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-                <label class="form-check-label" for="flexCheckDefault"> Remember Me </label>
-              </div>
-            </div>
             <div class="col-4">
               <div class="d-grid gap-2">
-                <button type="submit" class="btn btn-primary">Sign In</button>
+                <button type="submit" class="btn btn-primary">ورود</button>
               </div>
             </div>
           </div>
