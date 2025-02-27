@@ -12,22 +12,24 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class SurgeryController extends Controller
 {
-    public function List() {
-        $surgeries = Surgery::with(['basicInsurance', 'suppInsurance', 'doctors', 'operations']);
-        return view('Panel.surgeries.List', compact('surgeries'));
+    public function List()
+    {
+        $surgeries = Surgery::with(['basicInsurance', 'suppInsurance', 'doctors', 'operations'])->get();;
+        return view('Panel.surgery.List', compact('surgeries'));
     }
-    public function create() {
+    public function create()
+    {
         $insurances = Insurance::all();
         $doctors = Doctor::all();
         $operations = Operation::all();
-        return view('surgeries.create', compact('insurances', 'doctors', 'operations'));
+        return view('Panel.surgery.create', compact('insurances', 'doctors', 'operations'));
     }
     public function store(Request $request)
-     {
+    {
         $request->validate([
             'patient_name' => 'required|string|max:100',
             'patient_national_code' => 'required|string|max:20',
-            'basic_insurance_id' => 'required|exists:insurances,id',
+            'basic_insurance_id' => 'nullable|exists:insurances,id',
             'supp_insurance_id' => 'nullable|exists:insurances,id',
             'document_number' => 'required|unique:surgeries,document_number',
             'surgeried_at' => 'required|date',
@@ -39,40 +41,32 @@ class SurgeryController extends Controller
         $surgery->operations()->attach($request->operations);
 
         Alert::success('موفق!', 'عمل جراحی با موفقیت ثبت شد.');
-        return redirect()->route('surgeries.index')->with('success', 'عمل جراحی با موفقیت ثبت شد.');
+        return redirect()->route('surgeries')->with('success', 'عمل جراحی با موفقیت ثبت شد.');
     }
-
-    public function edit($id) {
+    public function edit($id)
+    {
         $surgery = Surgery::findOrFail($id);
         $insurances = Insurance::all();
         $doctors = Doctor::all();
         $operations = Operation::all();
-        return view('surgeries.edit', compact('surgery', 'insurances', 'doctors', 'operations'));
+        return view('Panel.surgery.edit', compact('surgery', 'insurances', 'doctors', 'operations'));
     }
-
-    public function update(Request $request, $id) {
+    public function update(Request $request, $id)
+    {
         $surgery = Surgery::findOrFail($id);
 
-        $request->validate([
-            'patient_name' => 'required|string|max:100',
-            'patient_national_code' => 'required|string|max:20',
-            'basic_insurance_id' => 'required|exists:insurances,id',
-            'supp_insurance_id' => 'nullable|exists:insurances,id',
-            'document_number' => 'required|unique:surgeries,document_number,' . $id,
-            'surgeried_at' => 'required|date',
-            'released_at' => 'required|date|after_or_equal:surgeried_at',
-        ]);
+        $dataform = $request->all();
 
-        $surgery->update($request->all());
+        $surgery->update($dataform);
         $surgery->doctors()->sync($request->doctors);
         $surgery->operations()->sync($request->operations);
 
-        return redirect()->route('surgeries.index')->with('success', 'اطلاعات عمل جراحی با موفقیت بروزرسانی شد.');
+        return redirect()->route('surgeries')->with('success', 'اطلاعات عمل جراحی با موفقیت بروزرسانی شد.');
     }
-
-    public function destroy($id) {
+    public function delete($id)
+    {
         $surgery = Surgery::findOrFail($id);
         $surgery->delete();
-        return redirect()->route('surgeries.index')->with('success', 'عمل جراحی حذف شد.');
+        return redirect()->route('surgeries')->with('success', 'عمل جراحی حذف شد.');
     }
 }

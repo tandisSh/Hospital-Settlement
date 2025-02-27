@@ -6,6 +6,7 @@ use App\Http\Controllers\Panel\DoctorRoleController;
 use App\Http\Controllers\Panel\InsuranceController;
 use App\Http\Controllers\Panel\OperationsController;
 use App\Http\Controllers\Panel\SpecialityController;
+use App\Http\Controllers\Panel\SurgeryController;
 use App\Http\Controllers\Panel\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -88,5 +89,21 @@ Route::prefix('Panel')->group(function () {
         Route::get('/edit/{id}', [OperationsController::class, 'edit'])->name('operations.edit');
         Route::post('/update/{id}', [OperationsController::class, 'update'])->name('operations.update');
         Route::delete('/delete/{id}', [OperationsController::class, 'delete'])->name('operations.delete');
+    });
+    Route::prefix('Insurances')->group(function () {
+        Route::get('/List', [InsuranceController::class, 'List'])->name('insurances');
+        Route::get('/create', [InsuranceController::class, 'create'])->name('insurances.create');
+        Route::post('/store', [InsuranceController::class, 'store'])->name('insurances.store');
+        Route::get('/edit/{id}', [InsuranceController::class, 'edit'])->name('insurances.edit');
+        Route::post('/update/{id}', [InsuranceController::class, 'update'])->name('insurances.update');
+        Route::delete('/delete/{id}', [InsuranceController::class, 'delete'])->name('insurances.delete');
+    });
+    Route::prefix('surgery')->group(function () {
+        Route::get('/List', [SurgeryController::class, 'List'])->name('surgeries');
+        Route::get('/create', [SurgeryController::class, 'create'])->name('surgery.create');
+        Route::post('/store', [SurgeryController::class, 'store'])->name('surgery.store');
+        Route::get('/edit/{id}', [SurgeryController::class, 'edit'])->name('surgery.edit');
+        Route::post('/update/{id}', [SurgeryController::class, 'update'])->name('surgery.update');
+        Route::delete('/delete/{id}', [SurgeryController::class, 'delete'])->name('surgery.delete');
     });
 });

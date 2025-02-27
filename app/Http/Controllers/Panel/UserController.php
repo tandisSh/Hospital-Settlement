@@ -12,7 +12,7 @@ class UserController extends Controller
 {
     public function Users()
     {
-        $users = User::all();
+        $users = User::orderBy('created_at', 'desc')->get();
         return view('Panel.User.UsersList', compact('users'));
     }
     public function Create()

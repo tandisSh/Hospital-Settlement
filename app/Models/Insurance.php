@@ -19,4 +19,10 @@ class Insurance extends Model
     protected $casts = [
         'status' => 'boolean',
     ];
+
+    public function surgeries()
+    {
+        return $this->hasMany(Surgery::class, 'basic_insurance_id')
+            ->orWhere('supp_insurance_id', $this->id);
+    }
 }

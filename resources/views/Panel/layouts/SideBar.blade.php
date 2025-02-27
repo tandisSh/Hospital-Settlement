@@ -55,7 +55,7 @@
                              </a>
                          </li>
                          <li class="nav-item">
-                             <a href="../index3.html" class="nav-link">
+                             <a href="{{route('surgeries')}}" class="nav-link">
                                  <i class="nav-icon bi bi-circle"></i>
                                  <p>عمل های جراحی</p>
                              </a>

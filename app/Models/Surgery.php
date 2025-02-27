@@ -33,6 +33,6 @@ class Surgery extends Model
     }
 
     public function operations() {
-        return $this->belongsToMany(Operation::class, 'surgery_operations');
+        return $this->belongsToMany(Operation::class, 'surgery_operation');
     }
 }
