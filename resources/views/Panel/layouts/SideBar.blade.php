@@ -10,18 +10,11 @@
          <nav class="mt-2">
              <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu" data-accordion="false">
                  <li class="nav-item">
-                     <a href="#" class="nav-link">
-                         <i class="nav-icon bi bi-speedometer"></i>
-                         <p>
-                             مدیریت
-                             <i class="nav-arrow bi bi-chevron-right"></i>
-                         </p>
-                     </a>
                      <ul >
                         <li class="nav-item">
-                            <a href="{{route('Show.Users')}}" class="nav-link">
+                            <a href="{{route('profile')}}" class="nav-link">
                                 <i class="nav-icon bi bi-circle"></i>
-                                <p>کاربران</p>
+                                <p>پروفایل</p>
                             </a>
                         </li>
                         <li class="nav-item">

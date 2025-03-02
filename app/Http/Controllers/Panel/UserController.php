@@ -5,66 +5,65 @@ namespace App\Http\Controllers\Panel;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule; // اضافه کردن Rule برای اعتبارسنجی
 use RealRashid\SweetAlert\Facades\Alert;
 
 class UserController extends Controller
 {
-    // public function Users()
-    // {
-    //     $users = User::orderBy('created_at', 'desc')->get();
-    //     return view('Panel.User.UsersList', compact('users'));
-    // }
-    // public function Create()
-    // {
-    //     return view('Panel.User.CreateUser');
-    // }
-    // public function Store(Request $request)
-    // {
-    //     $request->validate([
-    //         "name" => "required",
-    //         "phone" => "required",
-    //         "email" => "required|email",
-    //         "password" => "required|min:6",
-    //     ]);
-
-    //     $UserPhone = User::where("phone", $request->phone)->first();
-
-    //     if (!$UserPhone) {
-    //         $user = User::create([
-    //             'name' => $request->name,
-    //             'phone' => $request->phone,
-    //             'email' => $request->email,
-    //             'password' => Hash::make($request->password),
-    //         ]);
-
-    //         Alert::success('موفق!', 'کاربر با موفقیت ثبت شد.');
-    //         return redirect()->route("Show.Users");
-    //     } else {
-    //         Alert::error('خطا!', "شماره تلفن از قبل وجود دارد.");
-    //         return redirect()->route("User.Create.Form");
-    //     }
-    // }
-    public function Edit($id)
+    // نمایش پروفایل کاربر
+    public function showProfile()
     {
-        $user = User::find($id);
-        return view('Panel.User.EditUser', compact('user'));
+        $user = Auth::user(); // استفاده از Auth::user() با حرف کوچک
+        return view('Panel.User.profile', compact('user'));
     }
-    public function Update(Request $request, $id)
+
+    // نمایش فرم ویرایش پروفایل
+    public function editProfile()
     {
-        $user = User::find($id);
-        $dataform = $request->all();
-        $user->update($dataform);
-
-        Alert::success('موفق!', 'کاربر با موفقیت ویرایش شد.');
-        return redirect()->route('Show.Users');
+        $user = Auth::user(); // استفاده از Auth::user() با حرف کوچک
+        return view('Panel.User.editUser', compact('user'));
     }
-    // public function Delete(Request $request, $id)
-    // {
-    //     $user = User::find($id);
 
-    //     $user->delete();
-    //     // Alert::success('موفق!', 'کاربر با موفقیت حذف شد.');
-    //     return redirect()->route('Show.Users')->with('success', 'کاربر با موفقیت حذف شد.');
-    // }
+    // بروزرسانی پروفایل
+    public function updateProfile(Request $request)
+    {
+        $user = Auth::user(); // استفاده از Auth::user() با حرف کوچک
+
+        // بررسی وجود کاربر
+        if (!$user) {
+            return redirect()->route('login')->with('error', 'لطفاً ابتدا وارد شوید.');
+        }
+
+        // اعتبارسنجی داده‌ها
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
+            'phone' => ['nullable', 'string', 'max:15'],
+            'current_password' => ['nullable', 'string', 'min:8'],
+            'new_password' => ['nullable', 'string', 'min:8', 'confirmed'],
+        ]);
+
+        // بروزرسانی اطلاعات پایه
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->phone = $request->phone;
+
+        // بروزرسانی رمز عبور در صورت ارائه
+        if ($request->filled('current_password') && $request->filled('new_password')) {
+            if (Hash::check($request->current_password, $user->password)) {
+                $user->password = Hash::make($request->new_password);
+            } else {
+                return redirect()->back()->withErrors(['current_password' => 'رمز عبور فعلی نادرست است.']);
+            }
+        }
+
+        // ذخیره تغییرات
+        $user->save();
+
+        // نمایش پیام موفقیت
+        Alert::success('موفقیت', 'پروفایل شما با موفقیت بروزرسانی شد.');
+        return redirect()->route('profile');
+    }
 }

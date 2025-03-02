@@ -4,55 +4,61 @@
     <div class="container-fluid mt-5">
         <div class="row justify-content-center">
             <div class="col-md-8 col-lg-6">
-                <div class="card card-warning card-outline mb-4 shadow-sm">
-                    <div class="card-header bg-warning text-black d-flex justify-content-center align-items-center">
-                        <h3 class="card-title mb-0">ویرایش کاربر </h3>
+                <div class="card card-warning card-outline shadow-sm">
+                    <div class="card-header bg-warning text-black text-center">
+                        <h5 class="card-title mb-0">ویرایش پروفایل</h5>
                     </div>
-                    <form action="{{ route('UpdateUser', $user->id) }}" method="POST" class="needs-validation" novalidate>
+
+                    <form action="{{route('updateProfile')}}" method="POST" class="needs-validation p-3" novalidate>
                         @csrf
                         <div class="card-body">
-                            <div class="mb-3 row">
-                                <label for="name" class="col-sm-3 col-form-label">اسم:</label>
-                                <div class="col-sm-9">
-                                    <input name="name" type="text" class="form-control form-control-lg" id="name"
-                                        value="{{ $user->name }}" required />
-                                    <div class="invalid-feedback">
-                                        لطفاً نام را وارد کنید.
-                                    </div>
+                            <div class="row g-2 mb-3">
+                                <div class="col-6">
+                                    <label class="form-label small">نام:</label>
+                                    <input name="name" type="text" class="form-control form-control-sm"
+                                           value="{{ Auth::user()->name }}" required />
+                                </div>
+                                <div class="col-6">
+                                    <label class="form-label small">ایمیل:</label>
+                                    <input name="email" type="email" class="form-control form-control-sm"
+                                           value="{{ Auth::user()->email }}" required />
                                 </div>
                             </div>
-                            <div class="mb-3 row">
-                                <label for="email" class="col-sm-3 col-form-label">ایمیل:</label>
-                                <div class="col-sm-9">
-                                    <input name="email" type="email" class="form-control form-control-lg" id="email"
-                                        value="{{ $user->email }}" required />
-                                    <div class="invalid-feedback">
-                                        لطفاً یک ایمیل معتبر وارد کنید.
-                                    </div>
+
+                            <div class="row g-2 mb-3">
+                                <div class="col-6">
+                                    <label class="form-label small">شماره تلفن:</label>
+                                    <input name="phone" type="text" class="form-control form-control-sm"
+                                           value="{{ Auth::user()->phone ?? '' }}" />
                                 </div>
                             </div>
-                            <div class="mb-3 row">
-                                <label for="phone" class="col-sm-3 col-form-label">شماره تلفن:</label>
-                                <div class="col-sm-9">
-                                    <input name="phone" type="text" class="form-control form-control-lg" id="phone"
-                                        value="{{ $user->phone }}" required />
-                                    <div class="invalid-feedback">
-                                        لطفاً شماره تلفن را وارد کنید.
+
+                            {{-- تغییر رمز عبور (اختیاری) --}}
+                            <div class="border-top pt-3 mt-3">
+                                <h6 class="text-center mb-3 text-muted">تغییر رمز عبور (اختیاری)</h6>
+
+                                <div class="row g-2 mb-3">
+                                    <div class="col-6">
+                                        <label class="form-label small">رمز عبور فعلی:</label>
+                                        <input name="current_password" type="password" class="form-control form-control-sm" />
+                                    </div>
+                                    <div class="col-6">
+                                        <label class="form-label small">رمز عبور جدید:</label>
+                                        <input name="new_password" type="password" class="form-control form-control-sm" />
                                     </div>
                                 </div>
-                            </div>
-                            <div class="mb-3 row">
-                                <label for="password" class="col-sm-3 col-form-label">رمز عبور:</label>
-                                <div class="col-sm-9">
-                                    <input type="password" class="form-control form-control-lg" id="password" required />
-                                    <div class="invalid-feedback">
-                                        لطفاً رمز عبور را وارد کنید.
+
+                                <div class="row g-2 mb-3">
+                                    <div class="col-6">
+                                        <label class="form-label small">تکرار رمز عبور جدید:</label>
+                                        <input name="new_password_confirmation" type="password" class="form-control form-control-sm" />
                                     </div>
                                 </div>
                             </div>
                         </div>
+
                         <div class="card-footer bg-light d-flex justify-content-center">
-                            <button type="submit" class="btn btn-warning btn-lg">ویرایش</button>
+                            <button type="submit" class="btn btn-warning btn-sm px-4">بروزرسانی اطلاعات</button>
                         </div>
                     </form>
                 </div>
