@@ -22,6 +22,7 @@
                                             <th class="text-center">نام بیمار</th>
                                             <th class="text-center d-none d-md-table-cell">کد ملی</th>
                                             <th class="text-center d-none d-md-table-cell">تاریخ جراحی</th>
+                                            <th class="text-center d-none d-md-table-cell">تاریخ ثبت</th>
                                             <th class="text-center">عملیات</th>
                                         </tr>
                                     </thead>
@@ -34,8 +35,9 @@
                                                 <td class="text-center d-none d-md-table-cell">
                                                     {{ $surgery->patient_national_code }}</td>
                                                 <td class="text-center d-none d-md-table-cell">
-                                                    {{ \Carbon\Carbon::parse($surgery->surgeried_at)->format('Y/m/d') }}
-                                                </td>
+                                                    {{ $surgery->getSurgeriedAtShamsi() }}</td>
+                                                <td class="text-center d-none d-md-table-cell">
+                                                    {{ $surgery->getCreatedAtShamsi()->format('Y/m/d') }}</td>
                                                 <td class="text-center">
                                                     <div class="d-flex gap-2 justify-content-center">
                                                         <a href="#" class="btn btn-info btn-sm px-2"
@@ -61,7 +63,7 @@
 
                                         @if ($surgeries->isEmpty())
                                             <tr>
-                                                <td colspan="6" class="text-center text-muted">هیچ جراحی‌ای یافت نشد!
+                                                <td colspan="7" class="text-center text-muted">هیچ جراحی‌ای یافت نشد!
                                                 </td>
                                             </tr>
                                         @endif

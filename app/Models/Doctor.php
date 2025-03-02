@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Morilog\Jalali\Jalalian;
 
 class Doctor extends Model
 {
@@ -31,5 +32,15 @@ class Doctor extends Model
     public function roles()
     {
         return $this->belongsToMany(DoctorRole::class, 'doctor_role_assignments', 'doctor_id', 'doctor_role_id');
+    }
+
+    public function getCreatedAtShamsi()
+    {
+        return Jalalian::fromDateTime($this->created_at);
+    }
+
+    public function getUpdatedAtShamsi()
+    {
+        return Jalalian::fromDateTime($this->updated_at);
     }
 }

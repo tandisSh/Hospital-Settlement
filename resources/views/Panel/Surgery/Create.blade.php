@@ -4,163 +4,239 @@
 
     <div class="container-fluid mt-5">
         <div class="row justify-content-center">
-            <div class="col-md-8 col-lg-6">
+            <div class="col-md-8">
                 <div class="card card-primary card-outline mb-4 shadow-sm">
                     <div class="card-header bg-primary text-white d-flex justify-content-center align-items-center">
-                        <h3 class="card-title mb-0">افزودن جراحی جدید</h3>
+                        <h3 class="card-title mb-0 fs-5">افزودن جراحی جدید</h3>
                     </div>
-
-                    @if ($errors->any())
-                        <div class="alert alert-danger">
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif
-
                     <form action="{{ route('surgery.store') }}" method="POST" class="needs-validation" novalidate>
                         @csrf
                         <div class="card-body">
-
-                            <div class="mb-3 row">
-                                <label for="patient_name" class="col-sm-3 col-form-label">نام بیمار:</label>
-                                <div class="col-sm-9">
-                                    <input name="patient_name" type="text" class="form-control form-control-lg"
-                                        id="patient_name" required />
-                                    <div class="invalid-feedback">
-                                        لطفاً نام بیمار را وارد کنید.
+                            <!-- اطلاعات بیمار -->
+                            <div class="row g-3 mb-4">
+                                <h6 class="border-bottom pb-2 mb-3">اطلاعات بیمار</h6>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="patient_name" class="form-label small">نام بیمار:</label>
+                                        <input name="patient_name" type="text"
+                                               class="form-control @error('patient_name') is-invalid @enderror"
+                                               id="patient_name"
+                                               value="{{ old('patient_name') }}"
+                                               required />
+                                        @error('patient_name')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="patient_national_code" class="form-label small">کد ملی بیمار:</label>
+                                        <input name="patient_national_code" type="text"
+                                               class="form-control @error('patient_national_code') is-invalid @enderror"
+                                               id="patient_national_code"
+                                               value="{{ old('patient_national_code') }}"
+                                               required />
+                                        @error('patient_national_code')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="mb-3 row">
-                                <label for="patient_national_code" class="col-sm-3 col-form-label">کد ملی بیمار:</label>
-                                <div class="col-sm-9">
-                                    <input name="patient_national_code" type="text" class="form-control form-control-lg"
-                                        id="patient_national_code" required />
-                                    <div class="invalid-feedback">
-                                        لطفاً کد ملی بیمار را وارد کنید.
+                            <!-- اطلاعات بیمه -->
+                            <div class="row g-3 mb-4">
+                                <h6 class="border-bottom pb-2 mb-3">اطلاعات بیمه</h6>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="basic_insurance_id" class="form-label small">بیمه پایه:</label>
+                                        <select name="basic_insurance_id"
+                                                class="form-select @error('basic_insurance_id') is-invalid @enderror"
+                                                id="basic_insurance_id"
+                                                required>
+                                            <option value="">انتخاب بیمه پایه</option>
+                                            @foreach ($insurances as $insurance)
+                                                @if ($insurance->type == 'basic')
+                                                    <option value="{{ $insurance->id }}" {{ old('basic_insurance_id') == $insurance->id ? 'selected' : '' }}>
+                                                        {{ $insurance->name }}
+                                                    </option>
+                                                @endif
+                                            @endforeach
+                                        </select>
+                                        @error('basic_insurance_id')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="supp_insurance_id" class="form-label small">بیمه تکمیلی:</label>
+                                        <select name="supp_insurance_id"
+                                                class="form-select @error('supp_insurance_id') is-invalid @enderror"
+                                                id="supp_insurance_id">
+                                            <option value="">انتخاب بیمه تکمیلی</option>
+                                            @foreach ($insurances as $insurance)
+                                                @if ($insurance->type == 'supplementary')
+                                                    <option value="{{ $insurance->id }}" {{ old('supp_insurance_id') == $insurance->id ? 'selected' : '' }}>
+                                                        {{ $insurance->name }}
+                                                    </option>
+                                                @endif
+                                            @endforeach
+                                        </select>
+                                        @error('supp_insurance_id')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="mb-3 row">
-                                <label for="basic_insurance_id" class="col-sm-3 col-form-label">بیمه پایه:</label>
-                                <div class="col-sm-9">
-                                    <select name="basic_insurance_id" class="form-control form-control-lg"
-                                        id="basic_insurance_id" required>
-                                        <option value="">انتخاب بیمه پایه</option>
-                                        @foreach ($insurances as $insurance)
-                                            @if ($insurance->type == 'basic')
-                                                <option value="{{ $insurance->id }}">{{ $insurance->name }}</option>
-                                            @endif
-                                        @endforeach
-                                    </select>
-                                    <div class="invalid-feedback">
-                                        لطفاً بیمه پایه را انتخاب کنید.
+                            <!-- اطلاعات پزشکان -->
+                            <div class="row g-3 mb-4">
+                                <h6 class="border-bottom pb-2 mb-3">اطلاعات پزشکان</h6>
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label for="surgeon_doctor_id" class="form-label small">پزشک جراح:</label>
+                                        <select name="surgeon_doctor_id"
+                                                class="form-select @error('surgeon_doctor_id') is-invalid @enderror"
+                                                id="surgeon_doctor_id"
+                                                required>
+                                            <option value="">انتخاب پزشک جراح</option>
+                                            @foreach ($doctors as $doctor)
+                                                <option value="{{ $doctor->id }}" {{ old('surgeon_doctor_id') == $doctor->id ? 'selected' : '' }}>
+                                                    {{ $doctor->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        @error('surgeon_doctor_id')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label for="anesthesiologist_doctor_id" class="form-label small">پزشک بیهوشی:</label>
+                                        <select name="anesthesiologist_doctor_id"
+                                                class="form-select @error('anesthesiologist_doctor_id') is-invalid @enderror"
+                                                id="anesthesiologist_doctor_id"
+                                                required>
+                                            <option value="">انتخاب پزشک بیهوشی</option>
+                                            @foreach ($doctors as $doctor)
+                                                <option value="{{ $doctor->id }}" {{ old('anesthesiologist_doctor_id') == $doctor->id ? 'selected' : '' }}>
+                                                    {{ $doctor->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        @error('anesthesiologist_doctor_id')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label for="consultant_doctor_id" class="form-label small">پزشک مشاور:</label>
+                                        <select name="consultant_doctor_id"
+                                                class="form-select @error('consultant_doctor_id') is-invalid @enderror"
+                                                id="consultant_doctor_id">
+                                            <option value="">انتخاب پزشک مشاور</option>
+                                            @foreach ($doctors as $doctor)
+                                                <option value="{{ $doctor->id }}" {{ old('consultant_doctor_id') == $doctor->id ? 'selected' : '' }}>
+                                                    {{ $doctor->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        @error('consultant_doctor_id')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="mb-3 row">
-                                <label for="supp_insurance_id" class="col-sm-3 col-form-label">بیمه تکمیلی:</label>
-                                <div class="col-sm-9">
-                                    <select name="supp_insurance_id" class="form-control form-control-lg"
-                                        id="supp_insurance_id">
-                                        <option value="">انتخاب بیمه تکمیلی</option>
-                                        @foreach ($insurances as $insurance)
-                                            @if ($insurance->type == 'supplementary')
-                                                <option value="{{ $insurance->id }}">{{ $insurance->name }}</option>
-                                            @endif
-                                        @endforeach
-                                    </select>
+                            <!-- اطلاعات جراحی -->
+                            <div class="row g-3 mb-4">
+                                <h6 class="border-bottom pb-2 mb-3">اطلاعات جراحی</h6>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="document_number" class="form-label small">شماره پرونده:</label>
+                                        <input name="document_number" type="number"
+                                               class="form-control @error('document_number') is-invalid @enderror"
+                                               id="document_number"
+                                               value="{{ old('document_number') }}"
+                                               required />
+                                        @error('document_number')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
                                 </div>
-                            </div>
-
-                            <div class="mb-3 row">
-                                <label for="document_number" class="col-sm-3 col-form-label">شماره پرونده:</label>
-                                <div class="col-sm-9">
-                                    <input name="document_number" type="number" class="form-control form-control-lg"
-                                        id="document_number" required />
-                                    <div class="invalid-feedback">
-                                        لطفاً شماره پرونده را وارد کنید.
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="surgery_type" class="form-label small">نوع جراحی:</label>
+                                        <select name="surgery_type"
+                                                class="form-select @error('surgery_type') is-invalid @enderror"
+                                                id="surgery_type"
+                                                required>
+                                            <option value="">انتخاب نوع جراحی</option>
+                                            @foreach ($operations as $type)
+                                                <option value="{{ $type->id }}" {{ old('surgery_type') == $type->id ? 'selected' : '' }}>
+                                                    {{ $type->title }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        @error('surgery_type')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label for="surgeried_at" class="form-label small">تاریخ جراحی:</label>
+                                        <input name="surgeried_at" type="date"
+                                               class="form-control @error('surgeried_at') is-invalid @enderror"
+                                               id="surgeried_at"
+                                               value="{{ old('surgeried_at') }}"
+                                               required />
+                                        @error('surgeried_at')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label for="released_at" class="form-label small">تاریخ ترخیص:</label>
+                                        <input name="released_at" type="date"
+                                               class="form-control @error('released_at') is-invalid @enderror"
+                                               id="released_at"
+                                               value="{{ old('released_at') }}"
+                                               required />
+                                        @error('released_at')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label for="cost" class="form-label small">هزینه جراحی (تومان):</label>
+                                        <input name="cost" type="number"
+                                               class="form-control @error('cost') is-invalid @enderror"
+                                               id="cost"
+                                               value="{{ old('cost') }}"
+                                               required />
+                                        @error('cost')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="mb-3">
+                                        <label for="description" class="form-label small">توضیحات:</label>
+                                        <textarea name="description"
+                                                  class="form-control @error('description') is-invalid @enderror"
+                                                  id="description"
+                                                  rows="3">{{ old('description') }}</textarea>
+                                        @error('description')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="mb-3 row">
-                                <label for="doctor_id" class="col-sm-3 col-form-label">پزشک جراح:</label>
-                                <div class="col-sm-9">
-                                    <select name="doctor_id" class="form-control form-control-lg" id="doctor_id" required>
-                                        <option value="">انتخاب پزشک</option>
-                                        @foreach ($doctors as $doctor)
-                                            <option value="{{ $doctor->id }}">{{ $doctor->name }}</option>
-                                        @endforeach
-                                    </select>
-                                    <div class="invalid-feedback">
-                                        لطفاً پزشک را انتخاب کنید.
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="mb-3 row">
-                                <label for="surgery_type" class="col-sm-3 col-form-label">نوع جراحی:</label>
-                                <div class="col-sm-9">
-                                    <select name="surgery_type" class="form-control form-control-lg" id="surgery_type"
-                                        required>
-                                        <option value="">انتخاب نوع جراحی</option>
-                                        @foreach ($operations as $type)
-                                            <option value="{{ $type->id }}">{{ $type->title }}</option>
-                                        @endforeach
-                                    </select>
-                                    <div class="invalid-feedback">
-                                        لطفاً نوع جراحی را انتخاب کنید.
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="mb-3 row">
-                                <label for="surgeried_at" class="col-sm-3 col-form-label">تاریخ جراحی:</label>
-                                <div class="col-sm-9">
-                                    <input name="surgeried_at" type="date" class="form-control form-control-lg"
-                                        id="surgeried_at" required />
-                                    <div class="invalid-feedback">
-                                        لطفاً تاریخ جراحی را وارد کنید.
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="mb-3 row">
-                                <label for="released_at" class="col-sm-3 col-form-label">تاریخ ترخیص:</label>
-                                <div class="col-sm-9">
-                                    <input name="released_at" type="date" class="form-control form-control-lg"
-                                        id="released_at" required />
-                                    <div class="invalid-feedback">
-                                        لطفاً تاریخ ترخیص را وارد کنید.
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="mb-3 row">
-                                <label for="cost" class="col-sm-3 col-form-label">هزینه جراحی (تومان):</label>
-                                <div class="col-sm-9">
-                                    <input name="cost" type="number" class="form-control form-control-lg"
-                                        id="cost" required />
-                                    <div class="invalid-feedback">
-                                        لطفاً هزینه جراحی را وارد کنید.
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="mb-3 row">
-                                <label for="description" class="col-sm-3 col-form-label">توضیحات:</label>
-                                <div class="col-sm-9">
-                                    <textarea name="description" class="form-control form-control-lg" id="description" rows="3"></textarea>
-                                </div>
-                            </div>
-
                         </div>
 
                         <div class="card-footer bg-light d-flex justify-content-center">
@@ -171,5 +247,27 @@
             </div>
         </div>
     </div>
+
+    @push('scripts')
+    <script>
+        // Prevent selecting same doctor for different roles
+        document.querySelectorAll('select[name$="_doctor_id"]').forEach(select => {
+            select.addEventListener('change', function() {
+                const selectedValue = this.value;
+                if (!selectedValue) return;
+
+                document.querySelectorAll('select[name$="_doctor_id"]').forEach(otherSelect => {
+                    if (otherSelect !== this) {
+                        Array.from(otherSelect.options).forEach(option => {
+                            if (option.value === selectedValue) {
+                                option.disabled = true;
+                            }
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+    @endpush
 
 @endsection

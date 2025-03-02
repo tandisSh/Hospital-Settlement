@@ -18,13 +18,13 @@
                                 <table class="table table-hover table-bordered">
                                     <thead class="table-primary">
                                         <tr>
-
                                             <th class="text-center">ردیف</th>
                                             <th class="text-center">شناسه</th>
                                             <th class="text-center">نام</th>
                                             <th class="text-center">نوع</th>
                                             <th class="text-center">درصد تخفیف</th>
                                             <th class="text-center">وضعیت</th>
+                                            <th class="text-center">تاریخ ثبت</th>
                                             <th class="text-center">عملیات</th>
                                         </tr>
                                     </thead>
@@ -44,6 +44,7 @@
                                                         {{ $insurance->status ? 'فعال' : 'غیرفعال' }}
                                                     </span>
                                                 </td>
+                                                <td class="text-center">{{ $insurance->getCreatedAtShamsi()->format('Y/m/d') }}</td>
                                                 <td class="text-center">
                                                     <div class="d-flex gap-2 justify-content-center">
                                                         <a href="{{ route('insurances.edit', $insurance->id) }}"
@@ -60,7 +61,6 @@
                                                             @csrf
                                                             @method('DELETE')
                                                         </form>
-
                                                     </div>
                                                 </td>
                                             </tr>
@@ -68,7 +68,7 @@
 
                                         @if ($insurances->isEmpty())
                                             <tr>
-                                                <td colspan="6" class="text-center text-muted">هیچ بیمه‌ای یافت نشد!</td>
+                                                <td colspan="8" class="text-center text-muted">هیچ بیمه‌ای یافت نشد!</td>
                                             </tr>
                                         @endif
                                     </tbody>

@@ -25,6 +25,7 @@
                                             <th class="text-center">شماره پزشکی</th>
                                             <th class="text-center">موبایل</th>
                                             <th class="text-center">وضعیت</th>
+                                            <th class="text-center">تاریخ ثبت</th>
                                             <th class="text-center">عملیات</th>
                                         </tr>
                                     </thead>
@@ -43,6 +44,7 @@
                                                         {{ $doctor->status ? 'فعال' : 'غیرفعال' }}
                                                     </span>
                                                 </td>
+                                                <td class="text-center">{{ $doctor->getCreatedAtShamsi()->format('Y/m/d') }}</td>
                                                 <td class="text-center">
                                                     <div class="d-flex gap-2 justify-content-center">
                                                         <a href="#" class="btn btn-info btn-sm px-2" title="مشاهده">
@@ -68,7 +70,7 @@
 
                                         @if ($doctors->isEmpty())
                                             <tr>
-                                                <td colspan="8" class="text-center text-muted">هیچ پزشکی یافت نشد!</td>
+                                                <td colspan="10" class="text-center text-muted">هیچ پزشکی یافت نشد!</td>
                                             </tr>
                                         @endif
                                     </tbody>

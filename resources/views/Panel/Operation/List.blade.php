@@ -23,6 +23,7 @@
                                             <th class="text-center">نام</th>
                                             <th class="text-center">مبلغ (تومان)</th>
                                             <th class="text-center">وضعیت</th>
+                                            <th class="text-center">تاریخ ثبت</th>
                                             <th class="text-center">عملیات</th>
                                         </tr>
                                     </thead>
@@ -38,6 +39,7 @@
                                                         {{ $operation->status ? 'فعال' : 'غیرفعال' }}
                                                     </span>
                                                 </td>
+                                                <td class="text-center">{{ $operation->getCreatedAtShamsi()->format('Y/m/d') }}</td>
                                                 <td class="text-center">
                                                     <div class="d-flex gap-2 justify-content-center">
                                                         <a href="{{ route('operations.edit', $operation->id) }}"
@@ -62,7 +64,7 @@
 
                                         @if ($operations->isEmpty())
                                             <tr>
-                                                <td colspan="5" class="text-center text-muted">هیچ عملی یافت نشد!</td>
+                                                <td colspan="7" class="text-center text-muted">هیچ عملی یافت نشد!</td>
                                             </tr>
                                         @endif
                                     </tbody>
