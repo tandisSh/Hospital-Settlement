@@ -18,14 +18,10 @@
                                     <thead class="table-primary">
                                         <tr>
                                             <th class="text-center">ردیف</th>
-                                            <th class="text-center">شناسه</th>
                                             <th class="text-center">نام</th>
                                             <th class="text-center">تخصص</th>
-                                            <th class="text-center">کد ملی</th>
-                                            <th class="text-center">شماره پزشکی</th>
-                                            <th class="text-center">موبایل</th>
+                                            <th class="text-center">شماره موبایل</th>
                                             <th class="text-center">وضعیت</th>
-                                            <th class="text-center">تاریخ ثبت</th>
                                             <th class="text-center">عملیات</th>
                                         </tr>
                                     </thead>
@@ -33,21 +29,17 @@
                                         @foreach ($doctors as $index => $doctor)
                                             <tr>
                                                 <td class="text-center">{{ $index + 1 }}</td>
-                                                <td class="text-center">{{ $doctor->id }}</td>
                                                 <td class="text-center">{{ $doctor->name }}</td>
                                                 <td class="text-center">{{ $doctor->speciality->title }}</td>
-                                                <td class="text-center">{{ $doctor->national_code }}</td>
-                                                <td class="text-center">{{ $doctor->medical_number }}</td>
                                                 <td class="text-center">{{ $doctor->mobile }}</td>
                                                 <td class="text-center">
                                                     <span class="badge {{ $doctor->status ? 'bg-success' : 'bg-danger' }}">
                                                         {{ $doctor->status ? 'فعال' : 'غیرفعال' }}
                                                     </span>
                                                 </td>
-                                                <td class="text-center">{{ $doctor->getCreatedAtShamsi()->format('Y/m/d') }}</td>
                                                 <td class="text-center">
                                                     <div class="d-flex gap-2 justify-content-center">
-                                                        <a href="#" class="btn btn-info btn-sm px-2" title="مشاهده">
+                                                        <a href="{{ route('Doctor.Show', $doctor->id) }}" class="btn btn-info btn-sm px-2" title="مشاهده">
                                                             <i class="fa fa-eye text-dark"></i>
                                                         </a>
                                                         <a href="{{ route('Doctor.Edit', $doctor->id) }}"
@@ -70,7 +62,7 @@
 
                                         @if ($doctors->isEmpty())
                                             <tr>
-                                                <td colspan="10" class="text-center text-muted">هیچ پزشکی یافت نشد!</td>
+                                                <td colspan="6" class="text-center text-muted">هیچ پزشکی یافت نشد!</td>
                                             </tr>
                                         @endif
                                     </tbody>

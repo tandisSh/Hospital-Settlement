@@ -59,8 +59,8 @@ Route::prefix('Panel')->group(function () {
         Route::delete('/Delete{id}', [DoctorRoleController::class, "Delete"])->name('DoctorRole.Delete');
     });
     Route::prefix('Doctor')->group(function () {
-
         Route::get('/List', [DoctorController::class, "List"])->name('Doctors');
+        Route::get('/Show/{id}', [DoctorController::class, "Show"])->name('Doctor.Show');
         Route::get('/Create', [DoctorController::class, "Create"])->name('Doctor.Create');
         Route::post('/Create', [DoctorController::class, "Store"])->name('Doctor.Store');
         Route::get('/Edit{id}', [DoctorController::class, "Edit"])->name('Doctor.Edit');
@@ -93,6 +93,7 @@ Route::prefix('Panel')->group(function () {
     });
     Route::prefix('surgery')->group(function () {
         Route::get('/List', [SurgeryController::class, 'List'])->name('surgeries');
+        Route::get('/show/{id}', [SurgeryController::class, 'show'])->name('surgery.show');
         Route::get('/create', [SurgeryController::class, 'create'])->name('surgery.create');
         Route::post('/store', [SurgeryController::class, 'store'])->name('surgery.store');
         Route::get('/edit/{id}', [SurgeryController::class, 'edit'])->name('surgery.edit');
