@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Panel;
 use App\Http\Controllers\Controller;
 use App\Models\Speciality;
 use Illuminate\Http\Request;
-use RealRashid\SweetAlert\Facades\Alert;
 
 class SpecialityController extends Controller
 {
@@ -21,44 +20,34 @@ class SpecialityController extends Controller
     public function Store(Request $request)
     {
         $request->validate([
-            "title" => "required",
-            "status" => "required",
+            "title" => "required|unique:specialities,title",
+            "status" => "required|boolean",
         ]);
 
-        $title = Speciality::where("title", $request->title)->first();
-
-        if (!$title) {
-            $Speciality = Speciality::create([
-                'title' => $request->title,
-                'status' => $request->status,
-            ]);
-
-            Alert::success('موفق!', 'تخصص با موفقیت ثبت شد.');
-            return redirect()->route("Show.Speciality");
-        } else {
-            Alert::error('خطا!', " تخصص از قبل وجود دارد.");
-            return redirect()->route("Speciality.Create.Form");
-        }
+        Speciality::create($request->all());
+        return redirect()->route("Show.Speciality")->with('success', 'تخصص با موفقیت ثبت شد.');
     }
     public function Edit($id)
     {
-        $Speciality = Speciality::find($id);
+        $Speciality = Speciality::findOrFail($id);
         return view('Panel.Speciality.EditSpeciality', compact('Speciality'));
     }
     public function Update(Request $request, $id)
     {
-        $Speciality = Speciality::find($id);
-        $dataform = $request->all();
-        $Speciality->update($dataform);
+        $Speciality = Speciality::findOrFail($id);
+        
+        $request->validate([
+            "title" => "required|unique:specialities,title," . $id,
+            "status" => "required|boolean",
+        ]);
 
-        Alert::success('موفق!', 'تخصص با موفقیت ویرایش شد.');
-        return redirect()->route('Show.Speciality');
+        $Speciality->update($request->all());
+        return redirect()->route('Show.Speciality')->with('success', 'تخصص با موفقیت ویرایش شد.');
     }
-    public function Delete(Request $request, $id)
+    public function Delete($id)
     {
-        $Speciality = Speciality::find($id);
-
+        $Speciality = Speciality::findOrFail($id);
         $Speciality->delete();
-        return redirect()->route('Show.Speciality')->with('success', 'کاربر با موفقیت حذف شد.');
+        return redirect()->route('Show.Speciality')->with('success', 'تخصص با موفقیت حذف شد.');
     }
 }

@@ -10,65 +10,65 @@
                         <h3 class="card-title mb-0">افزودن بیمه جدید</h3>
                     </div>
 
-                    @if ($errors->any())
-                        <div class="alert alert-danger">
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif
-
                     <form action="{{ route('insurances.store') }}" method="POST" class="needs-validation" novalidate>
                         @csrf
                         <div class="card-body">
                             <div class="mb-3 row">
                                 <label for="name" class="col-sm-3 col-form-label">نام بیمه:</label>
                                 <div class="col-sm-9">
-                                    <input name="name" type="text" class="form-control form-control-lg" id="name"
-                                        required />
-                                    <div class="invalid-feedback">
-                                        لطفاً نام بیمه را وارد کنید.
-                                    </div>
+                                    <input name="name" type="text" class="form-control form-control-lg @error('name') is-invalid @enderror" 
+                                        id="name" value="{{ old('name') }}" required />
+                                    @error('name')
+                                        <div class="invalid-feedback d-block">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
                                 </div>
                             </div>
 
                             <div class="mb-3 row">
                                 <label for="type" class="col-sm-3 col-form-label">نوع بیمه:</label>
                                 <div class="col-sm-9">
-                                    <select name="type" class="form-control form-control-lg" id="type" required>
+                                    <select name="type" class="form-control form-control-lg @error('type') is-invalid @enderror" 
+                                        id="type" required>
                                         <option value="">انتخاب نوع بیمه</option>
-                                        <option value="basic">پایه</option>
-                                        <option value="supplementary">تکمیلی</option>
+                                        <option value="basic" {{ old('type') == 'basic' ? 'selected' : '' }}>پایه</option>
+                                        <option value="supplementary" {{ old('type') == 'supplementary' ? 'selected' : '' }}>تکمیلی</option>
                                     </select>
-                                    <div class="invalid-feedback">
-                                        لطفاً نوع بیمه را انتخاب کنید.
-                                    </div>
+                                    @error('type')
+                                        <div class="invalid-feedback d-block">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
                                 </div>
                             </div>
 
                             <div class="mb-3 row">
                                 <label for="discount" class="col-sm-3 col-form-label">درصد تخفیف:</label>
                                 <div class="col-sm-9">
-                                    <input name="discount" type="number" class="form-control form-control-lg"
-                                        id="discount" min="0" max="100" required />
-                                    <div class="invalid-feedback">
-                                        لطفاً درصد تخفیف را بین ۰ تا ۱۰۰ وارد کنید.
-                                    </div>
+                                    <input name="discount" type="number" class="form-control form-control-lg @error('discount') is-invalid @enderror"
+                                        id="discount" min="0" max="100" value="{{ old('discount') }}" required />
+                                    @error('discount')
+                                        <div class="invalid-feedback d-block">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
                                 </div>
                             </div>
 
                             <div class="mb-3 row">
                                 <label for="status" class="col-sm-3 col-form-label">وضعیت:</label>
                                 <div class="col-sm-9">
-                                    <select name="status" class="form-control form-control-lg" id="status" required>
-                                        <option value="1" selected>فعال</option>
-                                        <option value="0">غیرفعال</option>
+                                    <select name="status" class="form-control form-control-lg @error('status') is-invalid @enderror" 
+                                        id="status" required>
+                                        <option value="1" {{ old('status', '1') == '1' ? 'selected' : '' }}>فعال</option>
+                                        <option value="0" {{ old('status', '1') == '0' ? 'selected' : '' }}>غیرفعال</option>
                                     </select>
-                                    <div class="invalid-feedback">
-                                        لطفاً وضعیت بیمه را انتخاب کنید.
-                                    </div>
+                                    @error('status')
+                                        <div class="invalid-feedback d-block">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
                                 </div>
                             </div>
                         </div>
