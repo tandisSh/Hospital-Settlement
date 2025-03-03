@@ -1,0 +1,8 @@
+.sidebar-menu .nav-item ul {
+    list-style: none;
+    padding-right: 0;
+}
+
+.sidebar-menu .nav-item .nav-link i.bi-circle {
+    display: none;
+} 

@@ -7,7 +7,7 @@
                 <div class="card card-warning card-outline shadow-sm">
                     <div class="card-header bg-warning text-black text-center">
                         <h5 class="card-title mb-0">ویرایش جراحی</h5>
-                    </div>
+                    </div> 
 
                     <form action="{{ route('surgery.update', ['id' => $surgery->id]) }}" method="POST" class="needs-validation p-3" novalidate>
                         @csrf
