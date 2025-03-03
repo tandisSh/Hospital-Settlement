@@ -73,7 +73,7 @@ class SurgeryController extends Controller
 
         // Get doctor roles with their shares
         $doctorRoles = DoctorRole::whereIn('id', [1, 2, 3])->pluck('quota', 'id');
-        
+
         // Calculate shares based on surgery cost
         $surgeonShare = $doctorRoles[1]; // سهم جراح
         $anesthesiologistShare = $doctorRoles[2]; // سهم متخصص بیهوشی
@@ -131,15 +131,16 @@ class SurgeryController extends Controller
         Alert::success('موفق!', 'عمل جراحی با موفقیت ثبت شد.');
         return redirect()->route('surgeries')->with('success', 'عمل جراحی با موفقیت ثبت شد.');
     }
-    public function edit(Surgery $surgery)
+    public function edit($id)
     {
+        $surgery = Surgery::findOrFail($id);
         $surgeried_at = Carbon::parse($surgery->surgeried_at)->format('Y/m/d');
         $released_at = $surgery->released_at ? Carbon::parse($surgery->released_at)->format('Y/m/d') : null;
         $insurances = Insurance::all();
         $doctors = Doctor::all();
         $operations = Operation::all();
-        
-        return view('Panel.surgery.edit', compact('surgery', 'insurances', 'doctors', 'operations', 'surgeried_at', 'released_at'));
+
+        return view('Panel.Surgery.Edit', compact('surgery', 'insurances', 'doctors', 'operations', 'surgeried_at', 'released_at'));
     }
     public function update(Request $request, $id)
     {
@@ -152,37 +153,36 @@ class SurgeryController extends Controller
         $surgery = Surgery::findOrFail($id);
 
         $request->validate([
-            'patient_name' => 'required|string|max:100',
-            'patient_national_code' => 'required|string|max:20',
-            'basic_insurance_id' => 'nullable|exists:insurances,id',
+            'patient_name' => 'required|string|max:255',
+            'patient_national_code' => 'required|string|size:10',
+            'basic_insurance_id' => 'required|exists:insurances,id',
             'supp_insurance_id' => 'nullable|exists:insurances,id',
-            'document_number' => 'required|unique:surgeries,document_number,' . $id,
-            'surgeried_at' => 'required|date',
-            'released_at' => 'required|date|after_or_equal:surgeried_at',
+            'document_number' => 'required|numeric',
+            'description' => 'nullable|string',
             'surgeon_doctor_id' => 'required|exists:doctors,id',
             'anesthesiologist_doctor_id' => 'required|exists:doctors,id|different:surgeon_doctor_id',
             'consultant_doctor_id' => 'nullable|exists:doctors,id|different:surgeon_doctor_id|different:anesthesiologist_doctor_id',
             'surgery_type' => 'required|exists:operations,id',
-            'cost' => 'required|numeric|min:0',
-            'description' => 'nullable|string',
+            'surgeried_at' => 'required|date',
+            'released_at' => 'required|date|after_or_equal:surgeried_at',
+            'cost' => 'required|numeric|min:0'
         ]);
 
-        // Update surgery record
         $surgery->update([
             'patient_name' => $request->patient_name,
             'patient_national_code' => $request->patient_national_code,
             'basic_insurance_id' => $request->basic_insurance_id,
             'supp_insurance_id' => $request->supp_insurance_id,
             'document_number' => $request->document_number,
+            'description' => $request->description,
             'surgeried_at' => $request->surgeried_at,
             'released_at' => $request->released_at,
-            'cost' => $request->cost,
-            'description' => $request->description,
+            'cost' => $request->cost
         ]);
 
         // Get doctor roles with their shares
         $doctorRoles = DoctorRole::whereIn('id', [1, 2, 3])->pluck('quota', 'id');
-        
+
         // Calculate shares based on surgery cost
         $surgeonShare = $doctorRoles[1]; // سهم جراح
         $anesthesiologistShare = $doctorRoles[2]; // سهم متخصص بیهوشی

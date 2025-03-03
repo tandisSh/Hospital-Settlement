@@ -9,7 +9,7 @@
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-center mb-4">
                                 <h4 class="mb-0">لیست عمل پزشکی</h4>
-                                <a href="{{ route('operations.create') }}" class="btn btn-warning btn-sm px-3">
+                                <a href="{{ route('operations.create') }}" class="btn btn-primary btn-sm px-3">
                                     افزودن عمل جدید +
                                 </a>
                             </div>

@@ -9,27 +9,54 @@
                         <h5 class="card-title mb-0">ویرایش پروفایل</h5>
                     </div>
 
-                    <form action="{{route('updateProfile')}}" method="POST" class="needs-validation p-3" novalidate>
+                    @if(session('success'))
+                        <div class="alert alert-success m-3">
+                            {{ session('success') }}
+                        </div>
+                    @endif
+
+                    @if(session('error'))
+                        <div class="alert alert-danger m-3">
+                            {{ session('error') }}
+                        </div>
+                    @endif
+
+                    <form action="{{ route('updateProfile') }}" method="POST" class="needs-validation p-3" novalidate>
                         @csrf
                         <div class="card-body">
                             <div class="row g-2 mb-3">
                                 <div class="col-6">
                                     <label class="form-label small">نام:</label>
-                                    <input name="name" type="text" class="form-control form-control-sm"
-                                           value="{{ Auth::user()->name }}" required />
+                                    <input name="name" type="text" class="form-control form-control-sm @error('name') is-invalid @enderror"
+                                           value="{{ old('name', Auth::user()->name) }}" required />
+                                    @error('name')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
                                 </div>
                                 <div class="col-6">
                                     <label class="form-label small">ایمیل:</label>
-                                    <input name="email" type="email" class="form-control form-control-sm"
-                                           value="{{ Auth::user()->email }}" required />
+                                    <input name="email" type="email" class="form-control form-control-sm @error('email') is-invalid @enderror"
+                                           value="{{ old('email', Auth::user()->email) }}" required />
+                                    @error('email')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
                                 </div>
                             </div>
 
                             <div class="row g-2 mb-3">
                                 <div class="col-6">
                                     <label class="form-label small">شماره تلفن:</label>
-                                    <input name="phone" type="text" class="form-control form-control-sm"
-                                           value="{{ Auth::user()->phone ?? '' }}" />
+                                    <input name="phone" type="text" class="form-control form-control-sm @error('phone') is-invalid @enderror"
+                                           value="{{ old('phone', Auth::user()->phone) }}" />
+                                    @error('phone')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
                                 </div>
                             </div>
 
@@ -40,18 +67,36 @@
                                 <div class="row g-2 mb-3">
                                     <div class="col-6">
                                         <label class="form-label small">رمز عبور فعلی:</label>
-                                        <input name="current_password" type="password" class="form-control form-control-sm" />
+                                        <input name="current_password" type="password" 
+                                            class="form-control form-control-sm @error('current_password') is-invalid @enderror" />
+                                        @error('current_password')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
                                     </div>
                                     <div class="col-6">
                                         <label class="form-label small">رمز عبور جدید:</label>
-                                        <input name="new_password" type="password" class="form-control form-control-sm" />
+                                        <input name="new_password" type="password" 
+                                            class="form-control form-control-sm @error('new_password') is-invalid @enderror" />
+                                        @error('new_password')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
                                     </div>
                                 </div>
 
                                 <div class="row g-2 mb-3">
                                     <div class="col-6">
                                         <label class="form-label small">تکرار رمز عبور جدید:</label>
-                                        <input name="new_password_confirmation" type="password" class="form-control form-control-sm" />
+                                        <input name="new_password_confirmation" type="password" 
+                                            class="form-control form-control-sm @error('new_password_confirmation') is-invalid @enderror" />
+                                        @error('new_password_confirmation')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
                                     </div>
                                 </div>
                             </div>

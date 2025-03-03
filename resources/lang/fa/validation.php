@@ -17,6 +17,7 @@ return [
     'exists' => 'مقدار انتخاب شده برای :attribute معتبر نیست.',
     'boolean' => 'فیلد :attribute باید true یا false باشد.',
     'in' => 'مقدار انتخاب شده برای :attribute معتبر نیست.',
+    'confirmed' => ':attribute با تکرار آن مطابقت ندارد.',
     
     'attributes' => [
         'name' => 'نام',
@@ -30,6 +31,10 @@ return [
         'mobile' => 'شماره موبایل',
         'password' => 'رمز عبور',
         'phone' => 'شماره تلفن',
+        'email' => 'ایمیل',
+        'current_password' => 'رمز عبور فعلی',
+        'new_password' => 'رمز عبور جدید',
+        'new_password_confirmation' => 'تکرار رمز عبور جدید',
     ],
     'custom' => [
         'phone' => [

@@ -4,44 +4,43 @@
     <div class="container-fluid mt-5">
         <div class="row justify-content-center">
             <div class="col-md-8 col-lg-6">
-                <div class="card card-warning card-outline mb-4 shadow-sm">
-                    <div class="card-header bg-warning text-black d-flex justify-content-center align-items-center">
-                        <h3 class="card-title mb-0">ویرایش تخصص </h3>
+                <div class="card card-warning card-outline shadow-sm">
+                    <div class="card-header bg-warning text-black text-center">
+                        <h5 class="card-title mb-0">ویرایش تخصص</h5>
                     </div>
 
-                    <form action="{{ route('Update.Speciality', $Speciality->id) }}" method="POST" class="needs-validation"
-                        novalidate>
+                    <form action="{{ route('Update.Speciality', $Speciality->id) }}" method="POST" class="needs-validation p-3" novalidate>
                         @csrf
                         <div class="card-body">
-                            <div class="mb-3 row">
-                                <label for="title" class="col-sm-3 col-form-label">عنوان:</label>
-                                <div class="col-sm-9">
-                                    <input name="title" type="text" class="form-control form-control-lg @error('title') is-invalid @enderror"
-                                        id="title" value="{{ old('title', $Speciality->title) }}" required />
+                            <div class="row g-2">
+                                <div class="col-12">
+                                    <label class="form-label small">عنوان:</label>
+                                    <input name="title" type="text" class="form-control form-control-sm @error('title') is-invalid @enderror"
+                                        value="{{ old('title', $Speciality->title) }}" required />
                                     @error('title')
-                                        <div class="invalid-feedback d-block">
+                                        <div class="invalid-feedback">
                                             {{ $message }}
                                         </div>
                                     @enderror
                                 </div>
-                            </div>
-                            <div class="mb-3 row">
-                                <label for="status" class="col-sm-3 col-form-label">وضعیت:</label>
-                                <div class="col-sm-9">
-                                    <select class="form-select form-select-lg @error('status') is-invalid @enderror" name="status">
+
+                                <div class="col-6">
+                                    <label class="form-label small">وضعیت:</label>
+                                    <select class="form-control form-control-sm @error('status') is-invalid @enderror" name="status">
                                         <option value="1" {{ old('status', $Speciality->status) == 1 ? 'selected' : '' }}>فعال</option>
                                         <option value="0" {{ old('status', $Speciality->status) == 0 ? 'selected' : '' }}>غیرفعال</option>
                                     </select>
                                     @error('status')
-                                        <div class="invalid-feedback d-block">
+                                        <div class="invalid-feedback">
                                             {{ $message }}
                                         </div>
                                     @enderror
                                 </div>
                             </div>
                         </div>
+
                         <div class="card-footer bg-light d-flex justify-content-center">
-                            <button type="submit" class="btn btn-warning btn-lg">ویرایش</button>
+                            <button type="submit" class="btn btn-warning btn-sm px-4">ویرایش</button>
                         </div>
                     </form>
                 </div>

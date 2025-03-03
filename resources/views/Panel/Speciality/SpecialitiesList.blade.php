@@ -9,7 +9,7 @@
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-center mb-4">
                                 <h4 class="mb-0">لیست تخصص‌ها</h4>
-                                <a href="{{ route('Speciality.Create.Form') }}" class="btn btn-warning btn-sm px-3">ثبت تخصص
+                                <a href="{{ route('Speciality.Create.Form') }}" class="btn btn-primary btn-sm px-3">ثبت تخصص
                                     جدید +</a>
                             </div>
                             <div class="table-responsive">

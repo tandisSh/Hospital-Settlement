@@ -9,7 +9,7 @@
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-center mb-4">
                                 <h4 class="mb-0">لیست پزشکان</h4>
-                                <a href="{{ route('Doctor.Create') }}" class="btn btn-warning btn-sm px-3">افزودن پزشک جدید
+                                <a href="{{ route('Doctor.Create') }}" class="btn btn-primary btn-sm px-3">افزودن پزشک جدید
                                     +</a>
                             </div>
 

@@ -29,9 +29,4 @@ class AuthController extends Controller
             return redirect()->route("login")->with('error', trans('validation.auth.failed'));
         }
     }
-    // public function Logout(Request $request)
-    // {
-    //     Auth::logout();
-    //     return redirect()->route('Home');
-    // }
 }

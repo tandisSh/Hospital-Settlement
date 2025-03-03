@@ -9,7 +9,7 @@
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-center mb-4">
                                 <h4 class="mb-0">لیست نقش‌های پزشک</h4>
-                                <a href="{{ route('DoctorRole.Create') }}" class="btn btn-warning btn-sm px-3">افزودن نقش جدید +</a>
+                                <a href="{{ route('DoctorRole.Create') }}" class="btn btn-primary btn-sm px-3">افزودن نقش جدید +</a>
                             </div>
 
                             @if(session('success'))

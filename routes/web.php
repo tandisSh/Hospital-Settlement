@@ -19,19 +19,15 @@ Route::get('/', function () {
 Route::namespace('Auth')->group(function () {
     Route::get('/Login', [AuthController::class, "LoginForm"])->name('login');
     Route::post('/Login', [AuthController::class, "Login"])->name('Login');
-    // Route::get('/logout', [AuthController::class, "Logout"])->name('Logout');
 });
 
 Route::middleware(['auth'])->prefix('Panel')->group(function () {
-
-
 
     Route::prefix('User')->group(function () {
         Route::get('/profile', [UserController::class, 'showProfile'])->name('profile');
         Route::get('/profile/edit', [UserController::class, 'editProfile'])->name('editProfile');
         Route::post('/profile/update', [UserController::class, 'updateProfile'])->name('updateProfile');
     });
-
     Route::prefix('Speciality')->group(function () {
         //list
         Route::get('/List', [SpecialityController::class, "List"])->name('Show.Speciality');
