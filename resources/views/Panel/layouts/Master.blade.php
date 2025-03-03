@@ -12,6 +12,30 @@
         @yield('content')
         @include('Panel.layouts.Footer')
         @include('Panel.layouts.Js')
+    </div>
+
+    <script>
+        function confirmDelete(id) {
+            if (document.querySelector(`#delete-form-${id} button`).disabled) {
+                return;
+            }
+            
+            Swal.fire({
+                title: 'آیا مطمئن هستید؟',
+                text: "این عملیات قابل بازگشت نیست!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'بله، حذف شود',
+                cancelButtonText: 'خیر'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById(`delete-form-${id}`).submit();
+                }
+            });
+        }
+    </script>
 </body>
 </div>
 

@@ -25,13 +25,31 @@ class Doctor extends Model
         'password' => 'hashed',
     ];
 
+    protected static function booted(): void
+    {
+        static::deleting(function (Doctor $doctor) {
+            if ($doctor->isDeletable()) {
+                abort(403, 'این پزشک دارای عمل جراحی ثبت شده است و قابل حذف نمی‌باشد.');
+            }
+        });
+    }
+
     public function speciality()
     {
         return $this->belongsTo(Speciality::class);
     }
+
     public function roles()
     {
-        return $this->belongsToMany(DoctorRole::class, 'doctor_role_assignments', 'doctor_id', 'doctor_role_id');
+        return $this->belongsToMany(DoctorRole::class, 'doctor_role_assignments', 'doctor_id', 'doctor_role_id')
+            ->withTimestamps();
+    }
+
+    public function surgeries()
+    {
+        return $this->belongsToMany(Surgery::class, 'surgery_doctor')
+            ->withPivot(['doctor_role_id', 'amount'])
+            ->withTimestamps();
     }
 
     public function getCreatedAtShamsi()
@@ -42,5 +60,10 @@ class Doctor extends Model
     public function getUpdatedAtShamsi()
     {
         return Jalalian::fromDateTime($this->updated_at);
+    }
+
+    public function isDeletable(): bool
+    {
+        return $this->surgeries()->exists();
     }
 }

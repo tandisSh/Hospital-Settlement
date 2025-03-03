@@ -37,11 +37,15 @@ class Surgery extends Model
     }
 
     public function doctors() {
-        return $this->belongsToMany(Doctor::class, 'surgery_doctor');
+        return $this->belongsToMany(Doctor::class, 'surgery_doctor')
+            ->withPivot(['doctor_role_id', 'amount'])
+            ->withTimestamps();
     }
 
     public function operations() {
-        return $this->belongsToMany(Operation::class, 'surgery_operation');
+        return $this->belongsToMany(Operation::class, 'surgery_operation')
+            ->withPivot(['amount'])
+            ->withTimestamps();
     }
 
     public function getSurgeriedAtShamsi()

@@ -21,6 +21,30 @@ class Insurance extends Model
         'status' => 'boolean',
     ];
 
+    protected static function booted(): void
+    {
+        static::deleting(function (Insurance $insurance) {
+            if ($insurance->isDeletable()) {
+                abort(403, 'این بیمه دارای جراحی ثبت شده است و قابل حذف نمی‌باشد.');
+            }
+        });
+    }
+
+    public function isDeletable(): bool
+    {
+        return $this->basicSurgeries()->exists() || $this->suppSurgeries()->exists();
+    }
+
+    public function basicSurgeries()
+    {
+        return $this->hasMany(Surgery::class, 'basic_insurance_id');
+    }
+
+    public function suppSurgeries()
+    {
+        return $this->hasMany(Surgery::class, 'supp_insurance_id');
+    }
+
     public function surgeries()
     {
         return $this->hasMany(Surgery::class, 'basic_insurance_id')

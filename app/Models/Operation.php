@@ -16,6 +16,15 @@ class Operation extends Model
         'status' => 'boolean',
     ];
 
+    protected static function booted(): void
+    {
+        static::deleting(function (Operation $operation) {
+            if ($operation->isDeletable()) {
+                abort(403, 'این عمل دارای جراحی ثبت شده است و قابل حذف نمی‌باشد.');
+            }
+        });
+    }
+
     public function getCreatedAtShamsi()
     {
         return Jalalian::fromDateTime($this->created_at);
@@ -24,5 +33,17 @@ class Operation extends Model
     public function getUpdatedAtShamsi()
     {
         return Jalalian::fromDateTime($this->updated_at);
+    }
+
+    public function surgeries()
+    {
+        return $this->belongsToMany(Surgery::class, 'surgery_operation')
+            ->withPivot(['amount'])
+            ->withTimestamps();
+    }
+
+    public function isDeletable(): bool
+    {
+        return $this->surgeries()->exists();
     }
 }

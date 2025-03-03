@@ -19,7 +19,21 @@ class Speciality extends Model
         'status' => 'boolean',
     ];
 
-    public function Doctor()
+    protected static function booted(): void
+    {
+        static::deleting(function (Speciality $speciality) {
+            if ($speciality->isDeletable()) {
+                abort(403, 'این تخصص دارای پزشک است و قابل حذف نمی‌باشد.');
+            }
+        });
+    }
+
+    public function isDeletable(): bool
+    {
+        return $this->doctors()->exists();
+    }
+
+    public function doctors()
     {
         return $this->hasMany(Doctor::class);
     }
