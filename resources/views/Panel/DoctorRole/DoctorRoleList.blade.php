@@ -60,9 +60,6 @@
                                                 </td>
                                                 <td class="text-center align-middle">
                                                     <div class="d-flex gap-2 justify-content-center">
-                                                        <a href="#" class="btn btn-info btn-sm px-2" title="مشاهده">
-                                                            <i class="fa fa-eye text-dark"></i>
-                                                        </a>
                                                         <a href="{{ route('DoctorRole.Edit', $role->id) }}"
                                                             class="btn btn-warning btn-sm px-2" title="ویرایش">
                                                             <i class="fa fa-pen text-dark"></i>

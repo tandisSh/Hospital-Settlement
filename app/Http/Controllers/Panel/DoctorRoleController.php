@@ -26,6 +26,14 @@ class DoctorRoleController extends Controller
             'status' => 'boolean',
         ]);
 
+        // محاسبه مجموع درصد سهمیه‌های موجود
+        $totalQuota = DoctorRole::sum('quota');
+        
+        // بررسی اینکه با اضافه شدن سهمیه جدید، مجموع از 100 بیشتر نشود
+        if ($totalQuota + $request->quota > 100) {
+            return back()->withInput()->withErrors(['quota' => 'مجموع درصد سهمیه‌ها نمی‌تواند از 100 بیشتر باشد. (مجموع فعلی: ' . $totalQuota . '%)']);
+        }
+
         DoctorRole::create($request->all());
 
         Alert::success('موفق!', 'نقش جدید با موفقیت اضافه شد.');
@@ -46,6 +54,14 @@ class DoctorRoleController extends Controller
             'quota' => 'required|integer|min:1|max:100',
             'status' => 'boolean',
         ]);
+
+        // محاسبه مجموع درصد سهمیه‌های موجود به جز سهمیه فعلی
+        $totalQuota = DoctorRole::where('id', '!=', $id)->sum('quota');
+        
+        // بررسی اینکه با تغییر سهمیه، مجموع از 100 بیشتر نشود
+        if ($totalQuota + $request->quota > 100) {
+            return back()->withInput()->withErrors(['quota' => 'مجموع درصد سهمیه‌ها نمی‌تواند از 100 بیشتر باشد. (مجموع فعلی بدون این نقش: ' . $totalQuota . '%)']);
+        }
 
         $role->update($request->all());
 
