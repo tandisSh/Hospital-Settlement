@@ -20,12 +20,13 @@ class AuthController extends Controller
             "phone" => "required",
             "password" => "required",
         ]);
+
         $user = User::where("phone", $request->phone)->first();
         if ($user && Hash::check($request->password, $user->password)) {
             Auth::login($user);
             return redirect()->route("Panel");
         } else {
-            return redirect()->route("LoginForm")->with('error', "شماره تلفن یا رمز عبور اشتباه است");
+            return redirect()->route("login")->with('error', trans('validation.auth.failed'));
         }
     }
     // public function Logout(Request $request)

@@ -8,28 +8,30 @@ use App\Http\Controllers\Panel\OperationsController;
 use App\Http\Controllers\Panel\SpecialityController;
 use App\Http\Controllers\Panel\SurgeryController;
 use App\Http\Controllers\Panel\UserController;
-use App\Http\Middleware\AuthMiddleware;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+
 
 Route::get('/', function () {
     return view('Panel.index');
 })->name('Panel');
 
 Route::namespace('Auth')->group(function () {
-    Route::get('/Login', [AuthController::class, "LoginForm"])->name('LoginForm');
+    Route::get('/Login', [AuthController::class, "LoginForm"])->name('login');
     Route::post('/Login', [AuthController::class, "Login"])->name('Login');
     // Route::get('/logout', [AuthController::class, "Logout"])->name('Logout');
 });
-Route::prefix('Panel')->group(function () {
+
+Route::middleware(['auth'])->prefix('Panel')->group(function () {
+
+
 
     Route::prefix('User')->group(function () {
-
-        Route::middleware([AuthMiddleware::class])->group(function () {
-            Route::get('/profile', [UserController::class, 'showProfile'])->name('profile');
-            Route::get('/profile/edit', [UserController::class, 'editProfile'])->name('editProfile');
-            Route::post('/profile/update', [UserController::class, 'updateProfile'])->name('updateProfile');
-        });
+        Route::get('/profile', [UserController::class, 'showProfile'])->name('profile');
+        Route::get('/profile/edit', [UserController::class, 'editProfile'])->name('editProfile');
+        Route::post('/profile/update', [UserController::class, 'updateProfile'])->name('updateProfile');
     });
+
     Route::prefix('Speciality')->group(function () {
         //list
         Route::get('/List', [SpecialityController::class, "List"])->name('Show.Speciality');
