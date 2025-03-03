@@ -31,13 +31,11 @@ class OperationsController extends Controller
         Alert::success('موفق!', 'عمل با موفقیت ثبت شد.');
         return redirect()->route('operations')->with('success', 'عمل جدید ایجاد شد.');
     }
-
     public function edit($id)
     {
         $operation=Operation::find($id);
         return view('Panel.Operation.edit', compact('operation'));
     }
-
     public function update(Request $request, $id)
     {
         $operation=Operation::find($id);

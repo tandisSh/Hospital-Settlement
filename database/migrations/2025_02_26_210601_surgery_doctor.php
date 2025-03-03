@@ -20,8 +20,8 @@ return new class extends Migration
             $table->bigInteger('amount');
             $table->timestamps();
 
-            $table->foreign('doctor_id')->references('id')->on('doctors')->onDelete('cascade');
-            $table->foreign('surgery_id')->references('id')->on('surgeries')->onDelete('cascade');
+            $table->foreign('doctor_id')->references('id')->on('doctors');
+            $table->foreign('surgery_id')->references('id')->on('surgeries');
             $table->foreign('doctor_role_id')->references('id')->on('doctor_roles')->onDelete('restrict');
         });
     }

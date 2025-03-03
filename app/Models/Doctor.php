@@ -33,6 +33,10 @@ class Doctor extends Model
             }
         });
     }
+    public function isDeletable(): bool
+    {
+        return $this->surgeries()->exists();
+    }
 
     public function speciality()
     {
@@ -60,10 +64,5 @@ class Doctor extends Model
     public function getUpdatedAtShamsi()
     {
         return Jalalian::fromDateTime($this->updated_at);
-    }
-
-    public function isDeletable(): bool
-    {
-        return $this->surgeries()->exists();
     }
 }

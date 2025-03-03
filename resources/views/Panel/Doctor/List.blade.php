@@ -46,17 +46,6 @@
                                                             class="btn btn-warning btn-sm px-2" title="ویرایش">
                                                             <i class="fa fa-pen text-dark"></i>
                                                         </a>
-                                                        <form id="delete-form-{{ $doctor->id }}" method="POST" action="{{ route('Doctor.Delete', $doctor->id) }}" style="display: inline;">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="button"
-                                                                @disabled($doctor->isDeletable())
-                                                                onclick="confirmDelete('{{ $doctor->id }}')"
-                                                                class="btn btn-danger btn-sm px-2"
-                                                                title="{{ $doctor->isDeletable() ? 'این پزشک قابل حذف نیست' : 'حذف' }}">
-                                                                <i class="fa fa-trash text-light"></i>
-                                                            </button>
-                                                        </form>
                                                     </div>
                                                 </td>
                                             </tr>

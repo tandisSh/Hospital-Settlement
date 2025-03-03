@@ -29,28 +29,23 @@ class Insurance extends Model
             }
         });
     }
-
     public function isDeletable(): bool
     {
         return $this->basicSurgeries()->exists() || $this->suppSurgeries()->exists();
     }
-
     public function basicSurgeries()
     {
         return $this->hasMany(Surgery::class, 'basic_insurance_id');
     }
-
     public function suppSurgeries()
     {
         return $this->hasMany(Surgery::class, 'supp_insurance_id');
     }
-
     public function surgeries()
     {
         return $this->hasMany(Surgery::class, 'basic_insurance_id')
             ->orWhere('supp_insurance_id', $this->id);
     }
-
     public function getCreatedAtShamsi()
     {
         return Jalalian::fromDateTime($this->created_at);

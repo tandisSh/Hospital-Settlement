@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('patient_name', 100);
             $table->string('patient_national_code', 20);
-            $table->foreignId('basic_insurance_id')->constrained('insurances')->onDelete('cascade');
-            $table->foreignId('supp_insurance_id')->nullable()->constrained('insurances')->onDelete('cascade');
+            $table->foreignId('basic_insurance_id')->constrained('insurances');
+            $table->foreignId('supp_insurance_id')->nullable()->constrained('insurances');
             $table->integer('document_number')->unique();
             $table->text('description')->nullable();
             $table->date('surgeried_at');

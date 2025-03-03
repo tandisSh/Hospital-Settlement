@@ -1,5 +1,9 @@
 @extends('Panel.layouts.master')
 
+@section('styles')
+    <link rel="stylesheet" href="{{ asset('assets/plugins/persian-datepicker/persian-datepicker.min.css') }}">
+@endsection
+
 @section('content')
 
     <div class="container-fluid mt-5">
@@ -213,23 +217,13 @@
     </div>
 
     @push('scripts')
+    <script src="{{ asset('assets/plugins/persian-datepicker/persian-date.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/persian-datepicker/persian-datepicker.min.js') }}"></script>
     <script>
-        // Prevent selecting same doctor for different roles
-        document.querySelectorAll('select[name$="_doctor_id"]').forEach(select => {
-            select.addEventListener('change', function() {
-                const selectedValue = this.value;
-                if (!selectedValue) return;
-
-                document.querySelectorAll('select[name$="_doctor_id"]').forEach(otherSelect => {
-                    if (otherSelect !== this) {
-                        Array.from(otherSelect.options).forEach(option => {
-                            if (option.value === selectedValue) {
-                                option.disabled = true;
-                            }
-                        });
-                    }
-                });
-            });
+        $('.persian-date').persianDatepicker({
+            format: 'YYYY/MM/DD',
+            initialValue: false,
+            autoClose: true
         });
     </script>
     @endpush

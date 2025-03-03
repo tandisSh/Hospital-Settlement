@@ -1,5 +1,9 @@
 @extends('Panel.layouts.master')
 
+@section('styles')
+    <link rel="stylesheet" href="{{ asset('assets/plugins/persian-datepicker/persian-datepicker.min.css') }}">
+@endsection
+
 @section('content')
     <div class="container-fluid mt-5">
         <div class="row justify-content-center">
@@ -171,23 +175,21 @@
 
                                 <div class="col-6">
                                     <label class="form-label small">تاریخ جراحی:</label>
-                                    <input name="surgeried_at" type="date" class="form-control form-control-sm @error('surgeried_at') is-invalid @enderror"
+                                    <input name="surgeried_at" type="date"
+                                        class="form-control form-control-sm @error('surgeried_at') is-invalid @enderror"
                                         value="{{ old('surgeried_at', $surgery->surgeried_at) }}" required />
                                     @error('surgeried_at')
-                                        <div class="invalid-feedback">
-                                            {{ $message }}
-                                        </div>
+                                        <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
 
                                 <div class="col-6">
                                     <label class="form-label small">تاریخ ترخیص:</label>
-                                    <input name="released_at" type="date" class="form-control form-control-sm @error('released_at') is-invalid @enderror"
+                                    <input name="released_at" type="date"
+                                        class="form-control form-control-sm @error('released_at') is-invalid @enderror"
                                         value="{{ old('released_at', $surgery->released_at) }}" required />
                                     @error('released_at')
-                                        <div class="invalid-feedback">
-                                            {{ $message }}
-                                        </div>
+                                        <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
 
@@ -213,3 +215,15 @@
         </div>
     </div>
 @endsection
+
+@push('scripts')
+    <script src="{{ asset('assets/plugins/persian-datepicker/persian-date.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/persian-datepicker/persian-datepicker.min.js') }}"></script>
+    <script>
+        $('.persian-date').persianDatepicker({
+            format: 'YYYY/MM/DD',
+            initialValue: false,
+            autoClose: true
+        });
+    </script>
+@endpush

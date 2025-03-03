@@ -11,6 +11,7 @@ use App\Models\DoctorRole;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
 use Carbon\Carbon;
+use Morilog\Jalali\Jalalian;
 
 class SurgeryController extends Controller
 {
@@ -19,13 +20,6 @@ class SurgeryController extends Controller
         $surgeries = Surgery::with(['basicInsurance', 'suppInsurance', 'doctors', 'operations'])->orderBy('created_at', 'desc')->get();
         return view('Panel.surgery.List', compact('surgeries'));
     }
-
-    public function show($id)
-    {
-        $surgery = Surgery::with(['basicInsurance', 'suppInsurance', 'doctors.speciality', 'operations'])->findOrFail($id);
-        return view('Panel.Surgery.Show', compact('surgery'));
-    }
-
     public function create()
     {
         $insurances = Insurance::all();
@@ -58,7 +52,6 @@ class SurgeryController extends Controller
             'description' => 'nullable|string',
         ]);
 
-        // Create surgery record
         $surgery = Surgery::create([
             'patient_name' => $request->patient_name,
             'patient_national_code' => $request->patient_national_code,
@@ -75,9 +68,9 @@ class SurgeryController extends Controller
         $doctorRoles = DoctorRole::whereIn('id', [1, 2, 3])->pluck('quota', 'id');
 
         // Calculate shares based on surgery cost
-        $surgeonShare = $doctorRoles[1]; // سهم جراح
-        $anesthesiologistShare = $doctorRoles[2]; // سهم متخصص بیهوشی
-        $consultantShare = $doctorRoles[3] ?? 0; // سهم مشاور
+        $surgeonShare = $doctorRoles[1];
+        $anesthesiologistShare = $doctorRoles[2];
+        $consultantShare = $doctorRoles[3] ?? 0;
 
         // اگر مشاور نداشته باشیم، سهم مشاور به جراح اضافه می‌شود
         if (!$request->consultant_doctor_id) {
@@ -247,5 +240,10 @@ class SurgeryController extends Controller
         $surgery = Surgery::findOrFail($id);
         $surgery->delete();
         return redirect()->route('surgeries')->with('success', 'عمل جراحی حذف شد.');
+    }
+    public function show($id)
+    {
+        $surgery = Surgery::with(['basicInsurance', 'suppInsurance', 'doctors.speciality', 'operations'])->findOrFail($id);
+        return view('Panel.Surgery.Show', compact('surgery'));
     }
 }

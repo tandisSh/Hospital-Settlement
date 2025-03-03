@@ -8,22 +8,13 @@
                     <div class="card-header bg-warning text-black text-center">
                         <h5 class="card-title mb-0">ویرایش نقش</h5>
                     </div>
-                    @if ($errors->any())
-                        <div class="alert alert-danger m-3">
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif
                     <form action="{{ route('DoctorRole.Update' , $role->id) }}" method="POST" class="needs-validation p-3" novalidate>
                         @csrf
                         <div class="card-body">
                             <div class="row g-2">
                                 <div class="col-12">
                                     <label class="form-label small">عنوان:</label>
-                                    <input name="title" type="text" class="form-control form-control-sm @error('title') is-invalid @enderror" 
+                                    <input name="title" type="text" class="form-control form-control-sm @error('title') is-invalid @enderror"
                                            value="{{ old('title', $role->title) }}" required />
                                     @error('title')
                                         <div class="invalid-feedback">
@@ -34,7 +25,7 @@
 
                                 <div class="col-6">
                                     <label class="form-label small">وضعیت:</label>
-                                    <select class="form-control form-control-sm @error('status') is-invalid @enderror" 
+                                    <select class="form-control form-control-sm @error('status') is-invalid @enderror"
                                             name="status">
                                         <option value="1" {{ old('status', $role->status) == '1' ? 'selected' : '' }}>فعال</option>
                                         <option value="0" {{ old('status', $role->status) == '0' ? 'selected' : '' }}>غیرفعال</option>
@@ -48,9 +39,9 @@
 
                                 <div class="col-6">
                                     <label class="form-label small">سهمیه (%):</label>
-                                    <input type="number" name="quota" 
+                                    <input type="number" name="quota"
                                            class="form-control form-control-sm @error('quota') is-invalid @enderror"
-                                           min="1" max="100" 
+                                           min="1" max="100"
                                            value="{{ old('quota', $role->quota) }}" required />
                                     @error('quota')
                                         <div class="invalid-feedback">
@@ -62,7 +53,7 @@
                                 <div class="col-12">
                                     <div class="form-check">
                                         <input type="checkbox" name="required" id="required" value="1"
-                                               class="form-check-input @error('required') is-invalid @enderror" 
+                                               class="form-check-input @error('required') is-invalid @enderror"
                                                {{ old('required', $role->required) ? 'checked' : '' }} />
                                         <label class="form-check-label small" for="required">الزامی</label>
                                         @error('required')

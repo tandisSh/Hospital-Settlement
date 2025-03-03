@@ -16,19 +16,11 @@ class DoctorController extends Controller
         $doctors = Doctor::with('speciality')->orderBy('created_at', 'desc')->get();
         return view('Panel.Doctor.List', compact('doctors'));
     }
-
-    public function Show($id)
-    {
-        $doctor = Doctor::with(['speciality', 'roles'])->findOrFail($id);
-        return view('Panel.Doctor.Show', compact('doctor'));
-    }
-
     public function Create()
     {
-        $specialities = Speciality::all();
+        $specialities = Speciality::where('status', 1)->get();
         return view('Panel.Doctor.Create', compact('specialities'));
     }
-    
     public function Store(Request $request)
     {
         $request->validate([
@@ -40,9 +32,6 @@ class DoctorController extends Controller
             'password' => 'required|string|min:6|confirmed',
             'password_confirmation' => 'required',
             'status' => 'boolean',
-        ], [
-            'password.confirmed' => 'رمز عبور و تکرار آن باید یکسان باشند.',
-            'password_confirmation.required' => 'تکرار رمز عبور الزامی است.',
         ]);
 
         $doctor = Doctor::create([
@@ -58,14 +47,12 @@ class DoctorController extends Controller
         Alert::success('موفق!', 'پزشک جدید با موفقیت اضافه شد.');
         return redirect()->route('Doctors');
     }
-    
     public function Edit($id)
     {
         $doctor = Doctor::findOrFail($id);
         $specialities = Speciality::where('status', 1)->get();
         return view('Panel.Doctor.Edit', compact('doctor', 'specialities'));
     }
-
     public function Update(Request $request, $id)
     {
         $doctor = Doctor::findOrFail($id);
@@ -84,10 +71,7 @@ class DoctorController extends Controller
             $rules['password_confirmation'] = 'required';
         }
 
-        $request->validate($rules, [
-            'password.confirmed' => 'رمز عبور و تکرار آن باید یکسان باشند.',
-            'password_confirmation.required' => 'تکرار رمز عبور الزامی است.',
-        ]);
+        $request->validate($rules);
 
         $data = $request->except(['password', 'password_confirmation']);
 
@@ -100,12 +84,16 @@ class DoctorController extends Controller
         Alert::success('موفق!', 'پزشک با موفقیت ویرایش شد.');
         return redirect()->route('Doctors');
     }
-    
     public function delete($id)
     {
         $doctor = Doctor::findOrFail($id);
         $doctor->delete();
 
         return redirect()->route('Doctors')->with('success', 'پزشک با موفقیت حذف شد.');
+    }
+    public function Show($id)
+    {
+        $doctor = Doctor::with(['speciality', 'roles'])->findOrFail($id);
+        return view('Panel.Doctor.Show', compact('doctor'));
     }
 }
