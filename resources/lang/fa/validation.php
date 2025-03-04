@@ -18,7 +18,7 @@ return [
     'boolean' => 'فیلد :attribute باید true یا false باشد.',
     'in' => 'مقدار انتخاب شده برای :attribute معتبر نیست.',
     'confirmed' => ':attribute با تکرار آن مطابقت ندارد.',
-    
+
     'attributes' => [
         'name' => 'نام',
         'type' => 'نوع بیمه',
@@ -69,4 +69,5 @@ return [
     'auth' => [
         'failed' => 'شماره تلفن یا رمز عبور اشتباه است'
     ]
-]; 
+    
+];

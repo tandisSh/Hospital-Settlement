@@ -64,17 +64,17 @@
                                                             class="btn btn-warning btn-sm px-2" title="ویرایش">
                                                             <i class="fa fa-pen text-dark"></i>
                                                         </a>
-                                                        <button type="button"
+                                                        {{-- <button type="button"
                                                             class="btn btn-danger btn-sm px-2"
                                                             data-bs-toggle="modal"
                                                             data-bs-target="#deleteModal{{ $role->id }}"
                                                             title="حذف">
                                                             <i class="fa fa-trash text-dark"></i>
-                                                        </button>
+                                                        </button> --}}
                                                     </div>
 
                                                     <!-- Modal for Delete Confirmation -->
-                                                    <div class="modal fade" id="deleteModal{{ $role->id }}" tabindex="-1" aria-hidden="true">
+                                                    {{-- <div class="modal fade" id="deleteModal{{ $role->id }}" tabindex="-1" aria-hidden="true">
                                                         <div class="modal-dialog">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
@@ -94,7 +94,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    </div>
+                                                    </div> --}}
                                                 </td>
                                             </tr>
                                         @endforeach

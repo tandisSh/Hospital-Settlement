@@ -159,7 +159,7 @@
                                             <option value="">انتخاب نوع جراحی</option>
                                             @foreach ($operations as $type)
                                                 <option value="{{ $type->id }}" {{ old('surgery_type') == $type->id ? 'selected' : '' }}>
-                                                    {{ $type->title }}
+                                                    {{ $type->name }}
                                                 </option>
                                             @endforeach
                                         </select>
@@ -185,7 +185,7 @@
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
-                                    <div class="col-12">
+                                    {{-- <div class="col-12">
                                         <label class="form-label small">هزینه جراحی (تومان):</label>
                                         <input name="cost" type="number"
                                             class="form-control form-control-sm @error('cost') is-invalid @enderror"
@@ -193,7 +193,7 @@
                                         @error('cost')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
-                                    </div>
+                                    </div> --}}
                                     <div class="col-12">
                                         <label class="form-label small">توضیحات:</label>
                                         <textarea name="description"

@@ -11,7 +11,6 @@
 
                     <form action="{{ route('Doctor.Update', $doctor->id) }}" method="POST" class="needs-validation p-3" novalidate>
                         @csrf
-                        @method('PUT')
                         <div class="card-body">
                             <div class="row g-2">
                                 <div class="col-12">
@@ -77,6 +76,20 @@
                                 </div>
 
                                 <div class="col-6">
+                                    <label class="form-label small">نقش‌های پزشک:</label>
+                                    <select name="Doctor_roles[]" class="form-control form-control-sm @error('roles') is-invalid @enderror" multiple="multiple" required id="doctor-roles">
+                                        @foreach ($roles as $role)
+                                            <option value="{{ $role->id }}">{{ $role->title }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('roles')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
+                                </div>
+
+                                <div class="col-6">
                                     <label class="form-label small">وضعیت:</label>
                                     <select name="status" class="form-control form-control-sm @error('status') is-invalid @enderror"
                                         required>
@@ -100,4 +113,15 @@
             </div>
         </div>
     </div>
+    <script>
+        $(document).ready(function() {
+            $('#doctor-roles').select2({
+                placeholder: "نقش‌های پزشک را انتخاب کنید",
+                allowClear: true
+            });
+        });
+    </script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 @endsection

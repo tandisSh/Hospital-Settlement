@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Panel;
 
 use App\Http\Controllers\Controller;
 use App\Models\Doctor;
+use App\Models\DoctorRole;
 use App\Models\Speciality;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -19,7 +20,8 @@ class DoctorController extends Controller
     public function Create()
     {
         $specialities = Speciality::where('status', 1)->get();
-        return view('Panel.Doctor.Create', compact('specialities'));
+        $roles = DoctorRole::all();
+        return view('Panel.Doctor.Create', compact('specialities' , 'roles'));
     }
     public function Store(Request $request)
     {
@@ -32,8 +34,33 @@ class DoctorController extends Controller
             'password' => 'required|string|min:6|confirmed',
             'password_confirmation' => 'required',
             'status' => 'boolean',
+            'Doctor_roles' => 'required|array'
         ]);
 
+        // بررسی تداخل نقش‌ها
+        $selectedRoles = $request->Doctor_roles;
+
+        // اگر نقش بیهوشی انتخاب شده باشد
+        if (in_array(1, $selectedRoles)) {
+            // بررسی کنید که جراح یا مشاور انتخاب نشده باشد
+            if (in_array(2, $selectedRoles) || in_array(3, $selectedRoles)) {
+                return redirect()->back()
+                    ->withInput()
+                    ->withErrors(['Doctor_roles.conflict' => 'نقش‌های انتخاب شده با هم تداخل دارند. لطفاً نقش‌های سازگار را انتخاب کنید.']);
+            }
+        }
+
+        // اگر نقش جراح یا مشاور انتخاب شده باشد
+        if (in_array(2, $selectedRoles) || in_array(3, $selectedRoles)) {
+            // بررسی کنید که بیهوشی انتخاب نشده باشد
+            if (in_array(1, $selectedRoles)) {
+                return redirect()->back()
+                    ->withInput()
+                    ->withErrors(['Doctor_roles.conflict' => 'نقش‌های انتخاب شده با هم تداخل دارند. لطفاً نقش‌های سازگار را انتخاب کنید.']);
+            }
+        }
+
+        // ایجاد پزشک
         $doctor = Doctor::create([
             'name' => $request->name,
             'speciality_id' => $request->speciality_id,
@@ -44,6 +71,11 @@ class DoctorController extends Controller
             'status' => $request->status ?? 1,
         ]);
 
+        // ذخیره نقش‌های پزشک
+        if ($request->has('Doctor_roles')) {
+            $doctor->roles()->attach($request->Doctor_roles);
+        }
+
         Alert::success('موفق!', 'پزشک جدید با موفقیت اضافه شد.');
         return redirect()->route('Doctors');
     }
@@ -51,7 +83,8 @@ class DoctorController extends Controller
     {
         $doctor = Doctor::findOrFail($id);
         $specialities = Speciality::where('status', 1)->get();
-        return view('Panel.Doctor.Edit', compact('doctor', 'specialities'));
+        $roles = DoctorRole::all();
+        return view('Panel.Doctor.Edit', compact('doctor', 'specialities' , 'roles'));
     }
     public function Update(Request $request, $id)
     {
@@ -73,6 +106,31 @@ class DoctorController extends Controller
 
         $request->validate($rules);
 
+        // بررسی تداخل نقش‌ها
+        if ($request->has('Doctor_roles')) {
+            $selectedRoles = $request->Doctor_roles;
+
+            // اگر نقش بیهوشی انتخاب شده باشد
+            if (in_array(1, $selectedRoles)) {
+                // بررسی کنید که جراح یا مشاور انتخاب نشده باشد
+                if (in_array(2, $selectedRoles) || in_array(3, $selectedRoles)) {
+                    return redirect()->back()
+                        ->withInput()
+                        ->withErrors(['Doctor_roles.conflict' => 'نقش‌های انتخاب شده با هم تداخل دارند. لطفاً نقش‌های سازگار را انتخاب کنید.']);
+                }
+            }
+
+            // اگر نقش جراح یا مشاور انتخاب شده باشد
+            if (in_array(2, $selectedRoles) || in_array(3, $selectedRoles)) {
+                // بررسی کنید که بیهوشی انتخاب نشده باشد
+                if (in_array(1, $selectedRoles)) {
+                    return redirect()->back()
+                        ->withInput()
+                        ->withErrors(['Doctor_roles.conflict' => 'نقش‌های انتخاب شده با هم تداخل دارند. لطفاً نقش‌های سازگار را انتخاب کنید.']);
+                }
+            }
+        }
+
         $data = $request->except(['password', 'password_confirmation']);
 
         if ($request->filled('password')) {
@@ -80,6 +138,11 @@ class DoctorController extends Controller
         }
 
         $doctor->update($data);
+
+        // به‌روزرسانی نقش‌های پزشک
+        if ($request->has('Doctor_roles')) {
+            $doctor->roles()->sync($request->Doctor_roles);
+        }
 
         Alert::success('موفق!', 'پزشک با موفقیت ویرایش شد.');
         return redirect()->route('Doctors');

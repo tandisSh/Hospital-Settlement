@@ -11,7 +11,7 @@
                 <div class="card card-warning card-outline shadow-sm">
                     <div class="card-header bg-warning text-black text-center">
                         <h5 class="card-title mb-0">ویرایش جراحی</h5>
-                    </div> 
+                    </div>
 
                     <form action="{{ route('surgery.update', ['id' => $surgery->id]) }}" method="POST" class="needs-validation p-3" novalidate>
                         @csrf
@@ -162,7 +162,7 @@
                                         @foreach ($operations as $type)
                                             <option value="{{ $type->id }}"
                                                 {{ old('surgery_type', $surgery->operations->first()->id ?? '') == $type->id ? 'selected' : '' }}>
-                                                {{ $type->title }}
+                                                {{ $type->name }}
                                             </option>
                                         @endforeach
                                     </select>
@@ -190,17 +190,6 @@
                                         value="{{ old('released_at', $surgery->released_at) }}" required />
                                     @error('released_at')
                                         <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-
-                                <div class="col-12">
-                                    <label class="form-label small">هزینه جراحی (تومان):</label>
-                                    <input name="cost" type="number" class="form-control form-control-sm @error('cost') is-invalid @enderror"
-                                        value="{{ old('cost', $surgery->cost) }}" required />
-                                    @error('cost')
-                                        <div class="invalid-feedback">
-                                            {{ $message }}
-                                        </div>
                                     @enderror
                                 </div>
                             </div>

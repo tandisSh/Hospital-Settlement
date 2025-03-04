@@ -25,7 +25,7 @@ class DoctorRole extends Model
 
     public function doctors()
     {
-        return $this->belongsToMany(Doctor::class, 'doctor_role_assignments', 'doctor_role_id', 'doctor_id')
+        return $this->belongsToMany(Doctor::class, 'doctor_doctor_role', 'doctor_role_id', 'doctor_id')
             ->withTimestamps();
     }
 }

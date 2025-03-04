@@ -38,11 +38,6 @@
                             </div>
 
                             <div class="col-md-6 mb-4">
-                                <h6 class="fw-bold">هزینه کل:</h6>
-                                <p>{{ number_format($surgery->cost) }} تومان</p>
-                            </div>
-
-                            <div class="col-md-6 mb-4">
                                 <h6 class="fw-bold">بیمه پایه:</h6>
                                 <p>{{ $surgery->basicInsurance ? $surgery->basicInsurance->name : 'ندارد' }}</p>
                             </div>
@@ -52,7 +47,27 @@
                                 <p>{{ $surgery->suppInsurance ? $surgery->suppInsurance->name : 'ندارد' }}</p>
                             </div>
                         </div>
-
+                        <div class="mt-4">
+                            <h5 class="fw-bold mb-3">عمل‌های انجام شده:</h5>
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>نام عمل</th>
+                                            <th>هزینه</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($surgery->operations as $operation)
+                                            <tr>
+                                                <td>{{ $operation->name }}</td>
+                                                <td>{{ number_format($operation->price) }} تومان</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                         <div class="mt-4">
                             <h5 class="fw-bold mb-3">پزشکان:</h5>
                             <div class="table-responsive">
@@ -84,28 +99,6 @@
                                                     @endswitch
                                                 </td>
                                                 <td>{{ number_format($doctor->pivot->amount) }} تومان</td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-
-                        <div class="mt-4">
-                            <h5 class="fw-bold mb-3">عمل‌های انجام شده:</h5>
-                            <div class="table-responsive">
-                                <table class="table table-bordered">
-                                    <thead class="table-light">
-                                        <tr>
-                                            <th>نام عمل</th>
-                                            <th>هزینه</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach($surgery->operations as $operation)
-                                            <tr>
-                                                <td>{{ $operation->name }}</td>
-                                                <td>{{ number_format($operation->pivot->amount) }} تومان</td>
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -151,4 +144,4 @@
             </div>
         </div>
     </div>
-@endsection 
+@endsection
