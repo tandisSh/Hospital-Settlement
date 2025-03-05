@@ -24,103 +24,114 @@ class SurgeryController extends Controller
     public function create()
     {
         $insurances = Insurance::all();
-        $doctors = Doctor::all();
+        $surgeons = Doctor::whereHas('roles', function($query) {
+            $query->where('doctor_role_id', 2); // جراح
+        })->get();
+        $anesthesiologists = Doctor::whereHas('roles', function($query) {
+            $query->where('doctor_role_id', 1); // بیهوشی
+        })->get();
+        $consultants = Doctor::whereHas('roles', function($query) {
+            $query->where('doctor_role_id', 3); // مشاور
+        })->get();
         $operations = Operation::all();
         $today = Carbon::now()->format('Y/m/d');
-        return view('Panel.surgery.create', compact('insurances', 'doctors', 'operations', 'today'));
+        
+        return view('Panel.surgery.create', compact('insurances', 'surgeons', 'anesthesiologists', 'consultants', 'operations', 'today'));
     }
 
     public function store(Request $request)
     {
-    $request->validate([
-        'patient_name' => 'required|string|max:100',
-        'patient_national_code' => 'required|string|max:20',
-        'basic_insurance_id' => 'nullable|exists:insurances,id',
-        'supp_insurance_id' => 'nullable|exists:insurances,id',
-        'document_number' => 'required|unique:surgeries,document_number',
-        'surgeried_at' => 'required|date',
-        'released_at' => 'required|date|after_or_equal:surgeried_at',
-        'surgeon_doctor_id' => 'required|exists:doctors,id',
-        'anesthesiologist_doctor_id' => 'required|exists:doctors,id|different:surgeon_doctor_id',
-        'consultant_doctor_id' => 'nullable|exists:doctors,id|different:surgeon_doctor_id|different:anesthesiologist_doctor_id',
-        'surgery_type' => 'required|exists:operations,id',
-        'description' => 'nullable|string',
-    ]);
-
-    $surgery = Surgery::create([
-        'patient_name' => $request->patient_name,
-        'patient_national_code' => $request->patient_national_code,
-        'basic_insurance_id' => $request->basic_insurance_id,
-        'supp_insurance_id' => $request->supp_insurance_id,
-        'document_number' => $request->document_number,
-        'surgeried_at' => $request->surgeried_at,
-        'released_at' => $request->released_at,
-        'description' => $request->description,
-    ]);
-
-    // Get operation cost
-    $operation = Operation::find($request->surgery_type);
-    $operationAmount = $operation ? $operation->price : 0;
-
-    // Get doctor roles with their shares
-    $doctorRoles = DoctorRole::whereIn('id', [1, 2, 3])->pluck('quota', 'id');
-    // Calculate shares based on surgery cost
-    $surgeonShare = $doctorRoles[2];
-    $anesthesiologistShare = $doctorRoles[1];
-    $consultantShare = $doctorRoles[3] ?? 0;
-
-    // اگر مشاور نداشته باشیم، سهم مشاور به جراح اضافه می‌شود
-    if (!$request->consultant_doctor_id) {
-        $surgeonShare += $consultantShare;
-        $consultantShare = 0;
-    }
-
-    // محاسبه مبلغ هر پزشک
-    $totalCost = $operationAmount;
-    $doctors = [
-        1 => [
-            'id' => $request->surgeon_doctor_id,
-            'amount' => ($surgeonShare / 100) * $totalCost
-        ],
-        2 => [
-            'id' => $request->anesthesiologist_doctor_id,
-            'amount' => ($anesthesiologistShare / 100) * $totalCost
-        ]
-    ];
-
-    if ($request->consultant_doctor_id) {
-        $doctors[3] = [
-            'id' => $request->consultant_doctor_id,
-            'amount' => ($consultantShare / 100) * $totalCost
-        ];
-    }
-
-    $now = now();
-
-    // اتصال پزشکان به جراحی با مقادیر محاسبه شده
-    foreach ($doctors as $roleId => $doctor) {
-        DB::table('surgery_doctor')->insert([
-            'surgery_id' => $surgery->id,
-            'doctor_id' => $doctor['id'],
-            'doctor_role_id' => $roleId,
-            'amount' => $doctor['amount'],
-            'created_at' => $now,
-            'updated_at' => $now
+        $request->validate([
+            'patient_name' => 'required|string|max:100',
+            'patient_national_code' => 'required|string|max:20',
+            'basic_insurance_id' => 'nullable|exists:insurances,id',
+            'supp_insurance_id' => 'nullable|exists:insurances,id',
+            'document_number' => 'required|unique:surgeries,document_number',
+            'surgeried_at' => 'required|date',
+            'released_at' => 'required|date|after_or_equal:surgeried_at',
+            'surgeon_doctor_id' => 'required|exists:doctors,id',
+            'anesthesiologist_doctor_id' => 'required|exists:doctors,id|different:surgeon_doctor_id',
+            'consultant_doctor_id' => 'nullable|exists:doctors,id|different:surgeon_doctor_id|different:anesthesiologist_doctor_id',
+            'surgery_types' => 'required|array',
+            'surgery_types.*' => 'exists:operations,id',
+            'description' => 'nullable|string',
         ]);
-    }
 
-    // Attach operation type with amount and timestamps
-    DB::table('surgery_operation')->insert([
-        'surgery_id' => $surgery->id,
-        'operation_id' => $request->surgery_type,
-        'amount' => $operationAmount,
-        'created_at' => $now,
-        'updated_at' => $now
-    ]);
+        $surgery = Surgery::create([
+            'patient_name' => $request->patient_name,
+            'patient_national_code' => $request->patient_national_code,
+            'basic_insurance_id' => $request->basic_insurance_id,
+            'supp_insurance_id' => $request->supp_insurance_id,
+            'document_number' => $request->document_number,
+            'surgeried_at' => $request->surgeried_at,
+            'released_at' => $request->released_at,
+            'description' => $request->description,
+        ]);
 
-    Alert::success('موفق!', 'عمل جراحی با موفقیت ثبت شد.');
-    return redirect()->route('surgeries');
+        // محاسبه مجموع هزینه‌های عمل‌ها
+        $operations = Operation::whereIn('id', $request->surgery_types)->get();
+        $totalCost = $operations->sum('price');
 
+        // Get doctor roles with their shares
+        $doctorRoles = DoctorRole::whereIn('id', [1, 2, 3])->pluck('quota', 'id');
+        
+        // Calculate shares based on surgery cost
+        $surgeonShare = $doctorRoles[2];
+        $anesthesiologistShare = $doctorRoles[1];
+        $consultantShare = $doctorRoles[3] ?? 0;
+
+        // اگر مشاور نداشته باشیم، سهم مشاور به جراح اضافه می‌شود
+        if (!$request->consultant_doctor_id) {
+            $surgeonShare += $consultantShare;
+            $consultantShare = 0;
+        }
+
+        // محاسبه مبلغ هر پزشک
+        $doctors = [
+            2 => [
+                'id' => $request->surgeon_doctor_id,
+                'amount' => ($surgeonShare / 100) * $totalCost
+            ],
+            1 => [
+                'id' => $request->anesthesiologist_doctor_id,
+                'amount' => ($anesthesiologistShare / 100) * $totalCost
+            ]
+        ];
+
+        if ($request->consultant_doctor_id) {
+            $doctors[3] = [
+                'id' => $request->consultant_doctor_id,
+                'amount' => ($consultantShare / 100) * $totalCost
+            ];
+        }
+
+        $now = now();
+
+        // اتصال پزشکان به جراحی با مقادیر محاسبه شده
+        foreach ($doctors as $roleId => $doctor) {
+            DB::table('surgery_doctor')->insert([
+                'surgery_id' => $surgery->id,
+                'doctor_id' => $doctor['id'],
+                'doctor_role_id' => $roleId,
+                'amount' => $doctor['amount'],
+                'created_at' => $now,
+                'updated_at' => $now
+            ]);
+        }
+
+        // ذخیره عمل‌های جراحی با مبالغ مربوطه
+        foreach ($operations as $operation) {
+            DB::table('surgery_operation')->insert([
+                'surgery_id' => $surgery->id,
+                'operation_id' => $operation->id,
+                'amount' => $operation->price,
+                'created_at' => $now,
+                'updated_at' => $now
+            ]);
+        }
+
+        Alert::success('موفق!', 'عمل جراحی با موفقیت ثبت شد.');
+        return redirect()->route('surgeries');
     }
 
     public function edit($id)
@@ -129,10 +140,18 @@ class SurgeryController extends Controller
         $surgeried_at = Carbon::parse($surgery->surgeried_at)->format('Y/m/d');
         $released_at = $surgery->released_at ? Carbon::parse($surgery->released_at)->format('Y/m/d') : null;
         $insurances = Insurance::all();
-        $doctors = Doctor::all();
+        $surgeons = Doctor::whereHas('roles', function($query) {
+            $query->where('doctor_role_id', 2); // جراح
+        })->get();
+        $anesthesiologists = Doctor::whereHas('roles', function($query) {
+            $query->where('doctor_role_id', 1); // بیهوشی
+        })->get();
+        $consultants = Doctor::whereHas('roles', function($query) {
+            $query->where('doctor_role_id', 3); // مشاور
+        })->get();
         $operations = Operation::all();
 
-        return view('Panel.Surgery.Edit', compact('surgery', 'insurances', 'doctors', 'operations', 'surgeried_at', 'released_at'));
+        return view('Panel.Surgery.Edit', compact('surgery', 'insurances', 'surgeons', 'anesthesiologists', 'consultants', 'operations', 'surgeried_at', 'released_at'));
     }
     public function update(Request $request, $id)
     {
@@ -148,7 +167,8 @@ class SurgeryController extends Controller
             'surgeon_doctor_id' => 'required|exists:doctors,id',
             'anesthesiologist_doctor_id' => 'required|exists:doctors,id|different:surgeon_doctor_id',
             'consultant_doctor_id' => 'nullable|exists:doctors,id|different:surgeon_doctor_id|different:anesthesiologist_doctor_id',
-            'surgery_type' => 'required|exists:operations,id',
+            'surgery_types' => 'required|array',
+            'surgery_types.*' => 'exists:operations,id',
             'surgeried_at' => 'required|date',
             'released_at' => 'required|date|after_or_equal:surgeried_at',
         ]);
@@ -164,9 +184,9 @@ class SurgeryController extends Controller
             'released_at' => $request->released_at,
         ]);
 
-        // Get operation cost
-        $operation = Operation::find($request->surgery_type);
-        $operationAmount = $operation ? $operation->price : 0;
+        // محاسبه مجموع هزینه‌های عمل‌ها
+        $operations = Operation::whereIn('id', $request->surgery_types)->get();
+        $totalCost = $operations->sum('price');
 
         // Get doctor roles with their shares
         $doctorRoles = DoctorRole::whereIn('id', [1, 2, 3])->pluck('quota', 'id');
@@ -183,13 +203,12 @@ class SurgeryController extends Controller
         }
 
         // محاسبه مبلغ هر پزشک
-        $totalCost = $operationAmount;
         $doctors = [
-            1 => [
+            2 => [
                 'id' => $request->surgeon_doctor_id,
                 'amount' => ($surgeonShare / 100) * $totalCost
             ],
-            2 => [
+            1 => [
                 'id' => $request->anesthesiologist_doctor_id,
                 'amount' => ($anesthesiologistShare / 100) * $totalCost
             ]
@@ -215,20 +234,18 @@ class SurgeryController extends Controller
         }
         $surgery->doctors()->sync($doctorSync);
 
-        // Get operation cost
-        $operation = Operation::find($request->surgery_type);
-        $operationAmount = $operation ? $operation->cost : 0;
-
-        // Sync operation with amount and timestamp
-        $surgery->operations()->sync([
-            $request->surgery_type => [
-                'amount' => $operationAmount,
+        // Sync operations with amounts
+        $operationSync = [];
+        foreach ($operations as $operation) {
+            $operationSync[$operation->id] = [
+                'amount' => $operation->price,
                 'updated_at' => $now
-            ]
-        ]);
+            ];
+        }
+        $surgery->operations()->sync($operationSync);
 
         Alert::success('موفق!', 'اطلاعات عمل جراحی با موفقیت بروزرسانی شد.');
-        return redirect()->route('surgeries')->with('success', 'اطلاعات عمل جراحی با موفقیت بروزرسانی شد.');
+        return redirect()->route('surgeries');
     }
     public function delete($id)
     {

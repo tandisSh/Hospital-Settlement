@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('doctor_doctor_role', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('doctor_id')->constrained('doctors');
-            $table->foreignId('doctor_role_id')->constrained('doctor_roles');
+            $table->foreignId('doctor_id')->constrained('doctors')->onDelete('cascade');
+            $table->foreignId('doctor_role_id')->constrained('doctor_roles')->onDelete('cascade');
             $table->timestamps();
         });
     }

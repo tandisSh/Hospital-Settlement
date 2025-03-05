@@ -82,13 +82,20 @@
                                 </div>
                                 <div class="col-6">
                                     <label class="form-label small">نقش‌های پزشک:</label>
-                                    <select name="Doctor_roles[]" class="form-control form-control-sm @error('roles') is-invalid @enderror" multiple="multiple" required id="doctor-roles">
+                                    <select name="Doctor_roles[]" class="form-control form-control-sm select2 @error('Doctor_roles') is-invalid @enderror" multiple="multiple" required>
                                         @foreach ($roles as $role)
-                                            <option value="{{ $role->id }}">{{ $role->title }}</option>
+                                            <option value="{{ $role->id }}" {{ in_array($role->id, old('Doctor_roles', [])) ? 'selected' : '' }}>
+                                                {{ $role->title }}
+                                            </option>
                                         @endforeach
                                     </select>
-                                    @error('roles')
+                                    @error('Doctor_roles')
                                         <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
+                                    @error('Doctor_roles.conflict')
+                                        <div class="invalid-feedback d-block">
                                             {{ $message }}
                                         </div>
                                     @enderror
@@ -140,7 +147,7 @@
     </div>
     <script>
         $(document).ready(function() {
-            $('#doctor-roles').select2({
+            $('.select2').select2({
                 placeholder: "نقش‌های پزشک را انتخاب کنید",
                 allowClear: true
             });

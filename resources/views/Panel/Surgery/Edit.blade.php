@@ -103,73 +103,70 @@
 
                                 <div class="col-6">
                                     <label class="form-label small">پزشک جراح:</label>
-                                    <select name="surgeon_doctor_id" class="form-control form-control-sm @error('surgeon_doctor_id') is-invalid @enderror" required>
+                                    <select name="surgeon_doctor_id"
+                                        class="form-control form-control-sm @error('surgeon_doctor_id') is-invalid @enderror"
+                                        required>
                                         <option value="">انتخاب پزشک جراح</option>
-                                        @foreach ($doctors as $doctor)
-                                            <option value="{{ $doctor->id }}"
-                                                {{ old('surgeon_doctor_id', $surgery->doctors->where('pivot.doctor_role_id', 1)->first()->id ?? '') == $doctor->id ? 'selected' : '' }}>
+                                        @foreach ($surgeons as $doctor)
+                                            <option value="{{ $doctor->id }}" {{ old('surgeon_doctor_id', $surgery->doctors->where('pivot.doctor_role_id', 2)->first()?->id) == $doctor->id ? 'selected' : '' }}>
                                                 {{ $doctor->name }}
                                             </option>
                                         @endforeach
                                     </select>
                                     @error('surgeon_doctor_id')
-                                        <div class="invalid-feedback">
-                                            {{ $message }}
-                                        </div>
+                                        <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
 
                                 <div class="col-6">
-                                    <label class="form-label small">متخصص بیهوشی:</label>
-                                    <select name="anesthesiologist_doctor_id" class="form-control form-control-sm @error('anesthesiologist_doctor_id') is-invalid @enderror" required>
-                                        <option value="">انتخاب متخصص بیهوشی</option>
-                                        @foreach ($doctors as $doctor)
-                                            <option value="{{ $doctor->id }}"
-                                                {{ old('anesthesiologist_doctor_id', $surgery->doctors->where('pivot.doctor_role_id', 2)->first()->id ?? '') == $doctor->id ? 'selected' : '' }}>
+                                    <label class="form-label small">پزشک بیهوشی:</label>
+                                    <select name="anesthesiologist_doctor_id"
+                                        class="form-control form-control-sm @error('anesthesiologist_doctor_id') is-invalid @enderror"
+                                        required>
+                                        <option value="">انتخاب پزشک بیهوشی</option>
+                                        @foreach ($anesthesiologists as $doctor)
+                                            <option value="{{ $doctor->id }}" {{ old('anesthesiologist_doctor_id', $surgery->doctors->where('pivot.doctor_role_id', 1)->first()?->id) == $doctor->id ? 'selected' : '' }}>
                                                 {{ $doctor->name }}
                                             </option>
                                         @endforeach
                                     </select>
                                     @error('anesthesiologist_doctor_id')
-                                        <div class="invalid-feedback">
-                                            {{ $message }}
-                                        </div>
+                                        <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
 
-                                <div class="col-6">
+                                <div class="col-12">
                                     <label class="form-label small">پزشک مشاور:</label>
-                                    <select name="consultant_doctor_id" class="form-control form-control-sm @error('consultant_doctor_id') is-invalid @enderror">
+                                    <select name="consultant_doctor_id"
+                                        class="form-control form-control-sm @error('consultant_doctor_id') is-invalid @enderror">
                                         <option value="">انتخاب پزشک مشاور</option>
-                                        @foreach ($doctors as $doctor)
-                                            <option value="{{ $doctor->id }}"
-                                                {{ old('consultant_doctor_id', $surgery->doctors->where('pivot.doctor_role_id', 3)->first()->id ?? '') == $doctor->id ? 'selected' : '' }}>
+                                        @foreach ($consultants as $doctor)
+                                            <option value="{{ $doctor->id }}" {{ old('consultant_doctor_id', $surgery->doctors->where('pivot.doctor_role_id', 3)->first()?->id) == $doctor->id ? 'selected' : '' }}>
                                                 {{ $doctor->name }}
                                             </option>
                                         @endforeach
                                     </select>
                                     @error('consultant_doctor_id')
-                                        <div class="invalid-feedback">
-                                            {{ $message }}
-                                        </div>
+                                        <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
 
-                                <div class="col-6">
+                                <div class="col-12">
                                     <label class="form-label small">نوع جراحی:</label>
-                                    <select name="surgery_type" class="form-control form-control-sm @error('surgery_type') is-invalid @enderror" required>
-                                        <option value="">انتخاب نوع جراحی</option>
+                                    <select name="surgery_types[]" class="form-control form-control-sm select2 @error('surgery_types') is-invalid @enderror"
+                                        multiple="multiple" required>
                                         @foreach ($operations as $type)
-                                            <option value="{{ $type->id }}"
-                                                {{ old('surgery_type', $surgery->operations->first()->id ?? '') == $type->id ? 'selected' : '' }}>
-                                                {{ $type->name }}
+                                            <option value="{{ $type->id }}" data-price="{{ $type->price }}" 
+                                                {{ in_array($type->id, old('surgery_types', $surgery->operations->pluck('id')->toArray())) ? 'selected' : '' }}>
+                                                {{ $type->name }} ({{ number_format($type->price) }} تومان)
                                             </option>
                                         @endforeach
                                     </select>
-                                    @error('surgery_type')
-                                        <div class="invalid-feedback">
-                                            {{ $message }}
-                                        </div>
+                                    @error('surgery_types')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                    @error('surgery_types.*')
+                                        <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
 
@@ -209,6 +206,16 @@
     <script src="{{ asset('assets/plugins/persian-datepicker/persian-date.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/persian-datepicker/persian-datepicker.min.js') }}"></script>
     <script>
+        $(document).ready(function() {
+            $('.select2').select2({
+                theme: 'bootstrap-5',
+                width: '100%',
+                placeholder: 'نوع عمل‌های جراحی را انتخاب کنید',
+                allowClear: true,
+                dir: 'rtl'
+            });
+        });
+
         $('.persian-date').persianDatepicker({
             format: 'YYYY/MM/DD',
             initialValue: false,

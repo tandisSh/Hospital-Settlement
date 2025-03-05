@@ -94,7 +94,7 @@
                                             class="form-control form-control-sm @error('surgeon_doctor_id') is-invalid @enderror"
                                             required>
                                             <option value="">انتخاب پزشک جراح</option>
-                                            @foreach ($doctors as $doctor)
+                                            @foreach ($surgeons as $doctor)
                                                 <option value="{{ $doctor->id }}" {{ old('surgeon_doctor_id') == $doctor->id ? 'selected' : '' }}>
                                                     {{ $doctor->name }}
                                                 </option>
@@ -110,7 +110,7 @@
                                             class="form-control form-control-sm @error('anesthesiologist_doctor_id') is-invalid @enderror"
                                             required>
                                             <option value="">انتخاب پزشک بیهوشی</option>
-                                            @foreach ($doctors as $doctor)
+                                            @foreach ($anesthesiologists as $doctor)
                                                 <option value="{{ $doctor->id }}" {{ old('anesthesiologist_doctor_id') == $doctor->id ? 'selected' : '' }}>
                                                     {{ $doctor->name }}
                                                 </option>
@@ -125,7 +125,7 @@
                                         <select name="consultant_doctor_id"
                                             class="form-control form-control-sm @error('consultant_doctor_id') is-invalid @enderror">
                                             <option value="">انتخاب پزشک مشاور</option>
-                                            @foreach ($doctors as $doctor)
+                                            @foreach ($consultants as $doctor)
                                                 <option value="{{ $doctor->id }}" {{ old('consultant_doctor_id') == $doctor->id ? 'selected' : '' }}>
                                                     {{ $doctor->name }}
                                                 </option>
@@ -153,17 +153,18 @@
                                     </div>
                                     <div class="col-6">
                                         <label class="form-label small">نوع جراحی:</label>
-                                        <select name="surgery_type"
-                                            class="form-control form-control-sm @error('surgery_type') is-invalid @enderror"
-                                            required>
-                                            <option value="">انتخاب نوع جراحی</option>
+                                        <select name="surgery_types[]" class="form-control form-control-sm select2 @error('surgery_types') is-invalid @enderror"
+                                            multiple="multiple" required>
                                             @foreach ($operations as $type)
-                                                <option value="{{ $type->id }}" {{ old('surgery_type') == $type->id ? 'selected' : '' }}>
-                                                    {{ $type->name }}
+                                                <option value="{{ $type->id }}" data-price="{{ $type->price }}" {{ in_array($type->id, old('surgery_types', [])) ? 'selected' : '' }}>
+                                                    {{ $type->name }} ({{ number_format($type->price) }} تومان)
                                                 </option>
                                             @endforeach
                                         </select>
-                                        @error('surgery_type')
+                                        @error('surgery_types')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                        @error('surgery_types.*')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
@@ -185,15 +186,6 @@
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
-                                    {{-- <div class="col-12">
-                                        <label class="form-label small">هزینه جراحی (تومان):</label>
-                                        <input name="cost" type="number"
-                                            class="form-control form-control-sm @error('cost') is-invalid @enderror"
-                                            value="{{ old('cost') }}" required />
-                                        @error('cost')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div> --}}
                                     <div class="col-12">
                                         <label class="form-label small">توضیحات:</label>
                                         <textarea name="description"
@@ -220,6 +212,16 @@
     <script src="{{ asset('assets/plugins/persian-datepicker/persian-date.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/persian-datepicker/persian-datepicker.min.js') }}"></script>
     <script>
+        $(document).ready(function() {
+            $('.select2').select2({
+                theme: 'bootstrap-5',
+                width: '100%',
+                placeholder: 'نوع عمل‌های جراحی را انتخاب کنید',
+                allowClear: true,
+                dir: 'rtl'
+            });
+        });
+
         $('.persian-date').persianDatepicker({
             format: 'YYYY/MM/DD',
             initialValue: false,

@@ -1,104 +1,133 @@
 @extends('Panel.layouts.master')
 
 @section('content')
-    <div class="container-fluid mt-5">
+    <div class="container-fluid mt-3">
         <div class="row justify-content-center">
-            <div class="col-md-8">
+            <div class="col-md-9">
                 <div class="card card-primary card-outline shadow-sm">
-                    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-                        <h3 class="card-title mb-0">جزئیات جراحی</h3>
-                        <a href="{{ route('surgeries') }}" class="btn btn-light">بازگشت به لیست</a>
+                    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center py-2">
+                        <h3 class="card-title mb-0 fs-5">جزئیات جراحی</h3>
+                        <a href="{{ route('surgeries') }}" class="btn btn-light btn-sm py-1">
+                            <i class="fas fa-arrow-right ml-1"></i>
+                            بازگشت به لیست
+                        </a>
                     </div>
 
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-6 mb-4">
-                                <h6 class="fw-bold">نام بیمار:</h6>
-                                <p>{{ $surgery->patient_name }}</p>
+                    <div class="card-body py-2">
+                        <div class="row g-2">
+                            <div class="col-md-3 mb-2">
+                                <div class="border rounded p-2 h-100 bg-light">
+                                    <h6 class="fw-bold text-primary small mb-1">نام بیمار</h6>
+                                    <p class="mb-0 small">{{ $surgery->patient_name }}</p>
+                                </div>
                             </div>
 
-                            <div class="col-md-6 mb-4">
-                                <h6 class="fw-bold">کد ملی بیمار:</h6>
-                                <p>{{ $surgery->patient_national_code }}</p>
+                            <div class="col-md-3 mb-2">
+                                <div class="border rounded p-2 h-100 bg-light">
+                                    <h6 class="fw-bold text-primary small mb-1">کد ملی بیمار</h6>
+                                    <p class="mb-0 small">{{ $surgery->patient_national_code }}</p>
+                                </div>
                             </div>
 
-                            <div class="col-md-6 mb-4">
-                                <h6 class="fw-bold">شماره پرونده:</h6>
-                                <p>{{ $surgery->document_number }}</p>
+                            <div class="col-md-3 mb-2">
+                                <div class="border rounded p-2 h-100 bg-light">
+                                    <h6 class="fw-bold text-primary small mb-1">شماره پرونده</h6>
+                                    <p class="mb-0 small">{{ $surgery->document_number }}</p>
+                                </div>
                             </div>
 
-                            <div class="col-md-6 mb-4">
-                                <h6 class="fw-bold">تاریخ جراحی:</h6>
-                                <p>{{ $surgery->getSurgeriedAtShamsi() }}</p>
+                            <div class="col-md-3 mb-2">
+                                <div class="border rounded p-2 h-100 bg-light">
+                                    <h6 class="fw-bold text-primary small mb-1">تاریخ جراحی</h6>
+                                    <p class="mb-0 small">{{ $surgery->getSurgeriedAtShamsi() }}</p>
+                                </div>
                             </div>
 
-                            <div class="col-md-6 mb-4">
-                                <h6 class="fw-bold">تاریخ ترخیص:</h6>
-                                <p>{{ $surgery->getReleasedAtShamsi() }}</p>
+                            <div class="col-md-3 mb-2">
+                                <div class="border rounded p-2 h-100 bg-light">
+                                    <h6 class="fw-bold text-primary small mb-1">تاریخ ترخیص</h6>
+                                    <p class="mb-0 small">{{ $surgery->getReleasedAtShamsi() }}</p>
+                                </div>
                             </div>
 
-                            <div class="col-md-6 mb-4">
-                                <h6 class="fw-bold">بیمه پایه:</h6>
-                                <p>{{ $surgery->basicInsurance ? $surgery->basicInsurance->name : 'ندارد' }}</p>
+                            <div class="col-md-3 mb-2">
+                                <div class="border rounded p-2 h-100 bg-light">
+                                    <h6 class="fw-bold text-primary small mb-1">بیمه پایه</h6>
+                                    <p class="mb-0 small">{{ $surgery->basicInsurance ? $surgery->basicInsurance->name : 'ندارد' }}</p>
+                                </div>
                             </div>
 
-                            <div class="col-md-6 mb-4">
-                                <h6 class="fw-bold">بیمه تکمیلی:</h6>
-                                <p>{{ $surgery->suppInsurance ? $surgery->suppInsurance->name : 'ندارد' }}</p>
+                            <div class="col-md-3 mb-2">
+                                <div class="border rounded p-2 h-100 bg-light">
+                                    <h6 class="fw-bold text-primary small mb-1">بیمه تکمیلی</h6>
+                                    <p class="mb-0 small">{{ $surgery->suppInsurance ? $surgery->suppInsurance->name : 'ندارد' }}</p>
+                                </div>
                             </div>
                         </div>
-                        <div class="mt-4">
-                            <h5 class="fw-bold mb-3">عمل‌های انجام شده:</h5>
+
+                        <div class="mt-3">
+                            <h5 class="fw-bold mb-2 text-primary fs-6">
+                                <i class="fas fa-procedures ml-1"></i>
+                                عمل‌های انجام شده
+                            </h5>
                             <div class="table-responsive">
-                                <table class="table table-bordered">
-                                    <thead class="table-light">
+                                <table class="table table-bordered table-striped table-sm">
+                                    <thead class="bg-light">
                                         <tr>
-                                            <th>نام عمل</th>
-                                            <th>هزینه</th>
+                                            <th class="small">نام عمل</th>
+                                            <th class="small">هزینه</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach($surgery->operations as $operation)
                                             <tr>
-                                                <td>{{ $operation->name }}</td>
-                                                <td>{{ number_format($operation->price) }} تومان</td>
+                                                <td class="small">{{ $operation->name }}</td>
+                                                <td class="small">{{ number_format($operation->pivot->amount) }} تومان</td>
                                             </tr>
                                         @endforeach
+                                        <tr class="table-primary">
+                                            <td class="fw-bold small">مجموع هزینه عمل‌ها</td>
+                                            <td class="fw-bold small">{{ number_format($surgery->operations->sum('pivot.amount')) }} تومان</td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
-                        <div class="mt-4">
-                            <h5 class="fw-bold mb-3">پزشکان:</h5>
+
+                        <div class="mt-3">
+                            <h5 class="fw-bold mb-2 text-primary fs-6">
+                                <i class="fas fa-user-md ml-1"></i>
+                                پزشکان
+                            </h5>
                             <div class="table-responsive">
-                                <table class="table table-bordered">
-                                    <thead class="table-light">
+                                <table class="table table-bordered table-striped table-sm">
+                                    <thead class="bg-light">
                                         <tr>
-                                            <th>نام پزشک</th>
-                                            <th>تخصص</th>
-                                            <th>نقش</th>
-                                            <th>سهم از جراحی</th>
+                                            <th class="small">نام پزشک</th>
+                                            <th class="small">تخصص</th>
+                                            <th class="small">نقش</th>
+                                            <th class="small">سهم از جراحی</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach($surgery->doctors as $doctor)
                                             <tr>
-                                                <td>{{ $doctor->name }}</td>
-                                                <td>{{ $doctor->speciality->title }}</td>
-                                                <td>
+                                                <td class="small">{{ $doctor->name }}</td>
+                                                <td class="small">{{ $doctor->speciality->title }}</td>
+                                                <td class="small">
                                                     @switch($doctor->pivot->doctor_role_id)
-                                                        @case(1)
-                                                            جراح
-                                                            @break
                                                         @case(2)
-                                                            متخصص بیهوشی
+                                                            <span class="badge bg-success">جراح</span>
+                                                            @break
+                                                        @case(1)
+                                                            <span class="badge bg-info">متخصص بیهوشی</span>
                                                             @break
                                                         @case(3)
-                                                            مشاور
+                                                            <span class="badge bg-warning">مشاور</span>
                                                             @break
                                                     @endswitch
                                                 </td>
-                                                <td>{{ number_format($doctor->pivot->amount) }} تومان</td>
+                                                <td class="small">{{ number_format($doctor->pivot->amount) }} تومان</td>
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -107,35 +136,44 @@
                         </div>
 
                         @if($surgery->description)
-                            <div class="mt-4">
-                                <h5 class="fw-bold mb-3">توضیحات:</h5>
-                                <p class="text-justify">{{ $surgery->description }}</p>
+                            <div class="mt-3">
+                                <h5 class="fw-bold mb-2 text-primary fs-6">
+                                    <i class="fas fa-info-circle ml-1"></i>
+                                    توضیحات
+                                </h5>
+                                <div class="border rounded p-2 bg-light">
+                                    <p class="text-justify mb-0 small">{{ $surgery->description }}</p>
+                                </div>
                             </div>
                         @endif
 
-                        <div class="row mt-4">
-                            <div class="col-md-6 mb-4">
-                                <h6 class="fw-bold">تاریخ ثبت:</h6>
-                                <p>{{ $surgery->getCreatedAtShamsi() }}</p>
+                        <div class="row mt-3 g-2">
+                            <div class="col-md-6">
+                                <div class="border rounded p-2 bg-light">
+                                    <h6 class="fw-bold text-primary small mb-1">تاریخ ثبت</h6>
+                                    <p class="mb-0 small">{{ $surgery->getCreatedAtShamsi() }}</p>
+                                </div>
                             </div>
 
-                            <div class="col-md-6 mb-4">
-                                <h6 class="fw-bold">آخرین بروزرسانی:</h6>
-                                <p>{{ $surgery->getUpdatedAtShamsi() }}</p>
+                            <div class="col-md-6">
+                                <div class="border rounded p-2 bg-light">
+                                    <h6 class="fw-bold text-primary small mb-1">آخرین بروزرسانی</h6>
+                                    <p class="mb-0 small">{{ $surgery->getUpdatedAtShamsi() }}</p>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="card-footer bg-light d-flex justify-content-between">
-                        <a href="{{ route('surgery.edit', $surgery->id) }}" class="btn btn-warning">
-                            <i class="fas fa-edit"></i>
+                    <div class="card-footer bg-light d-flex justify-content-between py-2">
+                        <a href="{{ route('surgery.edit', $surgery->id) }}" class="btn btn-warning btn-sm">
+                            <i class="fas fa-edit ml-1"></i>
                             ویرایش اطلاعات
                         </a>
                         <form action="{{ route('surgery.delete', $surgery->id) }}" method="POST" class="d-inline">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-danger" onclick="return confirm('آیا از حذف این جراحی اطمینان دارید؟')">
-                                <i class="fas fa-trash"></i>
+                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('آیا از حذف این جراحی اطمینان دارید؟')">
+                                <i class="fas fa-trash ml-1"></i>
                                 حذف جراحی
                             </button>
                         </form>
