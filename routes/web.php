@@ -8,6 +8,7 @@ use App\Http\Controllers\Panel\OperationsController;
 use App\Http\Controllers\Panel\SpecialityController;
 use App\Http\Controllers\Panel\SurgeryController;
 use App\Http\Controllers\Panel\UserController;
+use App\Http\Controllers\Panel\InvoiceController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -65,14 +66,6 @@ Route::middleware(['auth'])->prefix('Panel')->group(function () {
         Route::post('/Edit{id}', [DoctorController::class, "Update"])->name('Doctor.Update');
         Route::delete('/Delete{id}', [DoctorController::class, "Delete"])->name('Doctor.Delete');
     });
-    Route::prefix('Insurances')->group(function () {
-        Route::get('/List', [InsuranceController::class, 'List'])->name('insurances');
-        Route::get('/create', [InsuranceController::class, 'create'])->name('insurances.create');
-        Route::post('/store', [InsuranceController::class, 'store'])->name('insurances.store');
-        Route::get('/edit/{id}', [InsuranceController::class, 'edit'])->name('insurances.edit');
-        Route::post('/update/{id}', [InsuranceController::class, 'update'])->name('insurances.update');
-        Route::delete('/delete/{id}', [InsuranceController::class, 'delete'])->name('insurances.delete');
-    });
     Route::prefix('operations')->group(function () {
         Route::get('/List', [OperationsController::class, 'List'])->name('operations');
         Route::get('/create', [OperationsController::class, 'create'])->name('operations.create');
@@ -97,5 +90,14 @@ Route::middleware(['auth'])->prefix('Panel')->group(function () {
         Route::get('/edit/{id}', [SurgeryController::class, 'edit'])->name('surgery.edit');
         Route::post('/update/{id}', [SurgeryController::class, 'update'])->name('surgery.update');
         Route::delete('/delete/{id}', [SurgeryController::class, 'delete'])->name('surgery.delete');
+    });
+    Route::prefix('invoices')->group(function () {
+        Route::get('/List', [InvoiceController::class, 'index'])->name('panel.invoices.index');
+        Route::get('/create', [InvoiceController::class, 'create'])->name('panel.invoices.create');
+        Route::post('/store', [InvoiceController::class, 'store'])->name('panel.invoices.store');
+        Route::get('/edit/{invoice}', [InvoiceController::class, 'edit'])->name('panel.invoices.edit');
+        Route::post('/update/{invoice}', [InvoiceController::class, 'update'])->name('panel.invoices.update');
+        Route::delete('/delete/{invoice}', [InvoiceController::class, 'destroy'])->name('panel.invoices.destroy');
+        Route::post('/search-surgeries', [InvoiceController::class, 'searchSurgeries'])->name('panel.invoices.search-surgeries');
     });
 });

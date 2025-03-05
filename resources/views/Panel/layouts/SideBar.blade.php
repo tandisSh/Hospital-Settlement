@@ -54,7 +54,13 @@
                         <li class="nav-item">
                             <a href="{{ route('surgeries') }}" class="nav-link">
                                 <i class="nav-icon fas fa-hospital"></i>
-                                <p>عمل‌های جراحی</p>
+                                <p>لیست عمل‌های جراحی</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('panel.invoices.index') }}" class="nav-link">
+                                <i class="nav-icon fas fa-file-invoice-dollar"></i>
+                                <p>صورتحساب‌های پزشکان</p>
                             </a>
                         </li>
                     </ul>
