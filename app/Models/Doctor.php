@@ -48,6 +48,10 @@ class Doctor extends Model
         return $this->belongsToMany(DoctorRole::class, 'doctor_doctor_role', 'doctor_id', 'doctor_role_id')
             ->withTimestamps();
     }
+    public function invoices()
+    {
+        return $this->hasMany(Invoice::class);
+    }
 
     public function surgeries()
     {

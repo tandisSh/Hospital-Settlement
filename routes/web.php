@@ -91,13 +91,13 @@ Route::middleware(['auth'])->prefix('Panel')->group(function () {
         Route::post('/update/{id}', [SurgeryController::class, 'update'])->name('surgery.update');
         Route::delete('/delete/{id}', [SurgeryController::class, 'delete'])->name('surgery.delete');
     });
-    Route::prefix('invoices')->group(function () {
-        Route::get('/List', [InvoiceController::class, 'index'])->name('panel.invoices.index');
-        Route::get('/create', [InvoiceController::class, 'create'])->name('panel.invoices.create');
-        Route::post('/store', [InvoiceController::class, 'store'])->name('panel.invoices.store');
-        Route::get('/edit/{invoice}', [InvoiceController::class, 'edit'])->name('panel.invoices.edit');
-        Route::post('/update/{invoice}', [InvoiceController::class, 'update'])->name('panel.invoices.update');
-        Route::delete('/delete/{invoice}', [InvoiceController::class, 'destroy'])->name('panel.invoices.destroy');
-        Route::post('/search-surgeries', [InvoiceController::class, 'searchSurgeries'])->name('panel.invoices.search-surgeries');
+    Route::prefix('Invoice')->group(function () {
+        Route::get('/Invoice',[InvoiceController::class,'index'])->name('Panel.InvoiceList');
+        Route::get('/pay',[InvoiceController::class,'pay'])->name('Panel.InvoicePay');
+        Route::get('/search-pay',[InvoiceController::class,'searchPay'])->name('Panel.SearchInvoicePay');
+        Route::post('/store', [InvoiceController::class, 'store'])->name('Panel.StoreInvoice');
+        Route::get('/invoice-list', [InvoiceController::class, 'invoiceList'])->name('Panel.Invoice.List');
+        Route::get('/edit/{id}', [InvoiceController::class, 'edit'])->name('Panel.EditInvoice');
+        Route::delete('/delete/{id}', [InvoiceController::class, 'destroy'])->name('Panel.DeleteInvoice');
     });
 });

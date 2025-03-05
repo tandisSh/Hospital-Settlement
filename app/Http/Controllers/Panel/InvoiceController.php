@@ -7,96 +7,121 @@ use App\Models\Doctor;
 use App\Models\Invoice;
 use App\Models\Surgery;
 use Illuminate\Http\Request;
-
+use Morilog\Jalali\Jalalian;
+use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Facades\Auth;
 class InvoiceController extends Controller
 {
     public function index()
     {
-        $invoices = Invoice::with('doctor')->latest()->get();
-        return view('Panel.Invoice.List', compact('invoices'));
+        $user = Auth::user();
+        $invoices = Invoice::all();
+        return view('Panel.Invoice.List', compact('invoices','user'));
     }
 
-    public function create()
+    public function pay()
     {
-        $doctors = Doctor::all();
-        return view('Panel.Invoice.Create', compact('doctors'));
+        $user = Auth::user();
+        $doctors = Doctor::orderBy('name')->get();
+        return view('Panel.Invoice.Create', compact('user', 'doctors'));
     }
 
-    public function searchSurgeries(Request $request)
+    public function searchPay(Request $request)
     {
-        $validated = $request->validate([
-            'doctor_id' => 'required|exists:doctors,id',
-            'from_date' => 'required|date',
-            'to_date' => 'required|date|after_or_equal:from_date'
-        ]);
+        $user = Auth::user();
+        $doctors = Doctor::orderBy('name')->get();
 
-        $surgeries = Surgery::whereHas('doctors', function($query) use ($validated) {
-            $query->where('doctor_id', $validated['doctor_id']);
-        })->whereBetween('surgery_date', [$validated['from_date'], $validated['to_date']])
-          ->with(['doctors' => function($query) use ($validated) {
-              $query->where('doctor_id', $validated['doctor_id']);
-          }])
-          ->get();
+        if ($request->has('doctor_id') && $request->doctor_id) {
+            $doctor = Doctor::with(['roles', 'speciality'])->findOrFail($request->doctor_id);
 
-        return response()->json($surgeries);
+            // تبدیل تاریخ‌های شمسی به میلادی
+            $startDate = $request->start_date ? Jalalian::fromFormat('Y/m/d', $request->start_date)->toCarbon() : null;
+            $endDate = $request->end_date ? Jalalian::fromFormat('Y/m/d', $request->end_date)->toCarbon() : null;
+
+            $surgeries = Surgery::with(['doctors', 'operations'])
+                ->whereHas('doctors', function($query) use ($request) {
+                    $query->where('doctors.id', $request->doctor_id);
+                })
+                ->when($startDate, function($query) use ($startDate) {
+                    $query->where('surgeried_at', '>=', $startDate);
+                })
+                ->when($endDate, function($query) use ($endDate) {
+                    $query->where('surgeried_at', '<=', $endDate);
+                })
+                ->get()
+                ->map(function($surgery) use ($doctor) {
+                    $doctorSurgery = $surgery->doctors->where('id', $doctor->id)->first();
+                    $roleName = $doctorSurgery ? $doctor->roles->where('id', $doctorSurgery->pivot->doctor_role_id)->first()->title : 'تعیین نشده';
+                    $amount = $doctorSurgery ? $doctorSurgery->pivot->amount : 0;
+
+                    return [
+                        'id' => $surgery->id,
+                        'patient_name' => $surgery->patient_name,
+                        'operations' => $surgery->operations,
+                        'role_name' => $roleName,
+                        'amount' => $amount,
+                        'surgeried_at' => Jalalian::fromDateTime($surgery->surgeried_at)->format('Y/m/d') // تبدیل به شمسی
+                    ];
+                });
+
+            $showSurgeryList = $doctor && $surgeries->isNotEmpty();
+            $totalAmount = $surgeries->sum('amount');
+
+            return view('Panel.Invoice.Create', compact('doctor', 'user', 'surgeries', 'doctors', 'showSurgeryList', 'totalAmount'));
+        }
+
+        return view('Panel.Invoice.Create', compact('user', 'doctors'));
     }
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'doctor_id' => 'required|exists:doctors,id',
-            'surgery_ids' => 'required|array',
-            'surgery_ids.*' => 'exists:surgeries,id',
-            'description' => 'nullable|string'
-        ]);
 
-        $surgeries = Surgery::whereIn('id', $validated['surgery_ids'])
-            ->with(['doctors' => function($query) use ($validated) {
-                $query->where('doctor_id', $validated['doctor_id']);
-            }])
-            ->get();
+            $request->validate([
+                'doctor_id' => 'required|exists:doctors,id',
+                'surgery_ids' => 'required|array|min:1',
+                'surgery_ids.*' => 'exists:surgeries,id',
+                'total_amount' => 'required|numeric|min:0'
+            ]);
 
-        $totalAmount = $surgeries->sum(function($surgery) {
-            return $surgery->doctors->first()->pivot->price ?? 0;
-        });
+            if (!$request->has('surgery_ids') || empty($request->surgery_ids)) {
+                Alert::error('خطا', 'لطفا حداقل یک عمل را انتخاب کنید');
+                return redirect()->back();
+            }
 
-        $invoice = Invoice::create([
-            'doctor_id' => $validated['doctor_id'],
-            'amount' => $totalAmount,
-            'description' => $validated['description'],
-            'status' => false
-        ]);
+            $surgeries = Surgery::with(['doctors'])->whereIn('id', $request->surgery_ids)->get();
 
-        return redirect()->route('panel.invoices.index')
-            ->with('success', 'صورتحساب با موفقیت ثبت شد.');
+            if ($surgeries->isEmpty()) {
+                Alert::error('خطا', 'عملیات انتخاب شده یافت نشد');
+                return redirect()->back();
+            }
+
+
+// Start transaction
+
+                $invoice = Invoice::create([
+                    'doctor_id' => $request->doctor_id,
+                    'amount' => $request->total_amount,
+                    'status' => 0,
+                    'created_at' => now(),
+                    'updated_at' => now()
+                ]);
+
+                // Update each surgery with the invoice ID
+                foreach ($surgeries as $surgery) {
+                    $surgery->doctors()->updateExistingPivot($request->doctor_id, [
+                        'invoice_id' => $invoice->id
+                    ]);
+                }
+
+
+                Alert::success('موفقیت', 'صورتحساب با موفقیت ایجاد شد');
+                return redirect()->route('Panel.Invoice.List');
+
     }
-
-    public function edit(Invoice $invoice)
-    {
-        $doctors = Doctor::all();
-        return view('Panel.Invoice.Edit', compact('invoice', 'doctors'));
-    }
-
-    public function update(Request $request, Invoice $invoice)
-    {
-        $validated = $request->validate([
-            'doctor_id' => 'required|exists:doctors,id',
-            'amount' => 'required|numeric|min:0',
-            'description' => 'nullable|string',
-            'status' => 'boolean'
-        ]);
-
-        $invoice->update($validated);
-
-        return redirect()->route('panel.invoices.index')
-            ->with('success', 'صورتحساب با موفقیت بروزرسانی شد.');
-    }
-
-    public function destroy(Invoice $invoice)
-    {
-        $invoice->delete();
-
-        return redirect()->route('panel.invoices.index')
-            ->with('success', 'صورتحساب با موفقیت حذف شد.');
-    }
-} 
+public function invoiceList()
+{
+    $user = Auth::user();
+    $invoices = Invoice::all();
+    return view('Panel.Invoice.List', compact('invoices', 'user'));
+}
+}

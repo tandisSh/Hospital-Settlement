@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
-use Morilog\Jalali\Jalalian;
+
 
 class SurgeryController extends Controller
 {
@@ -35,7 +35,7 @@ class SurgeryController extends Controller
         })->get();
         $operations = Operation::all();
         $today = Carbon::now()->format('Y/m/d');
-        
+
         return view('Panel.surgery.create', compact('insurances', 'surgeons', 'anesthesiologists', 'consultants', 'operations', 'today'));
     }
 
@@ -74,7 +74,7 @@ class SurgeryController extends Controller
 
         // Get doctor roles with their shares
         $doctorRoles = DoctorRole::whereIn('id', [1, 2, 3])->pluck('quota', 'id');
-        
+
         // Calculate shares based on surgery cost
         $surgeonShare = $doctorRoles[2];
         $anesthesiologistShare = $doctorRoles[1];

@@ -49,7 +49,7 @@
                                                         </a>
                                                         <a href="{{ route('surgery.edit', $surgery->id) }}" class="btn btn-warning btn-sm px-2"
                                                             title="ویرایش">
-                                                            <i class="fa fa-pen text-light "></i>
+                                                            <i class="fa fa-pen text-light"></i>
                                                         </a>
                                                         <button onclick="confirmAction('{{ route('surgery.delete', $surgery->id) }}')"
                                                             class="btn btn-danger btn-sm px-2" title="حذف">

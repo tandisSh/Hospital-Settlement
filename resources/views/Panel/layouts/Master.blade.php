@@ -3,6 +3,13 @@
 
 @include('Panel.layouts.Head-tag')
 
+<head>
+    <!-- Theme style -->
+    <link rel="stylesheet" href="{{ asset('dist/css/adminlte.min.css') }}">
+    <!-- Persian Datepicker -->
+    <link rel="stylesheet" href="{{ asset('plugins/persian-datepicker/persian-datepicker.min.css') }}">
+</head>
+
 <body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
     @include('sweetalert::alert', ['cdn' => "https://cdn.jsdelivr.net/npm/sweetalert2@9"])
     <div class="app-wrapper">
@@ -13,6 +20,12 @@
         @include('Panel.layouts.Footer')
         @include('Panel.layouts.Js')
     </div>
+
+    <!-- AdminLTE App -->
+    <script src="{{ asset('dist/js/adminlte.min.js') }}"></script>
+    <!-- Persian Datepicker -->
+    <script src="{{ asset('plugins/persian-datepicker/persian-datepicker.min.js') }}"></script>
+    @stack('scripts')
 
     <script>
         function confirmDelete(id) {

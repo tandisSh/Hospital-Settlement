@@ -58,9 +58,15 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('panel.invoices.index') }}" class="nav-link">
+                            <a href="{{ route('Panel.InvoicePay') }}" class="nav-link">
                                 <i class="nav-icon fas fa-file-invoice-dollar"></i>
                                 <p>صورتحساب‌های پزشکان</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('Panel.Invoice.List') }}" class="nav-link">
+                                <i class="nav-icon fas fa-file-invoice-dollar"></i>
+                                <p>لیست صورتحساب پزشکان  </p>
                             </a>
                         </li>
                     </ul>

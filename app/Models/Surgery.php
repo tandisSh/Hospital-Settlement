@@ -47,7 +47,12 @@ class Surgery extends Model
             ->withPivot(['amount'])
             ->withTimestamps();
     }
-
+    public function invoices()
+    {
+        return $this->belongsToMany(Invoice::class, 'surgery_doctor', 'surgery_id', 'invoice_id')
+                    ->whereNotNull('invoice_id')
+                    ->distinct();
+    }
     public function getSurgeriedAtShamsi()
     {
         return Jalalian::fromDateTime($this->surgeried_at)->format('Y/m/d');
