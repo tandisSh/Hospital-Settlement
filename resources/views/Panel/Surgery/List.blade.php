@@ -19,8 +19,9 @@
                                         <tr>
                                             <th class="text-center">ردیف</th>
                                             <th class="text-center">نام بیمار</th>
+                                            <th class="text-center">کد ملی بیمار</th>
                                             <th class="text-center">تاریخ جراحی</th>
-                                            <th class="text-center">پزشکان</th>
+                                            <th class="text-center">تاریخ ثبت</th>
                                             <th class="text-center">عملیات</th>
                                         </tr>
                                     </thead>
@@ -29,28 +30,30 @@
                                             <tr>
                                                 <td class="text-center">{{ $index + 1 }}</td>
                                                 <td class="text-center">{{ $surgery->patient_name }}</td>
+                                                <td class="text-center">{{ $surgery->patient_national_code }}</td>
                                                 <td class="text-center">{{ $surgery->getSurgeriedAtShamsi() }}</td>
-                                                <td class="text-center">
+                                                {{-- <td class="text-center">
                                                     @foreach($surgery->doctors->take(2) as $doctor)
                                                         <span class="badge bg-info">{{ $doctor->name }}</span>
                                                     @endforeach
                                                     @if($surgery->doctors->count() > 2)
                                                         <span class="badge bg-secondary">+{{ $surgery->doctors->count() - 2 }}</span>
                                                     @endif
-                                                </td>
+                                                </td> --}}
+                                                <td class="text-center">{{ $surgery->getCreatedAtShamsi()->format('H:i - Y/m/d') }}</td>
                                                 <td class="text-center">
                                                     <div class="d-flex gap-2 justify-content-center">
                                                         <a href="{{ route('surgery.show', $surgery->id) }}" class="btn btn-info btn-sm px-2"
                                                             title="مشاهده جزییات">
-                                                            <i class="fa fa-eye text-dark"></i>
+                                                            <i class="fa fa-eye text-light"></i>
                                                         </a>
                                                         <a href="{{ route('surgery.edit', $surgery->id) }}" class="btn btn-warning btn-sm px-2"
                                                             title="ویرایش">
-                                                            <i class="fa fa-pen text-dark"></i>
+                                                            <i class="fa fa-pen text-light "></i>
                                                         </a>
                                                         <button onclick="confirmAction('{{ route('surgery.delete', $surgery->id) }}')"
                                                             class="btn btn-danger btn-sm px-2" title="حذف">
-                                                            <i class="fa fa-trash text-dark"></i>
+                                                            <i class="fa fa-trash "></i>
                                                         </button>
                                                         <form id="delete-form" method="POST" style="display: none;">
                                                             @csrf

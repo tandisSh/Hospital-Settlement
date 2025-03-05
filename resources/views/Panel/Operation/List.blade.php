@@ -39,20 +39,20 @@
                                                         {{ $operation->status ? 'فعال' : 'غیرفعال' }}
                                                     </span>
                                                 </td>
-                                                <td class="text-center">{{ $operation->getCreatedAtShamsi()->format('Y/m/d') }}</td>
+                                                <td class="text-center">{{ $operation->getCreatedAtShamsi()->format('H:i - Y/m/d') }}</td>
                                                 <td class="text-center">
                                                     <div class="d-flex gap-2 justify-content-center">
                                                         <a href="{{ route('operations.edit', $operation->id) }}"
                                                             class="btn btn-warning btn-sm px-2" title="ویرایش">
-                                                            <i class="fa fa-pen text-dark"></i>
+                                                            <i class="fa fa-pen text-light"></i>
                                                         </a>
                                                         <form id="delete-form-{{ $operation->id }}" method="POST" action="{{ route('operations.delete', $operation->id) }}" style="display: inline;">
                                                             @csrf
                                                             @method('DELETE')
-                                                            <button type="button" 
-                                                                @disabled($operation->isDeletable()) 
-                                                                onclick="confirmDelete('{{ $operation->id }}')" 
-                                                                class="btn btn-danger btn-sm px-2" 
+                                                            <button type="button"
+                                                                @disabled($operation->isDeletable())
+                                                                onclick="confirmDelete('{{ $operation->id }}')"
+                                                                class="btn btn-danger btn-sm px-2"
                                                                 title="{{ $operation->isDeletable() ? 'این عمل قابل حذف نیست' : 'حذف' }}">
                                                                 <i class="fa fa-trash text-light"></i>
                                                             </button>

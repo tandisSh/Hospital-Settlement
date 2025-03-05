@@ -22,6 +22,7 @@
                                             <th class="text-center">تخصص</th>
                                             <th class="text-center">شماره موبایل</th>
                                             <th class="text-center">وضعیت</th>
+                                            <th class="text-center">تاریخ ثبت</th>
                                             <th class="text-center">عملیات</th>
                                         </tr>
                                     </thead>
@@ -37,15 +38,16 @@
                                                         {{ $doctor->status ? 'فعال' : 'غیرفعال' }}
                                                     </span>
                                                 </td>
+                                                <td class="text-center">{{ $doctor->getCreatedAtShamsi()->format('H:i - Y/m/d') }}</td>
                                                 <td class="text-center">
                                                     <div class="d-flex gap-2 justify-content-center">
                                                         <a href="{{ route('Doctor.Show', $doctor->id) }}"
                                                             class="btn btn-info btn-sm px-2" title="مشاهده">
-                                                            <i class="fa fa-eye text-dark"></i>
+                                                            <i class="fa fa-eye text-light"></i>
                                                         </a>
                                                         <a href="{{ route('Doctor.Edit', $doctor->id) }}"
                                                             class="btn btn-warning btn-sm px-2" title="ویرایش">
-                                                            <i class="fa fa-pen text-dark"></i>
+                                                            <i class="fa fa-pen text-light"></i>
                                                         </a>
                                                         <form id="delete-form-{{ $doctor->id }}" method="POST"
                                                             action="{{ route('Doctor.Delete', $doctor->id) }}"

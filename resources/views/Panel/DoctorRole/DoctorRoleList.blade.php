@@ -36,6 +36,7 @@
                                             <th class="text-center align-middle d-none d-md-table-cell">اجباری</th>
                                             <th class="text-center align-middle d-none d-md-table-cell">سهمیه</th>
                                             <th class="text-center align-middle">وضعیت</th>
+                                            <th class="text-center align-middle">تاریخ ثبت</th>
                                             <th class="text-center align-middle">عملیات</th>
                                         </tr>
                                     </thead>
@@ -58,11 +59,12 @@
                                                         {{ $role->status ? 'فعال' : 'غیرفعال' }}
                                                     </span>
                                                 </td>
+                                                <td class="text-center align-middle">{{ $role->getCreatedAtShamsi()->format('H:i - Y/m/d') }}</td>
                                                 <td class="text-center align-middle">
                                                     <div class="d-flex gap-2 justify-content-center">
                                                         <a href="{{ route('DoctorRole.Edit', $role->id) }}"
                                                             class="btn btn-warning btn-sm px-2" title="ویرایش">
-                                                            <i class="fa fa-pen text-dark"></i>
+                                                            <i class="fa fa-pen text-light"></i>
                                                         </a>
                                                         {{-- <button type="button"
                                                             class="btn btn-danger btn-sm px-2"

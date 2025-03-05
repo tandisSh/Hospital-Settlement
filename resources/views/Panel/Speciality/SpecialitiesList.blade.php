@@ -20,6 +20,7 @@
                                             <th class="text-center">شناسه</th>
                                             <th class="text-center">عنوان تخصص</th>
                                             <th class="text-center">وضعیت</th>
+                                            <th class="text-center">تاریخ ثبت</th>
                                             <th class="text-center">عملیات</th>
                                         </tr>
                                     </thead>
@@ -36,19 +37,20 @@
                                                         <span class="badge bg-danger">غیرفعال</span>
                                                     @endif
                                                 </td>
+                                                <td class="text-center">{{ $speciality->getCreatedAtShamsi()->format('H:i - Y/m/d') }}</td>
                                                 <td class="text-center">
                                                     <div class="d-flex gap-2 justify-content-center">
                                                         <a href="{{ route('Speciality.Edit', $speciality->id) }}"
                                                             class="btn btn-warning btn-sm px-2" title="ویرایش">
-                                                            <i class="fa fa-pen text-dark"></i>
+                                                            <i class="fa fa-pen text-light"></i>
                                                         </a>
                                                         <form id="delete-form-{{ $speciality->id }}" method="POST" action="{{ route('Delete.Speciality', $speciality->id) }}" style="display: inline;">
                                                             @csrf
                                                             @method('DELETE')
-                                                            <button type="button" 
+                                                            <button type="button"
                                                                 @disabled($speciality->isDeletable())
                                                                 onclick="confirmDelete('{{ $speciality->id }}')"
-                                                                class="btn btn-danger btn-sm px-2" 
+                                                                class="btn btn-danger btn-sm px-2"
                                                                 title="{{ $speciality->isDeletable() ? 'این تخصص قابل حذف نیست' : 'حذف' }}">
                                                                 <i class="fa fa-trash text-light"></i>
                                                             </button>
