@@ -23,4 +23,8 @@ class Invoice extends Model
     {
         return Jalalian::fromDateTime($this->created_at);
     }
+    public function getSurgeriedAtShamsi()
+    {
+        return Jalalian::fromDateTime($this->surgeried_at)->format('Y/m/d');
+    }
 }

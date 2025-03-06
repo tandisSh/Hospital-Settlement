@@ -55,7 +55,7 @@ class Surgery extends Model
     }
     public function getSurgeriedAtShamsi()
     {
-        return Jalalian::fromDateTime($this->surgeried_at)->format('Y/m/d');
+        return Jalalian::fromDateTime($this->surgeried_at);
     }
 
     public function getReleasedAtShamsi()
