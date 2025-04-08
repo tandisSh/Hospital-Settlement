@@ -14,10 +14,10 @@ class Invoice extends Model
         return $this->belongsTo(Doctor::class);
     }
 
-    // public function payments()
-    // {
-    //     return $this->hasMany(Payment::class);
-    // }
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
+    }
 
     public function getCreatedAtShamsi()
     {
