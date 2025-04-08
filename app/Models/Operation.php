@@ -24,6 +24,10 @@ class Operation extends Model
             }
         });
     }
+    public function isDeletable(): bool
+    {
+        return $this->surgeries()->exists();
+    }
 
     public function getCreatedAtShamsi()
     {
@@ -42,8 +46,5 @@ class Operation extends Model
             ->withTimestamps();
     }
 
-    public function isDeletable(): bool
-    {
-        return $this->surgeries()->exists();
-    }
+
 }

@@ -47,8 +47,8 @@
                                 <th>ردیف</th>
 
                                 <th>نام پزشک</th>
-                                <th>تاریخ</th>
-                                <th>مبلغ کل</th>
+                                <th>مبلغ کل(تومان)</th>
+                                <th>تاریخ ثبت</th>
                                 <th>وضعیت</th>
                                 <th style="width: 150px;">عملیات</th>
                             </tr>
@@ -58,20 +58,28 @@
                                 <tr class="align-middle">
                                     <td>{{ $index + 1 }}</td>
                                     <td>{{ $invoice->doctor->name }}</td>
+                                    <td>{{ number_format($invoice->amount) }}</td>
                                     <td>{{ $invoice->getCreatedAtShamsi()->format('H:i - Y/m/d') }}</td>
-                                    <td>{{ number_format($invoice->amount) }} ریال</td>
                                     <td>
                                         <span class="badge {{ $invoice->status ? 'bg-success' : 'bg-danger' }}">
                                             {{ $invoice->status ? 'پرداخت شده' : 'پرداخت نشده' }}
                                         </span>
                                     </td>
                                     <td>
-                                        <a href="{{ route('Panel.EditInvoice', $invoice->id) }}"
-                                            class="btn btn-warning btn-sm shadow-sm" style="color: white !important;"><i
-                                                class="fa fa-pencil text-light"></i></a>
-                                        <a href="{{ route('Panel.DeleteInvoice', $invoice->id) }}"
-                                            class="btn btn-danger btn-sm shadow-sm" style="color: white !important;"><i
-                                                class="fa fa-trash text-light"></i></a>
+                                        <form id="delete-form-{{ $invoice->id }}" method="POST"
+                                            action="{{ route('Panel.DeleteInvoice', $invoice->id) }}"
+                                            style="display: inline;">
+                                          @csrf
+                                          @method('DELETE')
+
+                                          <button type="button"
+                                                  class="btn btn-danger btn-sm px-2"
+                                                  title="{{ !$invoice->isDeletable() ? 'این صورتحساب قابل حذف نیست' : 'حذف' }}"
+                                                  {{ !$invoice->isDeletable() ? 'disabled' : '' }}
+                                                  onclick="confirmDelete('{{ $invoice->id }}')">
+                                              <i class="fa fa-trash text-light"></i>
+                                          </button>
+                                      </form>
 
                                     </td>
                                 </tr>

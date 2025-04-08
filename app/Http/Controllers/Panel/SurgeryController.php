@@ -25,10 +25,10 @@ class SurgeryController extends Controller
     {
         $insurances = Insurance::all();
         $surgeons = Doctor::whereHas('roles', function($query) {
-            $query->where('doctor_role_id', 2); // جراح
+            $query->where('doctor_role_id', 1); // جراح
         })->get();
         $anesthesiologists = Doctor::whereHas('roles', function($query) {
-            $query->where('doctor_role_id', 1); // بیهوشی
+            $query->where('doctor_role_id', 2); // بیهوشی
         })->get();
         $consultants = Doctor::whereHas('roles', function($query) {
             $query->where('doctor_role_id', 3); // مشاور

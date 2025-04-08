@@ -27,4 +27,18 @@ class Invoice extends Model
     {
         return Jalalian::fromDateTime($this->surgeried_at)->format('Y/m/d');
     }
+
+    protected static function booted()
+    {
+        static::deleting(function ($invoice) {
+            if (!$invoice->isDeletable()) {
+                throw new \Exception('این فاکتور قابل حذف نیست.');
+            }
+        });
+    }
+
+    public function isDeletable()
+    {
+        return $this->status == 0;
+    }
 }

@@ -41,9 +41,9 @@ class DoctorController extends Controller
         $selectedRoles = $request->Doctor_roles;
 
         // اگر نقش بیهوشی انتخاب شده باشد
-        if (in_array(1, $selectedRoles)) {
+        if (in_array(2, $selectedRoles)) {
             // بررسی کنید که جراح یا مشاور انتخاب نشده باشد
-            if (in_array(2, $selectedRoles) || in_array(3, $selectedRoles)) {
+            if (in_array(1, $selectedRoles) || in_array(3, $selectedRoles)) {
                 return redirect()->back()
                     ->withInput()
                     ->withErrors(['Doctor_roles.conflict' => 'نقش‌های انتخاب شده با هم تداخل دارند. لطفاً نقش‌های سازگار را انتخاب کنید.']);
@@ -51,9 +51,9 @@ class DoctorController extends Controller
         }
 
         // اگر نقش جراح یا مشاور انتخاب شده باشد
-        if (in_array(2, $selectedRoles) || in_array(3, $selectedRoles)) {
+        if (in_array(1, $selectedRoles) || in_array(3, $selectedRoles)) {
             // بررسی کنید که بیهوشی انتخاب نشده باشد
-            if (in_array(1, $selectedRoles)) {
+            if (in_array(2, $selectedRoles)) {
                 return redirect()->back()
                     ->withInput()
                     ->withErrors(['Doctor_roles.conflict' => 'نقش‌های انتخاب شده با هم تداخل دارند. لطفاً نقش‌های سازگار را انتخاب کنید.']);
@@ -97,6 +97,7 @@ class DoctorController extends Controller
             'medical_number' => 'required|string|max:191',
             'mobile' => 'required|string|max:11|unique:doctors,mobile,' . $id,
             'status' => 'boolean',
+            'Doctor_roles' => 'array'
         ];
 
         if ($request->filled('password')) {
@@ -111,9 +112,9 @@ class DoctorController extends Controller
             $selectedRoles = $request->Doctor_roles;
 
             // اگر نقش بیهوشی انتخاب شده باشد
-            if (in_array(1, $selectedRoles)) {
+            if (in_array(2, $selectedRoles)) {
                 // بررسی کنید که جراح یا مشاور انتخاب نشده باشد
-                if (in_array(2, $selectedRoles) || in_array(3, $selectedRoles)) {
+                if (in_array(1, $selectedRoles) || in_array(3, $selectedRoles)) {
                     return redirect()->back()
                         ->withInput()
                         ->withErrors(['Doctor_roles.conflict' => 'نقش‌های انتخاب شده با هم تداخل دارند. لطفاً نقش‌های سازگار را انتخاب کنید.']);
@@ -121,9 +122,9 @@ class DoctorController extends Controller
             }
 
             // اگر نقش جراح یا مشاور انتخاب شده باشد
-            if (in_array(2, $selectedRoles) || in_array(3, $selectedRoles)) {
+            if (in_array(1, $selectedRoles) || in_array(3, $selectedRoles)) {
                 // بررسی کنید که بیهوشی انتخاب نشده باشد
-                if (in_array(1, $selectedRoles)) {
+                if (in_array(2, $selectedRoles)) {
                     return redirect()->back()
                         ->withInput()
                         ->withErrors(['Doctor_roles.conflict' => 'نقش‌های انتخاب شده با هم تداخل دارند. لطفاً نقش‌های سازگار را انتخاب کنید.']);

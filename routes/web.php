@@ -97,7 +97,6 @@ Route::middleware(['auth'])->prefix('Panel')->group(function () {
         Route::get('/search-pay',[InvoiceController::class,'searchPay'])->name('Panel.SearchInvoicePay');
         Route::post('/store', [InvoiceController::class, 'store'])->name('Panel.StoreInvoice');
         Route::get('/invoice-list', [InvoiceController::class, 'invoiceList'])->name('Panel.Invoice.List');
-        Route::get('/edit/{id}', [InvoiceController::class, 'edit'])->name('Panel.EditInvoice');
         Route::delete('/delete/{id}', [InvoiceController::class, 'destroy'])->name('Panel.DeleteInvoice');
     });
 });

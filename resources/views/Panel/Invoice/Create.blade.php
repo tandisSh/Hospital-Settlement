@@ -1,7 +1,7 @@
 @extends('Panel.layouts.master')
 
 @php
-use Morilog\Jalali\Jalalian;
+    use Morilog\Jalali\Jalalian;
 @endphp
 
 @section('content')
@@ -42,8 +42,9 @@ use Morilog\Jalali\Jalalian;
                             </div>
                             <div class="col-md-3">
                                 <label class="form-label fw-bold text-dark">&nbsp;</label>
-                                <button type="submit" class="btn btn-secondary shadow-sm w-100">
-                                    <i class="fas fa-search me-1"></i>جستجو
+                                <button type="submit" class="btn btn-primary shadow-sm w-100">
+                                    جستجو
+                                    <i class="fas fa-search me-1"></i>
                                 </button>
                             </div>
                         </div>
@@ -75,7 +76,7 @@ use Morilog\Jalali\Jalalian;
                                                 <th>نام بیمار</th>
                                                 <th>نوع عمل</th>
                                                 <th>نقش</th>
-                                                <th>مبلغ سهم</th>
+                                                <th>مبلغ سهم(تومان)</th>
                                                 <th>تاریخ عمل</th>
                                             </tr>
                                         </thead>
@@ -84,14 +85,15 @@ use Morilog\Jalali\Jalalian;
                                                 id="invoice-form">
                                                 @csrf
                                                 <input type="hidden" name="doctor_id" value="{{ $doctor->id }}">
-                                                <input type="hidden" name="total_amount" value="{{ $totalAmount }}">
+                                                <input type="hidden" name="selected_total_amount" id="selected-total-amount" value="0">
                                                 @foreach ($surgeries as $index => $surgery)
                                                     <tr>
                                                         <td>
                                                             <div class="form-check">
                                                                 <input type="checkbox" name="surgery_ids[]"
                                                                     value="{{ $surgery['id'] }}"
-                                                                    class="form-check-input surgery-checkbox">
+                                                                    class="form-check-input surgery-checkbox"
+                                                                    data-amount="{{ $surgery['amount'] }}">
                                                             </div>
                                                         </td>
                                                         <td>{{ $index + 1 }}</td>
@@ -110,14 +112,23 @@ use Morilog\Jalali\Jalalian;
                                                             <span
                                                                 class="badge bg-secondary">{{ $surgery['role_name'] }}</span>
                                                         </td>
-                                                        <td>{{ number_format($surgery['amount'])}}</td>
-                                                        <td>{{ Jalalian::fromDateTime($surgery['surgeried_at'])->format('Y/m/d') }}</td>
+                                                        <td>{{ number_format($surgery['amount']) }}</td>
+                                                        <td>{{ Jalalian::fromDateTime($surgery['surgeried_at'])->format('Y/m/d') }}
+                                                        </td>
                                                     </tr>
                                                 @endforeach
                                                 <tr class="table-light">
-                                                    <td colspan="5" class="text-end fw-bold">مجموع دریافتی:</td>
+                                                    <td colspan="5" class="text-end fw-bold">مجموع سهم ها:</td>
                                                     <td colspan="2" class="text-success fw-bold">
-                                                        {{ number_format($totalAmount) }} ریال
+                                                        {{ number_format($totalAmount) }} تومان
+                                                    </td>
+                                                </tr>
+                                                <tr class="table-light">
+                                                    <td colspan="5" class="text-end fw-bold">مجموع سهم‌های انتخاب شده:
+                                                    </td>
+                                                    <td colspan="2" class="text-success fw-bold"
+                                                        id="total-selected-amount">
+                                                        0 تومان
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -151,30 +162,32 @@ use Morilog\Jalali\Jalalian;
     @push('scripts')
         <script>
             document.addEventListener('DOMContentLoaded', function() {
-                const form = document.getElementById('invoice-form');
-                const submitBtn = document.getElementById('submit-btn');
                 const checkboxes = document.querySelectorAll('.surgery-checkbox');
+                const totalSelectedAmountElement = document.getElementById('total-selected-amount');
+                const submitBtn = document.getElementById('submit-btn');
+                const totalAmountInput = document.getElementById('selected-total-amount');
 
-                // Enable/disable submit button based on checkbox selection
-                function updateSubmitButton() {
-                    const anyChecked = Array.from(checkboxes).some(cb => cb.checked);
-                    submitBtn.disabled = !anyChecked;
+                function updateSelectedAmount() {
+                    let totalSelected = 0;
+                    let anyChecked = false;
+
+                    checkboxes.forEach(checkbox => {
+                        if (checkbox.checked) {
+                            totalSelected += parseInt(checkbox.dataset.amount) || 0;
+                            anyChecked = true;
+                        }
+                    });
+
+                    totalSelectedAmountElement.textContent = totalSelected.toLocaleString() + ' تومان ';
+                    totalAmountInput.value = totalSelected; // ذخیره مقدار در فیلد مخفی
+                    submitBtn.disabled = !anyChecked; // فعال/غیرفعال کردن دکمه پرداخت
                 }
 
-                // Add change event listener to all checkboxes
                 checkboxes.forEach(checkbox => {
-                    checkbox.addEventListener('change', updateSubmitButton);
+                    checkbox.addEventListener('change', updateSelectedAmount);
                 });
 
-                // Form submission handler
-                form.addEventListener('submit', function(e) {
-                    const checkedBoxes = Array.from(checkboxes).filter(cb => cb.checked);
-                    if (checkedBoxes.length === 0) {
-                        e.preventDefault();
-                        alert('لطفا حداقل یک عمل را انتخاب کنید');
-                        return false;
-                    }
-                });
+                updateSelectedAmount(); // مقدار اولیه را تنظیم می‌کند
             });
         </script>
     @endpush
