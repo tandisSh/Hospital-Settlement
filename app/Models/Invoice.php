@@ -19,6 +19,17 @@ class Invoice extends Model
         return $this->hasMany(Payment::class);
     }
 
+    public function surgeries()
+    {
+        return $this->belongsToMany(
+            Surgery::class,
+            'surgery_doctor', // جدول واسط
+            'doctor_id', // FK در جدول واسط برای doctor
+            'surgery_id', // FK در جدول واسط برای surgery
+            'doctor_id', // FK محلی در invoices
+            'id' // FK مربوطه در surgeries
+        )->withPivot(['invoice_id']); // اگر invoice_id در جدول واسط ذخیره می‌شود
+    }
     public function getCreatedAtShamsi()
     {
         return Jalalian::fromDateTime($this->created_at);

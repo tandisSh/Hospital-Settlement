@@ -133,10 +133,8 @@ class PaymentController extends Controller
     }
     private function updateInvoiceStatus(Invoice $invoice)
     {
-        // محاسبه مجموع پرداخت‌های مربوط به این فاکتور
         $totalPaid = Payment::where('invoice_id', $invoice->id)->sum('amount');
 
-        // بررسی وضعیت فعلی فاکتور
         if ($totalPaid >= $invoice->amount && $invoice->status != 1) {
             $invoice->update(['status' => 1]);
             return true;

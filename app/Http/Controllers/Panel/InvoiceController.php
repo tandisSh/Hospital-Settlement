@@ -48,43 +48,43 @@ class InvoiceController extends Controller
 
 
             $surgeries = Surgery::with(['doctors', 'operations'])
-            ->whereHas('doctors', function ($query) use ($request) {
-                $query->where('doctors.id', $request->doctor_id)
-                    ->whereNull('surgery_doctor.invoice_id');
-            })
-            ->when($startDate, function ($query) use ($startDate) {
-                $query->where('surgeried_at', '>=', $startDate);
-            })
-            ->when($endDate, function ($query) use ($endDate) {
-                $query->where('surgeried_at', '<=', $endDate);
-            })
-            ->get()
-            ->map(function ($surgery) use ($doctor) {
-                $doctorSurgery = $surgery->doctors->where('id', $doctor->id)->first();
+                ->whereHas('doctors', function ($query) use ($request) {
+                    $query->where('doctors.id', $request->doctor_id)
+                        ->whereNull('surgery_doctor.invoice_id');
+                })
+                ->when($startDate, function ($query) use ($startDate) {
+                    $query->where('surgeried_at', '>=', $startDate);
+                })
+                ->when($endDate, function ($query) use ($endDate) {
+                    $query->where('surgeried_at', '<=', $endDate);
+                })
+                ->get()
+                ->map(function ($surgery) use ($doctor) {
+                    $doctorSurgery = $surgery->doctors->where('id', $doctor->id)->first();
 
-                $roleName = 'تعیین نشده';
-                $amount = 0;
+                    $roleName = 'تعیین نشده';
+                    $amount = 0;
 
-                if ($doctorSurgery) {
-                    $amount = $doctorSurgery->pivot->amount ?? 0;
+                    if ($doctorSurgery) {
+                        $amount = $doctorSurgery->pivot->amount ?? 0;
 
-                    if ($doctorSurgery->pivot->doctor_role_id) {
-                        $role =DoctorRole::find($doctorSurgery->pivot->doctor_role_id);
-                        if ($role) {
-                            $roleName = $role->title;
+                        if ($doctorSurgery->pivot->doctor_role_id) {
+                            $role = DoctorRole::find($doctorSurgery->pivot->doctor_role_id);
+                            if ($role) {
+                                $roleName = $role->title;
+                            }
                         }
                     }
-                }
 
-                return [
-                    'id' => $surgery->id,
-                    'patient_name' => $surgery->patient_name,
-                    'operations' => $surgery->operations,
-                    'role_name' => $roleName,
-                    'amount' => $amount,
-                    'surgeried_at' => $surgery->surgeried_at
-                ];
-            });
+                    return [
+                        'id' => $surgery->id,
+                        'patient_name' => $surgery->patient_name,
+                        'operations' => $surgery->operations,
+                        'role_name' => $roleName,
+                        'amount' => $amount,
+                        'surgeried_at' => $surgery->surgeried_at
+                    ];
+                });
 
 
             $showSurgeryList = $doctor && $surgeries->isNotEmpty();
@@ -173,5 +173,29 @@ class InvoiceController extends Controller
             Alert::error('خطا', 'خطایی در حذف فاکتور رخ داده است: ' . $e->getMessage());
             return redirect()->back();
         }
+    }
+    public function print($id)
+    {
+        $invoice = Invoice::with('doctor')->findOrFail($id);
+
+        $surgeryData = DB::table('surgery_doctor')
+            ->where('surgery_doctor.invoice_id', $id)
+            ->join('surgeries', 'surgery_doctor.surgery_id', '=', 'surgeries.id')
+            ->join('surgery_operation', 'surgeries.id', '=', 'surgery_operation.surgery_id')
+            ->join('operations', 'surgery_operation.operation_id', '=', 'operations.id')
+            ->select(
+                'surgeries.id as surgery_id',
+                'surgeries.patient_name',
+                'operations.name as operation_name',
+                'surgeries.surgeried_at',
+                'surgeries.released_at',
+                'surgery_doctor.amount' // نام فیلد را تغییر ندادیم
+            )
+            ->get();
+
+        return view('Panel.Invoice.print', [
+            'invoice' => $invoice,
+            'surgeryData' => $surgeryData
+        ]);
     }
 }

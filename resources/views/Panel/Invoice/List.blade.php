@@ -80,7 +80,7 @@
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a class="dropdown-item">
+                                                    <a class="dropdown-item" href="{{ route('Panel.InvoicePrint', $invoice->id) }}">
                                                         <i class="fa fa-print"></i> چاپ
                                                     </a>
                                                 </li>
