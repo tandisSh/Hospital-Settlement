@@ -9,6 +9,7 @@ use App\Http\Controllers\Panel\SpecialityController;
 use App\Http\Controllers\Panel\SurgeryController;
 use App\Http\Controllers\Panel\UserController;
 use App\Http\Controllers\Panel\InvoiceController;
+use App\Http\Controllers\Panel\PaymentController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -99,4 +100,12 @@ Route::middleware(['auth'])->prefix('Panel')->group(function () {
         Route::get('/invoice-list', [InvoiceController::class, 'invoiceList'])->name('Panel.Invoice.List');
         Route::delete('/delete/{id}', [InvoiceController::class, 'destroy'])->name('Panel.DeleteInvoice');
     });
+    Route::prefix('Payment')->group(function () {
+        Route::get('/create/{invoice}', [PaymentController::class, 'create'])->name('Panel.Payment.Create');
+        Route::post('/store-cash', [PaymentController::class, 'storeCashPayment'])->name('Panel.StoreCashPayment');
+        Route::post('/store-cheque', [PaymentController::class, 'storeChequePayment'])->name('Panel.StoreChequePayment');
+    });
+
+
+
 });

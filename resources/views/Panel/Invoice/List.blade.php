@@ -12,7 +12,6 @@
                             <div class="col-md-3">
                                 <input type="text" name="search" class="form-control shadow-sm"
                                     placeholder="جستجو بر اساس  نام پزشک" value="{{ old('search', request('search')) }}">
-                                <!-- اضافه کردن سایه به فیلد ورودی -->
                             </div>
 
                             <div class="col-md-3">
@@ -45,7 +44,6 @@
                         <thead class="table-light">
                             <tr>
                                 <th>ردیف</th>
-
                                 <th>نام پزشک</th>
                                 <th>مبلغ کل(تومان)</th>
                                 <th>تاریخ ثبت</th>
@@ -66,27 +64,32 @@
                                         </span>
                                     </td>
                                     <td>
-                                        <form id="delete-form-{{ $invoice->id }}" method="POST"
-                                            action="{{ route('Panel.DeleteInvoice', $invoice->id) }}"
-                                            style="display: inline;">
-                                          @csrf
-                                          @method('DELETE')
-
-                                          <button type="button"
-                                                  class="btn btn-danger btn-sm px-2"
-                                                  title="{{ !$invoice->isDeletable() ? 'این صورتحساب قابل حذف نیست' : 'حذف' }}"
-                                                  {{ !$invoice->isDeletable() ? 'disabled' : '' }}
-                                                  onclick="confirmDelete('{{ $invoice->id }}')">
-                                              <i class="fa fa-trash text-light"></i>
-                                          </button>
-                                      </form>
-
+                                        <div class="dropdown">
+                                            <button class="btn btn-secondary btn-sm px-2" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                                ...
+                                            </button>
+                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                <li>
+                                                    <a class="dropdown-item" href="#" onclick="">
+                                                        <i class="fa fa-trash text-danger"></i> حذف
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a class="dropdown-item" href="{{ route('Panel.Payment.Create', $invoice->id) }}">
+                                                        <i class="fa fa-dollar-sign"></i> مالی
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a class="dropdown-item">
+                                                        <i class="fa fa-print"></i> چاپ
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
                                     </td>
                                 </tr>
                             @endforeach
                         </tbody>
-
-
                     </table>
                 </div>
             </div>
