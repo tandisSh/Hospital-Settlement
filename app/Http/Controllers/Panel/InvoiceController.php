@@ -189,7 +189,7 @@ class InvoiceController extends Controller
                 'operations.name as operation_name',
                 'surgeries.surgeried_at',
                 'surgeries.released_at',
-                'surgery_doctor.amount' // نام فیلد را تغییر ندادیم
+                'surgery_doctor.amount'
             )
             ->get();
 

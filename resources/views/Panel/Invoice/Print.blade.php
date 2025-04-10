@@ -13,7 +13,6 @@
             <div class="col-lg-10">
                 <div class="text-center mb-4">
                     <h2 class="fw-bold">صورتحساب پزشکی</h2>
-                    <p class="mb-1">بیمه تامین اجتماعی</p>
                 </div>
 
                 <div class="row mb-3">
@@ -76,6 +75,6 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
- 
+
 </body>
 </html>

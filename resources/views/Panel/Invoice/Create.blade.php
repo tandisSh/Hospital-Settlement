@@ -110,6 +110,7 @@
                                                         </td>
                                                         <td>
                                                             <span
+
                                                                 class="badge bg-secondary">{{ $surgery['role_name'] }}</span>
                                                         </td>
                                                         <td>{{ number_format($surgery['amount']) }}</td>
@@ -179,15 +180,15 @@
                     });
 
                     totalSelectedAmountElement.textContent = totalSelected.toLocaleString() + ' تومان ';
-                    totalAmountInput.value = totalSelected; // ذخیره مقدار در فیلد مخفی
-                    submitBtn.disabled = !anyChecked; // فعال/غیرفعال کردن دکمه پرداخت
+                    totalAmountInput.value = totalSelected;
+                    submitBtn.disabled = !anyChecked;
                 }
 
                 checkboxes.forEach(checkbox => {
                     checkbox.addEventListener('change', updateSelectedAmount);
                 });
 
-                updateSelectedAmount(); // مقدار اولیه را تنظیم می‌کند
+                updateSelectedAmount();
             });
         </script>
     @endpush

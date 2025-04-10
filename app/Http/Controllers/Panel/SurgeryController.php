@@ -76,8 +76,8 @@ class SurgeryController extends Controller
         $doctorRoles = DoctorRole::whereIn('id', [1, 2, 3])->pluck('quota', 'id');
 
         // Calculate shares based on surgery cost
-        $surgeonShare = $doctorRoles[2];
-        $anesthesiologistShare = $doctorRoles[1];
+        $surgeonShare = $doctorRoles[1];
+        $anesthesiologistShare = $doctorRoles[2];
         $consultantShare = $doctorRoles[3] ?? 0;
 
         // اگر مشاور نداشته باشیم، سهم مشاور به جراح اضافه می‌شود
@@ -141,10 +141,10 @@ class SurgeryController extends Controller
         $released_at = $surgery->released_at ? Carbon::parse($surgery->released_at)->format('Y/m/d') : null;
         $insurances = Insurance::all();
         $surgeons = Doctor::whereHas('roles', function($query) {
-            $query->where('doctor_role_id', 2); // جراح
+            $query->where('doctor_role_id', 1); // جراح
         })->get();
         $anesthesiologists = Doctor::whereHas('roles', function($query) {
-            $query->where('doctor_role_id', 1); // بیهوشی
+            $query->where('doctor_role_id', 2); // بیهوشی
         })->get();
         $consultants = Doctor::whereHas('roles', function($query) {
             $query->where('doctor_role_id', 3); // مشاور
@@ -192,8 +192,8 @@ class SurgeryController extends Controller
         $doctorRoles = DoctorRole::whereIn('id', [1, 2, 3])->pluck('quota', 'id');
 
         // Calculate shares based on surgery cost
-        $surgeonShare = $doctorRoles[2]; // سهم جراح
-        $anesthesiologistShare = $doctorRoles[1]; // سهم متخصص بیهوشی
+        $surgeonShare = $doctorRoles[1]; // سهم جراح
+        $anesthesiologistShare = $doctorRoles[2]; // سهم متخصص بیهوشی
         $consultantShare = $doctorRoles[3] ?? 0; // سهم مشاور
 
         // اگر مشاور نداشته باشیم، سهم مشاور به جراح اضافه می‌شود
@@ -204,11 +204,11 @@ class SurgeryController extends Controller
 
         // محاسبه مبلغ هر پزشک
         $doctors = [
-            2 => [
+            1 => [
                 'id' => $request->surgeon_doctor_id,
                 'amount' => ($surgeonShare / 100) * $totalCost
             ],
-            1 => [
+            2 => [
                 'id' => $request->anesthesiologist_doctor_id,
                 'amount' => ($anesthesiologistShare / 100) * $totalCost
             ]

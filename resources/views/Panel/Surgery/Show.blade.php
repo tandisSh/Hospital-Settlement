@@ -116,10 +116,10 @@
                                                 <td class="small">{{ $doctor->speciality->title }}</td>
                                                 <td class="small">
                                                     @switch($doctor->pivot->doctor_role_id)
-                                                        @case(2)
+                                                        @case(1)
                                                             <span class="badge bg-success">جراح</span>
                                                             @break
-                                                        @case(1)
+                                                        @case(2)
                                                             <span class="badge bg-info">متخصص بیهوشی</span>
                                                             @break
                                                         @case(3)
