@@ -1,14 +1,14 @@
 <!--begin::Head-->
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>AdminLTE 4 | Login Page</title>
+    <title>adminLTE 4 | Login Page</title>
     <!--begin::Primary Meta Tags-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="title" content="AdminLTE 4 | Login Page" />
+    <meta name="title" content="adminLTE 4 | Login Page" />
     <meta name="author" content="ColorlibHQ" />
     <meta
       name="description"
-      content="AdminLTE is a Free Bootstrap 5 Admin Dashboard, 30 example pages using Vanilla JS."
+      content="adminLTE is a Free Bootstrap 5 admin Dashboard, 30 example pages using Vanilla JS."
     />
     <meta
       name="keywords"
@@ -39,8 +39,8 @@
       crossorigin="anonymous"
     />
     <!--end::Third Party Plugin(Bootstrap Icons)-->
-    <!--begin::Required Plugin(AdminLTE)-->
+    <!--begin::Required Plugin(adminLTE)-->
     <link rel="stylesheet" href="{{ asset('assets/css/adminlte.css') }}" />
-    <!--end::Required Plugin(AdminLTE)-->
+    <!--end::Required Plugin(adminLTE)-->
   </head>
   <!--end::Head-->

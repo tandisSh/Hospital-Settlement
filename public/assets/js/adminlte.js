@@ -1,7 +1,7 @@
 /*!
- * AdminLTE v4.0.0-beta3 (https://adminlte.io)
+ * adminLTE v4.0.0-beta3 (https://adminlte.io)
  * Copyright 2014-2024 Colorlib <https://colorlib.com>
- * Licensed under MIT (https://github.com/ColorlibHQ/AdminLTE/blob/master/LICENSE)
+ * Licensed under MIT (https://github.com/ColorlibHQ/adminLTE/blob/master/LICENSE)
  */
 (function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
@@ -87,8 +87,8 @@
 
     /**
      * --------------------------------------------
-     * @file AdminLTE layout.ts
-     * @description Layout for AdminLTE.
+     * @file adminLTE layout.ts
+     * @description Layout for adminLTE.
      * @license MIT
      * --------------------------------------------
      */
@@ -128,8 +128,8 @@
 
     /**
      * --------------------------------------------
-     * @file AdminLTE push-menu.ts
-     * @description Push menu for AdminLTE.
+     * @file adminLTE push-menu.ts
+     * @description Push menu for adminLTE.
      * @license MIT
      * --------------------------------------------
      */
@@ -274,8 +274,8 @@
 
     /**
      * --------------------------------------------
-     * @file AdminLTE treeview.ts
-     * @description Treeview plugin for AdminLTE.
+     * @file adminLTE treeview.ts
+     * @description Treeview plugin for adminLTE.
      * @license MIT
      * --------------------------------------------
      */
@@ -374,8 +374,8 @@
 
     /**
      * --------------------------------------------
-     * @file AdminLTE direct-chat.ts
-     * @description Direct chat for AdminLTE.
+     * @file adminLTE direct-chat.ts
+     * @description Direct chat for adminLTE.
      * @license MIT
      * --------------------------------------------
      */
@@ -433,8 +433,8 @@
 
     /**
      * --------------------------------------------
-     * @file AdminLTE card-widget.ts
-     * @description Card widget for AdminLTE.
+     * @file adminLTE card-widget.ts
+     * @description Card widget for adminLTE.
      * @license MIT
      * --------------------------------------------
      */
@@ -623,8 +623,8 @@
 
     /**
      * --------------------------------------------
-     * @file AdminLTE fullscreen.ts
-     * @description Fullscreen plugin for AdminLTE.
+     * @file adminLTE fullscreen.ts
+     * @description Fullscreen plugin for adminLTE.
      * @license MIT
      * --------------------------------------------
      */

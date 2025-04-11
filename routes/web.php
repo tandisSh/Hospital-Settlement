@@ -1,82 +1,82 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController;
-use App\Http\Controllers\Panel\DoctorController;
-use App\Http\Controllers\Panel\DoctorRoleController;
-use App\Http\Controllers\Panel\InsuranceController;
-use App\Http\Controllers\Panel\OperationsController;
-use App\Http\Controllers\Panel\SpecialityController;
-use App\Http\Controllers\Panel\SurgeryController;
-use App\Http\Controllers\Panel\UserController;
-use App\Http\Controllers\Panel\InvoiceController;
-use App\Http\Controllers\Panel\PaymentController;
+use App\Http\Controllers\admin\DoctorController;
+use App\Http\Controllers\admin\DoctorRoleController;
+use App\Http\Controllers\admin\InsuranceController;
+use App\Http\Controllers\admin\OperationsController;
+use App\Http\Controllers\admin\SpecialityController;
+use App\Http\Controllers\admin\SurgeryController;
+use App\Http\Controllers\admin\UserController;
+use App\Http\Controllers\admin\InvoiceController;
+use App\Http\Controllers\admin\PaymentController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', function () {
-    return view('Panel.index');
-})->name('Panel');
+    return view('admin.index');
+})->name('admin');
 
 Route::namespace('Auth')->group(function () {
     Route::get('/Login', [AuthController::class, "LoginForm"])->name('login');
     Route::post('/Login', [AuthController::class, "Login"])->name('Login');
 });
 
-Route::middleware(['auth'])->prefix('Panel')->group(function () {
+Route::middleware(['auth'])->prefix('admin')->group(function () {
 
-    Route::prefix('User')->group(function () {
+    Route::prefix('user')->group(function () {
         Route::get('/profile', [UserController::class, 'showProfile'])->name('profile');
         Route::get('/profile/edit', [UserController::class, 'editProfile'])->name('editProfile');
         Route::post('/profile/update', [UserController::class, 'updateProfile'])->name('updateProfile');
     });
-    Route::prefix('Speciality')->group(function () {
+    Route::prefix('speciality')->group(function () {
         //list
-        Route::get('/List', [SpecialityController::class, "List"])->name('Show.Speciality');
+        Route::get('/list', [SpecialityController::class, "List"])->name('Show.Speciality');
         //show add page
-        Route::get('/Create', [SpecialityController::class, "Create"])->name('Speciality.Create.Form');
+        Route::get('/create', [SpecialityController::class, "Create"])->name('Speciality.Create.Form');
         //add Speciality
-        Route::post('/Create', [SpecialityController::class, "Store"])->name('Speciality.Store');
+        Route::post('/create', [SpecialityController::class, "Store"])->name('Speciality.Store');
         //Speciality edit page
-        Route::get('/Edit{id}', [SpecialityController::class, "Edit"])->name('Speciality.Edit');
+        Route::get('/edit{id}', [SpecialityController::class, "Edit"])->name('Speciality.Edit');
         //Speciality edit
-        Route::post('/Edit{id}', [SpecialityController::class, "Update"])->name('Update.Speciality');
+        Route::post('/edit{id}', [SpecialityController::class, "Update"])->name('Update.Speciality');
         //Speciality delete
-        Route::delete('/Delete{id}', [SpecialityController::class, "Delete"])->name('Delete.Speciality');
+        Route::delete('/delete{id}', [SpecialityController::class, "Delete"])->name('Delete.Speciality');
     });
-    Route::prefix('DoctorRole')->group(function () {
+    Route::prefix('doctor-role')->group(function () {
         //list
-        Route::get('/List', [DoctorRoleController::class, "List"])->name('Show.DoctorRole');
+        Route::get('/list', [DoctorRoleController::class, "List"])->name('Show.DoctorRole');
         //show add page
-        Route::get('/Create', [DoctorRoleController::class, "Create"])->name('DoctorRole.Create');
+        Route::get('/create', [DoctorRoleController::class, "Create"])->name('DoctorRole.Create');
         //add Speciality
-        Route::post('/Create', [DoctorRoleController::class, "Store"])->name('DoctorRole.Store');
+        Route::post('/create', [DoctorRoleController::class, "Store"])->name('DoctorRole.Store');
         //Speciality edit page
-        Route::get('/Edit{id}', [DoctorRoleController::class, "Edit"])->name('DoctorRole.Edit');
+        Route::get('/edit{id}', [DoctorRoleController::class, "Edit"])->name('DoctorRole.Edit');
         //Speciality edit
-        Route::post('/Edit{id}', [DoctorRoleController::class, "Update"])->name('DoctorRole.Update');
+        Route::post('/edit{id}', [DoctorRoleController::class, "Update"])->name('DoctorRole.Update');
         //Speciality delete
-        Route::delete('/Delete{id}', [DoctorRoleController::class, "Delete"])->name('DoctorRole.Delete');
+        Route::delete('/delete{id}', [DoctorRoleController::class, "Delete"])->name('DoctorRole.Delete');
     });
-    Route::prefix('Doctor')->group(function () {
-        Route::get('/List', [DoctorController::class, "List"])->name('Doctors');
-        Route::get('/Show/{id}', [DoctorController::class, "Show"])->name('Doctor.Show');
-        Route::get('/Create', [DoctorController::class, "Create"])->name('Doctor.Create');
-        Route::post('/Create', [DoctorController::class, "Store"])->name('Doctor.Store');
-        Route::get('/Edit{id}', [DoctorController::class, "Edit"])->name('Doctor.Edit');
-        Route::post('/Edit{id}', [DoctorController::class, "Update"])->name('Doctor.Update');
-        Route::delete('/Delete{id}', [DoctorController::class, "Delete"])->name('Doctor.Delete');
+    Route::prefix('doctor')->group(function () {
+        Route::get('/list', [DoctorController::class, "List"])->name('Doctors');
+        Route::get('/show/{id}', [DoctorController::class, "Show"])->name('Doctor.Show');
+        Route::get('/create', [DoctorController::class, "Create"])->name('Doctor.Create');
+        Route::post('/create', [DoctorController::class, "Store"])->name('Doctor.Store');
+        Route::get('/edit{id}', [DoctorController::class, "Edit"])->name('Doctor.Edit');
+        Route::post('/edit{id}', [DoctorController::class, "Update"])->name('Doctor.Update');
+        Route::delete('/delete{id}', [DoctorController::class, "Delete"])->name('Doctor.Delete');
     });
     Route::prefix('operations')->group(function () {
-        Route::get('/List', [OperationsController::class, 'List'])->name('operations');
+        Route::get('/list', [OperationsController::class, 'List'])->name('operations');
         Route::get('/create', [OperationsController::class, 'create'])->name('operations.create');
         Route::post('/store', [OperationsController::class, 'store'])->name('operations.store');
         Route::get('/edit/{id}', [OperationsController::class, 'edit'])->name('operations.edit');
         Route::post('/update/{id}', [OperationsController::class, 'update'])->name('operations.update');
         Route::delete('/delete/{id}', [OperationsController::class, 'delete'])->name('operations.delete');
     });
-    Route::prefix('Insurances')->group(function () {
-        Route::get('/List', [InsuranceController::class, 'List'])->name('insurances');
+    Route::prefix('insurances')->group(function () {
+        Route::get('/list', [InsuranceController::class, 'List'])->name('insurances');
         Route::get('/create', [InsuranceController::class, 'create'])->name('insurances.create');
         Route::post('/store', [InsuranceController::class, 'store'])->name('insurances.store');
         Route::get('/edit/{id}', [InsuranceController::class, 'edit'])->name('insurances.edit');
@@ -84,7 +84,7 @@ Route::middleware(['auth'])->prefix('Panel')->group(function () {
         Route::delete('/delete/{id}', [InsuranceController::class, 'delete'])->name('insurances.delete');
     });
     Route::prefix('surgery')->group(function () {
-        Route::get('/List', [SurgeryController::class, 'List'])->name('surgeries');
+        Route::get('/list', [SurgeryController::class, 'List'])->name('surgeries');
         Route::get('/show/{id}', [SurgeryController::class, 'show'])->name('surgery.show');
         Route::get('/create', [SurgeryController::class, 'create'])->name('surgery.create');
         Route::post('/store', [SurgeryController::class, 'store'])->name('surgery.store');
@@ -92,18 +92,18 @@ Route::middleware(['auth'])->prefix('Panel')->group(function () {
         Route::post('/update/{id}', [SurgeryController::class, 'update'])->name('surgery.update');
         Route::delete('/delete/{id}', [SurgeryController::class, 'delete'])->name('surgery.delete');
     });
-    Route::prefix('Invoice')->group(function () {
-        Route::get('/Invoice', [InvoiceController::class, 'index'])->name('Panel.InvoiceList');
-        Route::get('/pay', [InvoiceController::class, 'pay'])->name('Panel.InvoicePay');
-        Route::get('/search-pay', [InvoiceController::class, 'searchPay'])->name('Panel.SearchInvoicePay');
-        Route::post('/store', [InvoiceController::class, 'store'])->name('Panel.StoreInvoice');
-        Route::get('/invoice-list', [InvoiceController::class, 'invoiceList'])->name('Panel.Invoice.List');
-        Route::delete('/delete/{id}', [InvoiceController::class, 'destroy'])->name('Panel.DeleteInvoice');
-        Route::get('/invoices/print/{id}', [InvoiceController::class, 'print'])->name('Panel.InvoicePrint');
+    Route::prefix('invoice')->group(function () {
+        Route::get('/invoice', [InvoiceController::class, 'index'])->name('admin.InvoiceList');
+        Route::get('/pay', [InvoiceController::class, 'pay'])->name('admin.InvoicePay');
+        Route::get('/search-pay', [InvoiceController::class, 'searchPay'])->name('admin.SearchInvoicePay');
+        Route::post('/store', [InvoiceController::class, 'store'])->name('admin.StoreInvoice');
+        Route::get('/invoice-list', [InvoiceController::class, 'invoiceList'])->name('admin.Invoice.List');
+        Route::delete('/delete/{id}', [InvoiceController::class, 'destroy'])->name('admin.DeleteInvoice');
+        Route::get('/invoices/print/{id}', [InvoiceController::class, 'print'])->name('admin.InvoicePrint');
     });
-    Route::prefix('Payment')->group(function () {
-        Route::get('/create/{invoice}', [PaymentController::class, 'create'])->name('Panel.Payment.Create');
-        Route::post('/store-cash', [PaymentController::class, 'storeCashPayment'])->name('Panel.StoreCashPayment');
-        Route::post('/store-cheque', [PaymentController::class, 'storeChequePayment'])->name('Panel.StoreChequePayment');
+    Route::prefix('payment')->group(function () {
+        Route::get('/create/{invoice}', [PaymentController::class, 'create'])->name('admin.Payment.Create');
+        Route::post('/store-cash', [PaymentController::class, 'storeCashPayment'])->name('admin.StoreCashPayment');
+        Route::post('/store-cheque', [PaymentController::class, 'storeChequePayment'])->name('admin.StoreChequePayment');
     });
 });
