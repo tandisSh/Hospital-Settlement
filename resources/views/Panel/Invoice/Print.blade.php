@@ -10,12 +10,7 @@
 <body class="p-3">
     <div class="container-fluid">
         <div class="row justify-content-center">
-            <div class="col-lg-10">
-                <div class="text-center mb-4">
-                    <h2 class="fw-bold">صورتحساب پزشکی</h2>
-                </div>
-
-                <div class="row mb-3">
+                <div class="row mb-3 justify-content-center">
                     <div class="col-md-6">
                         <p class="mb-1"><strong>نام پزشک:</strong> {{ $invoice->doctor->name }}</p>
                     </div>

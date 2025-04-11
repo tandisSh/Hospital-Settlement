@@ -6,7 +6,6 @@
     <div class="container mt-5">
         <div class="col-md-10 mx-auto">
 
-            <!-- کارت وضعیت پرداخت -->
             <div class="card shadow-sm mb-4 border-primary">
                 <div class="card-body py-3">
                     <div class="row text-center">
@@ -28,7 +27,6 @@
                 </div>
             </div>
 
-            <!-- کارت اصلی فرم -->
             <div class="card shadow-lg rounded">
                 <div class="card-header bg-primary text-white">
                     <h5 class="mb-0">
@@ -43,17 +41,15 @@
                     </div>
                 @else
                     <div class="card-body">
-                        <!-- Tabs -->
                         <ul class="nav nav-pills mb-4" role="tablist">
                             <li class="nav-item">
                                 <a class="nav-link active" data-bs-toggle="pill" href="#cash" role="tab">پرداخت نقدی</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" data-bs-toggle="pill" href="#cheque" role="tab">پرداخت چکی</a>
+                                <a class="nav-link" data-bs-toggle="pill" href="#cheque" ro le="tab">پرداخت چکی</a>
                             </li>
                         </ul>
 
-                        <!-- Tab content -->
                         <div class="tab-content">
                             {{-- نقدی --}}
                             <div class="tab-pane fade show active" id="cash" role="tabpanel">

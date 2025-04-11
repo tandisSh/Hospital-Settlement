@@ -12,14 +12,20 @@
                     <div class="card-header bg-warning text-black text-center">
                         <h5 class="card-title mb-0">ویرایش جراحی</h5>
                     </div>
-
-                    <form action="{{ route('surgery.update', ['id' => $surgery->id]) }}" method="POST" class="needs-validation p-3" novalidate>
+                    @if ($errors->has('quota_error'))
+                        <div class="alert alert-danger text-center">
+                            {{ $errors->first('quota_error') }}
+                        </div>
+                    @endif
+                    <form action="{{ route('surgery.update', ['id' => $surgery->id]) }}" method="POST"
+                        class="needs-validation p-3" novalidate>
                         @csrf
                         <div class="card-body">
                             <div class="row g-2">
                                 <div class="col-12">
                                     <label class="form-label small">نام بیمار:</label>
-                                    <input name="patient_name" type="text" class="form-control form-control-sm @error('patient_name') is-invalid @enderror"
+                                    <input name="patient_name" type="text"
+                                        class="form-control form-control-sm @error('patient_name') is-invalid @enderror"
                                         value="{{ old('patient_name', $surgery->patient_name) }}" required />
                                     @error('patient_name')
                                         <div class="invalid-feedback">
@@ -30,8 +36,10 @@
 
                                 <div class="col-12">
                                     <label class="form-label small">کد ملی بیمار:</label>
-                                    <input name="patient_national_code" type="text" class="form-control form-control-sm @error('patient_national_code') is-invalid @enderror"
-                                        value="{{ old('patient_national_code', $surgery->patient_national_code) }}" required />
+                                    <input name="patient_national_code" type="text"
+                                        class="form-control form-control-sm @error('patient_national_code') is-invalid @enderror"
+                                        value="{{ old('patient_national_code', $surgery->patient_national_code) }}"
+                                        required />
                                     @error('patient_national_code')
                                         <div class="invalid-feedback">
                                             {{ $message }}
@@ -41,7 +49,8 @@
 
                                 <div class="col-6">
                                     <label class="form-label small">بیمه پایه:</label>
-                                    <select name="basic_insurance_id" class="form-control form-control-sm @error('basic_insurance_id') is-invalid @enderror"
+                                    <select name="basic_insurance_id"
+                                        class="form-control form-control-sm @error('basic_insurance_id') is-invalid @enderror"
                                         required>
                                         <option value="">انتخاب بیمه پایه</option>
                                         @foreach ($insurances as $insurance)
@@ -62,7 +71,8 @@
 
                                 <div class="col-6">
                                     <label class="form-label small">بیمه تکمیلی:</label>
-                                    <select name="supp_insurance_id" class="form-control form-control-sm @error('supp_insurance_id') is-invalid @enderror">
+                                    <select name="supp_insurance_id"
+                                        class="form-control form-control-sm @error('supp_insurance_id') is-invalid @enderror">
                                         <option value="">انتخاب بیمه تکمیلی</option>
                                         @foreach ($insurances as $insurance)
                                             @if ($insurance->type == 'supplementary')
@@ -82,7 +92,8 @@
 
                                 <div class="col-6">
                                     <label class="form-label small">شماره پرونده:</label>
-                                    <input name="document_number" type="number" class="form-control form-control-sm @error('document_number') is-invalid @enderror"
+                                    <input name="document_number" type="number"
+                                        class="form-control form-control-sm @error('document_number') is-invalid @enderror"
                                         value="{{ old('document_number', $surgery->document_number) }}" required />
                                     @error('document_number')
                                         <div class="invalid-feedback">
@@ -93,7 +104,8 @@
 
                                 <div class="col-12">
                                     <label class="form-label small">توضیحات:</label>
-                                    <textarea name="description" class="form-control form-control-sm @error('description') is-invalid @enderror" rows="3">{{ old('description', $surgery->description) }}</textarea>
+                                    <textarea name="description" class="form-control form-control-sm @error('description') is-invalid @enderror"
+                                        rows="3">{{ old('description', $surgery->description) }}</textarea>
                                     @error('description')
                                         <div class="invalid-feedback">
                                             {{ $message }}
@@ -108,7 +120,8 @@
                                         required>
                                         <option value="">انتخاب پزشک جراح</option>
                                         @foreach ($surgeons as $doctor)
-                                            <option value="{{ $doctor->id }}" {{ old('surgeon_doctor_id', $surgery->doctors->where('pivot.doctor_role_id', 2)->first()?->id) == $doctor->id ? 'selected' : '' }}>
+                                            <option value="{{ $doctor->id }}"
+                                                {{ old('surgeon_doctor_id', $surgery->doctors->where('pivot.doctor_role_id', 2)->first()?->id) == $doctor->id ? 'selected' : '' }}>
                                                 {{ $doctor->name }}
                                             </option>
                                         @endforeach
@@ -125,7 +138,8 @@
                                         required>
                                         <option value="">انتخاب پزشک بیهوشی</option>
                                         @foreach ($anesthesiologists as $doctor)
-                                            <option value="{{ $doctor->id }}" {{ old('anesthesiologist_doctor_id', $surgery->doctors->where('pivot.doctor_role_id', 1)->first()?->id) == $doctor->id ? 'selected' : '' }}>
+                                            <option value="{{ $doctor->id }}"
+                                                {{ old('anesthesiologist_doctor_id', $surgery->doctors->where('pivot.doctor_role_id', 1)->first()?->id) == $doctor->id ? 'selected' : '' }}>
                                                 {{ $doctor->name }}
                                             </option>
                                         @endforeach
@@ -141,7 +155,8 @@
                                         class="form-control form-control-sm @error('consultant_doctor_id') is-invalid @enderror">
                                         <option value="">انتخاب پزشک مشاور</option>
                                         @foreach ($consultants as $doctor)
-                                            <option value="{{ $doctor->id }}" {{ old('consultant_doctor_id', $surgery->doctors->where('pivot.doctor_role_id', 3)->first()?->id) == $doctor->id ? 'selected' : '' }}>
+                                            <option value="{{ $doctor->id }}"
+                                                {{ old('consultant_doctor_id', $surgery->doctors->where('pivot.doctor_role_id', 3)->first()?->id) == $doctor->id ? 'selected' : '' }}>
                                                 {{ $doctor->name }}
                                             </option>
                                         @endforeach
@@ -153,10 +168,11 @@
 
                                 <div class="col-12">
                                     <label class="form-label small">نوع جراحی:</label>
-                                    <select name="surgery_types[]" class="form-control form-control-sm select2 @error('surgery_types') is-invalid @enderror"
+                                    <select name="surgery_types[]"
+                                        class="form-control form-control-sm select2 @error('surgery_types') is-invalid @enderror"
                                         multiple="multiple" required>
                                         @foreach ($operations as $type)
-                                            <option value="{{ $type->id }}" data-price="{{ $type->price }}" 
+                                            <option value="{{ $type->id }}" data-price="{{ $type->price }}"
                                                 {{ in_array($type->id, old('surgery_types', $surgery->operations->pluck('id')->toArray())) ? 'selected' : '' }}>
                                                 {{ $type->name }} ({{ number_format($type->price) }} تومان)
                                             </option>

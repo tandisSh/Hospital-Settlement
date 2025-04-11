@@ -5,7 +5,6 @@
 @endsection
 
 @section('content')
-
     <div class="container-fluid mt-5">
         <div class="row justify-content-center">
             <div class="col-md-8 col-lg-6">
@@ -13,7 +12,11 @@
                     <div class="card-header bg-primary text-white text-center">
                         <h5 class="card-title mb-0">افزودن جراحی جدید</h5>
                     </div>
-
+                    @if ($errors->has('quota_error'))
+                        <div class="alert alert-danger text-center">
+                            {{ $errors->first('quota_error') }}
+                        </div>
+                    @endif
                     <form action="{{ route('surgery.store') }}" method="POST" class="needs-validation p-3" novalidate>
                         @csrf
                         <div class="card-body">
@@ -54,7 +57,8 @@
                                             <option value="">انتخاب بیمه پایه</option>
                                             @foreach ($insurances as $insurance)
                                                 @if ($insurance->type == 'basic')
-                                                    <option value="{{ $insurance->id }}" {{ old('basic_insurance_id') == $insurance->id ? 'selected' : '' }}>
+                                                    <option value="{{ $insurance->id }}"
+                                                        {{ old('basic_insurance_id') == $insurance->id ? 'selected' : '' }}>
                                                         {{ $insurance->name }}
                                                     </option>
                                                 @endif
@@ -71,7 +75,8 @@
                                             <option value="">انتخاب بیمه تکمیلی</option>
                                             @foreach ($insurances as $insurance)
                                                 @if ($insurance->type == 'supplementary')
-                                                    <option value="{{ $insurance->id }}" {{ old('supp_insurance_id') == $insurance->id ? 'selected' : '' }}>
+                                                    <option value="{{ $insurance->id }}"
+                                                        {{ old('supp_insurance_id') == $insurance->id ? 'selected' : '' }}>
                                                         {{ $insurance->name }}
                                                     </option>
                                                 @endif
@@ -95,7 +100,8 @@
                                             required>
                                             <option value="">انتخاب پزشک جراح</option>
                                             @foreach ($surgeons as $doctor)
-                                                <option value="{{ $doctor->id }}" {{ old('surgeon_doctor_id') == $doctor->id ? 'selected' : '' }}>
+                                                <option value="{{ $doctor->id }}"
+                                                    {{ old('surgeon_doctor_id') == $doctor->id ? 'selected' : '' }}>
                                                     {{ $doctor->name }}
                                                 </option>
                                             @endforeach
@@ -111,7 +117,8 @@
                                             required>
                                             <option value="">انتخاب پزشک بیهوشی</option>
                                             @foreach ($anesthesiologists as $doctor)
-                                                <option value="{{ $doctor->id }}" {{ old('anesthesiologist_doctor_id') == $doctor->id ? 'selected' : '' }}>
+                                                <option value="{{ $doctor->id }}"
+                                                    {{ old('anesthesiologist_doctor_id') == $doctor->id ? 'selected' : '' }}>
                                                     {{ $doctor->name }}
                                                 </option>
                                             @endforeach
@@ -126,7 +133,8 @@
                                             class="form-control form-control-sm @error('consultant_doctor_id') is-invalid @enderror">
                                             <option value="">انتخاب پزشک مشاور</option>
                                             @foreach ($consultants as $doctor)
-                                                <option value="{{ $doctor->id }}" {{ old('consultant_doctor_id') == $doctor->id ? 'selected' : '' }}>
+                                                <option value="{{ $doctor->id }}"
+                                                    {{ old('consultant_doctor_id') == $doctor->id ? 'selected' : '' }}>
                                                     {{ $doctor->name }}
                                                 </option>
                                             @endforeach
@@ -153,10 +161,12 @@
                                     </div>
                                     <div class="col-6">
                                         <label class="form-label small">نوع جراحی:</label>
-                                        <select name="surgery_types[]" class="form-control form-control-sm select2 @error('surgery_types') is-invalid @enderror"
+                                        <select name="surgery_types[]"
+                                            class="form-control form-control-sm select2 @error('surgery_types') is-invalid @enderror"
                                             multiple="multiple" required>
                                             @foreach ($operations as $type)
-                                                <option value="{{ $type->id }}" data-price="{{ $type->price }}" {{ in_array($type->id, old('surgery_types', [])) ? 'selected' : '' }}>
+                                                <option value="{{ $type->id }}" data-price="{{ $type->price }}"
+                                                    {{ in_array($type->id, old('surgery_types', [])) ? 'selected' : '' }}>
                                                     {{ $type->name }} ({{ number_format($type->price) }} تومان)
                                                 </option>
                                             @endforeach
@@ -188,8 +198,7 @@
                                     </div>
                                     <div class="col-12">
                                         <label class="form-label small">توضیحات:</label>
-                                        <textarea name="description"
-                                            class="form-control form-control-sm @error('description') is-invalid @enderror"
+                                        <textarea name="description" class="form-control form-control-sm @error('description') is-invalid @enderror"
                                             rows="3">{{ old('description') }}</textarea>
                                         @error('description')
                                             <div class="invalid-feedback">{{ $message }}</div>
@@ -209,25 +218,24 @@
     </div>
 
     @push('scripts')
-    <script src="{{ asset('assets/plugins/persian-datepicker/persian-date.min.js') }}"></script>
-    <script src="{{ asset('assets/plugins/persian-datepicker/persian-datepicker.min.js') }}"></script>
-    <script>
-        $(document).ready(function() {
-            $('.select2').select2({
-                theme: 'bootstrap-5',
-                width: '100%',
-                placeholder: 'نوع عمل‌های جراحی را انتخاب کنید',
-                allowClear: true,
-                dir: 'rtl'
+        <script src="{{ asset('assets/plugins/persian-datepicker/persian-date.min.js') }}"></script>
+        <script src="{{ asset('assets/plugins/persian-datepicker/persian-datepicker.min.js') }}"></script>
+        <script>
+            $(document).ready(function() {
+                $('.select2').select2({
+                    theme: 'bootstrap-5',
+                    width: '100%',
+                    placeholder: 'نوع عمل‌های جراحی را انتخاب کنید',
+                    allowClear: true,
+                    dir: 'rtl'
+                });
             });
-        });
 
-        $('.persian-date').persianDatepicker({
-            format: 'YYYY/MM/DD',
-            initialValue: false,
-            autoClose: true
-        });
-    </script>
+            $('.persian-date').persianDatepicker({
+                format: 'YYYY/MM/DD',
+                initialValue: false,
+                autoClose: true
+            });
+        </script>
     @endpush
-
 @endsection

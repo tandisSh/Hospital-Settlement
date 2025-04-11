@@ -24,13 +24,13 @@ class SurgeryController extends Controller
     public function create()
     {
         $insurances = Insurance::all();
-        $surgeons = Doctor::whereHas('roles', function($query) {
+        $surgeons = Doctor::whereHas('roles', function ($query) {
             $query->where('doctor_role_id', 1); // جراح
         })->get();
-        $anesthesiologists = Doctor::whereHas('roles', function($query) {
+        $anesthesiologists = Doctor::whereHas('roles', function ($query) {
             $query->where('doctor_role_id', 2); // بیهوشی
         })->get();
-        $consultants = Doctor::whereHas('roles', function($query) {
+        $consultants = Doctor::whereHas('roles', function ($query) {
             $query->where('doctor_role_id', 3); // مشاور
         })->get();
         $operations = Operation::all();
@@ -57,6 +57,15 @@ class SurgeryController extends Controller
             'description' => 'nullable|string',
         ]);
 
+        // چک کردن مجموع quotaها
+        $doctorRoles = DoctorRole::whereIn('id', [1, 2, 3])->pluck('quota', 'id');
+        $totalQuota = $doctorRoles->sum();
+
+        if ($totalQuota != 100) {
+            Alert::error('خطا!', 'مجموع سهم‌بندی پزشکان باید دقیقاً ۱۰۰ درصد باشد. لطفاً تنظیمات سهم‌بندی را بررسی کنید.');
+            return back()->withInput();
+        }
+
         $surgery = Surgery::create([
             'patient_name' => $request->patient_name,
             'patient_national_code' => $request->patient_national_code,
@@ -73,7 +82,7 @@ class SurgeryController extends Controller
         $totalCost = $operations->sum('price');
 
         // Get doctor roles with their shares
-        $doctorRoles = DoctorRole::whereIn('id', [1, 2, 3])->pluck('quota', 'id');
+        // $doctorRoles = DoctorRole::whereIn('id', [1, 2, 3])->pluck('quota', 'id');
 
         // Calculate shares based on surgery cost
         $surgeonShare = $doctorRoles[1];
@@ -140,13 +149,13 @@ class SurgeryController extends Controller
         $surgeried_at = Carbon::parse($surgery->surgeried_at)->format('Y/m/d');
         $released_at = $surgery->released_at ? Carbon::parse($surgery->released_at)->format('Y/m/d') : null;
         $insurances = Insurance::all();
-        $surgeons = Doctor::whereHas('roles', function($query) {
+        $surgeons = Doctor::whereHas('roles', function ($query) {
             $query->where('doctor_role_id', 1); // جراح
         })->get();
-        $anesthesiologists = Doctor::whereHas('roles', function($query) {
+        $anesthesiologists = Doctor::whereHas('roles', function ($query) {
             $query->where('doctor_role_id', 2); // بیهوشی
         })->get();
-        $consultants = Doctor::whereHas('roles', function($query) {
+        $consultants = Doctor::whereHas('roles', function ($query) {
             $query->where('doctor_role_id', 3); // مشاور
         })->get();
         $operations = Operation::all();
@@ -172,6 +181,15 @@ class SurgeryController extends Controller
             'surgeried_at' => 'required|date',
             'released_at' => 'required|date|after_or_equal:surgeried_at',
         ]);
+
+        // چک کردن مجموع quotaها
+        $doctorRoles = DoctorRole::whereIn('id', [1, 2, 3])->pluck('quota', 'id');
+        $totalQuota = $doctorRoles->sum();
+
+        if ($totalQuota != 100) {
+            Alert::error('خطا!', 'مجموع سهم‌بندی پزشکان باید دقیقاً ۱۰۰ درصد باشد. لطفاً تنظیمات سهم‌بندی را بررسی کنید.');
+            return back()->withInput();
+        }
 
         $surgery->update([
             'patient_name' => $request->patient_name,
