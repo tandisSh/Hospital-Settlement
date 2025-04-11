@@ -120,10 +120,10 @@
                                                             <span class="badge bg-success">جراح</span>
                                                             @break
                                                         @case(2)
-                                                            <span class="badge bg-info">متخصص بیهوشی</span>
+                                                            <span class="badge bg-success">متخصص بیهوشی</span>
                                                             @break
                                                         @case(3)
-                                                            <span class="badge bg-warning">مشاور</span>
+                                                            <span class="badge bg-success">مشاور</span>
                                                             @break
                                                     @endswitch
                                                 </td>

@@ -152,8 +152,8 @@
                     </div>
                 </div>
             @elseif(isset($doctor))
-                <div class="alert alert-info mb-0">
-                    <i class="fas fa-info-circle me-2"></i>
+                <div class="alert alert-warning mb-0">
+                    <i class="fas fa-warning me-2"></i>
                     هیچ عملیات جراحی برای این پزشک یافت نشد
                 </div>
             @endif

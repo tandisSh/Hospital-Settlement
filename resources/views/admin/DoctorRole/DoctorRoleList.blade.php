@@ -105,7 +105,7 @@
                                             <tr>
                                                 <td colspan="7" class="text-center py-4">
                                                     <div class="text-muted">
-                                                        <i class="fa fa-info-circle fa-2x mb-2"></i>
+                                                        <i class="fa fa-warning-circle fa-2x mb-2"></i>
                                                         <p class="mb-0">هیچ نقشی یافت نشد!</p>
                                                     </div>
                                                 </td>
