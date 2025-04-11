@@ -73,6 +73,7 @@
                                             <tr>
                                                 <th>انتخاب</th>
                                                 <th>ردیف</th>
+                                                <th>نام پزشک</th>
                                                 <th>نام بیمار</th>
                                                 <th>نوع عمل</th>
                                                 <th>نقش</th>
@@ -97,6 +98,7 @@
                                                             </div>
                                                         </td>
                                                         <td>{{ $index + 1 }}</td>
+                                                        <td>{{ $doctor->name }}</td>
                                                         <td>{{ $surgery['patient_name'] }}</td>
                                                         <td>
                                                             @if ($surgery['operations'] && count($surgery['operations']) > 0)

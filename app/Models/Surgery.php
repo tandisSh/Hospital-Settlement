@@ -37,19 +37,19 @@ class Surgery extends Model
     }
 
     public function doctors() {
-        return $this->belongsToMany(Doctor::class, 'surgery_doctor')
-            ->withPivot(['doctor_role_id', 'amount'])
+        return $this->belongsToMany(Doctor::class, 'doctor_surgery')
+            ->withPivot(['invoice_id','doctor_role_id', 'amount'])
             ->withTimestamps();
     }
 
     public function operations() {
-        return $this->belongsToMany(Operation::class, 'surgery_operation')
+        return $this->belongsToMany(Operation::class, 'operation_surgery')
             ->withPivot(['amount'])
             ->withTimestamps();
     }
     public function invoices()
     {
-        return $this->belongsToMany(Invoice::class, 'surgery_doctor', 'surgery_id', 'invoice_id')
+        return $this->belongsToMany(Invoice::class, 'doctor_surgery', 'surgery_id', 'invoice_id')
                     ->whereNotNull('invoice_id')
                     ->distinct();
     }

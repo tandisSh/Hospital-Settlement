@@ -23,7 +23,7 @@ class Invoice extends Model
     {
         return $this->belongsToMany(
             Surgery::class,
-            'surgery_doctor', // جدول واسط
+            'doctor_surgery', // جدول واسط
             'doctor_id', // FK در جدول واسط برای doctor
             'surgery_id', // FK در جدول واسط برای surgery
             'doctor_id', // FK محلی در invoices

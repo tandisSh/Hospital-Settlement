@@ -55,7 +55,7 @@ class Doctor extends Model
 
     public function surgeries()
     {
-        return $this->belongsToMany(Surgery::class, 'surgery_doctor')
+        return $this->belongsToMany(Surgery::class, 'doctor_surgery')
             ->withPivot(['doctor_role_id', 'amount'])
             ->withTimestamps();
     }

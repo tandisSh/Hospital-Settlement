@@ -75,19 +75,19 @@
                                     <thead class="bg-light">
                                         <tr>
                                             <th class="small">نام عمل</th>
-                                            <th class="small">هزینه</th>
+                                            <th class="small">هزینه (تومان)</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach($surgery->operations as $operation)
                                             <tr>
                                                 <td class="small">{{ $operation->name }}</td>
-                                                <td class="small">{{ number_format($operation->pivot->amount) }} تومان</td>
+                                                <td class="small">{{ number_format($operation->pivot->amount) }} </td>
                                             </tr>
                                         @endforeach
                                         <tr class="table-primary">
                                             <td class="fw-bold small">مجموع هزینه عمل‌ها</td>
-                                            <td class="fw-bold small">{{ number_format($surgery->operations->sum('pivot.amount')) }} تومان</td>
+                                            <td class="fw-bold small">{{ number_format($surgery->operations->sum('pivot.amount')) }} </td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -104,30 +104,34 @@
                                     <thead class="bg-light">
                                         <tr>
                                             <th class="small">نام پزشک</th>
-                                            <th class="small">تخصص</th>
                                             <th class="small">نقش</th>
-                                            <th class="small">سهم از جراحی</th>
+                                            <th class="small">سهم از جراحی (تومان)</th>
+                                            <th class="small">صورتحساب</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach($surgery->doctors as $doctor)
                                             <tr>
                                                 <td class="small">{{ $doctor->name }}</td>
-                                                <td class="small">{{ $doctor->speciality->title }}</td>
                                                 <td class="small">
                                                     @switch($doctor->pivot->doctor_role_id)
-                                                        @case(1)
-                                                            <span class="badge bg-success">جراح</span>
-                                                            @break
                                                         @case(2)
-                                                            <span class="badge bg-success">متخصص بیهوشی</span>
+                                                            <span class="small">جراح</span>
+                                                            @break
+                                                        @case(1)
+                                                            <span class="small">متخصص بیهوشی</span>
                                                             @break
                                                         @case(3)
-                                                            <span class="badge bg-success">مشاور</span>
+                                                            <span class="small">مشاور</span>
                                                             @break
                                                     @endswitch
                                                 </td>
-                                                <td class="small">{{ number_format($doctor->pivot->amount) }} تومان</td>
+                                                <td class="small">{{ number_format($doctor->pivot->amount) }} </td>
+                                                <td class="small">
+                                                    <span class="badge {{ $doctor->pivot->invoice_id ? 'bg-success' : 'bg-warning text-dark' }}">
+                                                        {{ $doctor->pivot->invoice_id ? 'ثبت شده' : 'ثبت نشده' }}
+                                                    </span>
+                                                </td>
                                             </tr>
                                         @endforeach
                                     </tbody>

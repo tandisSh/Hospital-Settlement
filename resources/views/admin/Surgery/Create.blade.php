@@ -1,10 +1,35 @@
 @extends('admin.layouts.master')
 
-@section('styles')
+{{-- @section('styles')
     <link rel="stylesheet" href="{{ asset('assets/plugins/persian-datepicker/persian-datepicker.min.css') }}">
-@endsection
+@endsection --}}
+
 
 @section('content')
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+
+<style>
+    .select2-container--default .select2-selection--multiple {
+        min-height: 38px;
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+        padding: 0.25rem;
+        direction: rtl;
+    }
+    .select2-selection__choice {
+        background-color: #0d6efd !important;
+        border: none !important;
+        color: #fff !important;
+        padding: 0 8px !important;
+        margin-left: 4px !important;
+        font-size: 0.85rem;
+    }
+    .select2-container--default .select2-results > .select2-results__options {
+        text-align: right;
+    }
+</style>
+
     <div class="container-fluid mt-5">
         <div class="row justify-content-center">
             <div class="col-md-8 col-lg-6">
@@ -159,7 +184,7 @@
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
-                                    <div class="col-6">
+                                    {{-- <div class="col-6">
                                         <label class="form-label small">نوع جراحی:</label>
                                         <select name="surgery_types[]"
                                             class="form-control form-control-sm select2 @error('surgery_types') is-invalid @enderror"
@@ -177,7 +202,28 @@
                                         @error('surgery_types.*')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
+                                    </div> --}}
+
+                                    <div class="col-6">
+                                        <label class="form-label small">نوع جراحی:</label>
+                                        <select name="surgery_types[]"
+                                                class="form-control form-control-sm select2-multiple @error('surgery_types') is-invalid @enderror"
+                                                multiple="multiple" required>
+                                            @foreach ($operations as $type)
+                                                <option value="{{ $type->id }}"
+                                                        {{ in_array($type->id, old('surgery_types', [])) ? 'selected' : '' }}>
+                                                    {{ $type->name }} ({{ number_format($type->price) }} تومان)
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        @error('surgery_types')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                        @error('surgery_types.*')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
                                     </div>
+
                                     <div class="col-6">
                                         <label class="form-label small">تاریخ جراحی:</label>
                                         <input name="surgeried_at" type="date"
@@ -217,7 +263,7 @@
         </div>
     </div>
 
-    @push('scripts')
+    {{-- @push('scripts')
         <script src="{{ asset('assets/plugins/persian-datepicker/persian-date.min.js') }}"></script>
         <script src="{{ asset('assets/plugins/persian-datepicker/persian-datepicker.min.js') }}"></script>
         <script>
@@ -237,5 +283,24 @@
                 autoClose: true
             });
         </script>
-    @endpush
+    @endpush --}}
+
+    <!-- Select2 -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/i18n/fa.js"></script>
+
+<script>
+  $(document).ready(function() {
+    $('.select2').select2({
+        placeholder: "نوع عمل‌های جراحی را انتخاب کنید",
+        language: "fa",
+        dir: "rtl",
+        width: '100%',
+        allowClear: true,
+        closeOnSelect: false,
+        theme: 'bootstrap-5' // اگر از بوت‌استرپ 5 استفاده می‌کنید
+    });
+});
+</script>
 @endsection

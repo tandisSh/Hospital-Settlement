@@ -41,7 +41,7 @@ class Operation extends Model
 
     public function surgeries()
     {
-        return $this->belongsToMany(Surgery::class, 'surgery_operation')
+        return $this->belongsToMany(Surgery::class, 'operation_surgery')
             ->withPivot(['amount'])
             ->withTimestamps();
     }

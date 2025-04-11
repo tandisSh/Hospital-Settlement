@@ -118,7 +118,7 @@ class SurgeryController extends Controller
 
         // اتصال پزشکان به جراحی با مقادیر محاسبه شده
         foreach ($doctors as $roleId => $doctor) {
-            DB::table('surgery_doctor')->insert([
+            DB::table('doctor_surgery')->insert([
                 'surgery_id' => $surgery->id,
                 'doctor_id' => $doctor['id'],
                 'doctor_role_id' => $roleId,
@@ -130,7 +130,7 @@ class SurgeryController extends Controller
 
         // ذخیره عمل‌های جراحی با مبالغ مربوطه
         foreach ($operations as $operation) {
-            DB::table('surgery_operation')->insert([
+            DB::table('operation_surgery')->insert([
                 'surgery_id' => $surgery->id,
                 'operation_id' => $operation->id,
                 'amount' => $operation->price,

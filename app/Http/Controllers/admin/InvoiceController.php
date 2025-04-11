@@ -50,7 +50,7 @@ class InvoiceController extends Controller
             $surgeries = Surgery::with(['doctors', 'operations'])
                 ->whereHas('doctors', function ($query) use ($request) {
                     $query->where('doctors.id', $request->doctor_id)
-                        ->whereNull('surgery_doctor.invoice_id');
+                        ->whereNull('doctor_surgery.invoice_id');
                 })
                 ->when($startDate, function ($query) use ($startDate) {
                     $query->where('surgeried_at', '>=', $startDate);
@@ -152,7 +152,7 @@ class InvoiceController extends Controller
             // حذف فاکتور
             $invoice->delete();
 
-            // بروزرسانی جدول `surgery_doctor` و ست کردن `invoice_id` به `null`
+            // بروزرسانی جدول `doctor_surgery` و ست کردن `invoice_id` به `null`
             foreach ($invoice->surgeries as $surgery) {
                 foreach ($surgery->doctors as $doctor) {
                     $doctor->pivot->update(['invoice_id' => null]);
@@ -178,18 +178,18 @@ class InvoiceController extends Controller
     {
         $invoice = Invoice::with('doctor')->findOrFail($id);
 
-        $surgeryData = DB::table('surgery_doctor')
-            ->where('surgery_doctor.invoice_id', $id)
-            ->join('surgeries', 'surgery_doctor.surgery_id', '=', 'surgeries.id')
-            ->join('surgery_operation', 'surgeries.id', '=', 'surgery_operation.surgery_id')
-            ->join('operations', 'surgery_operation.operation_id', '=', 'operations.id')
+        $surgeryData = DB::table('doctor_surgery')
+            ->where('doctor_surgery.invoice_id', $id)
+            ->join('surgeries', 'doctor_surgery.surgery_id', '=', 'surgeries.id')
+            ->join('operation_surgery', 'surgeries.id', '=', 'operation_surgery.surgery_id')
+            ->join('operations', 'operation_surgery.operation_id', '=', 'operations.id')
             ->select(
                 'surgeries.id as surgery_id',
                 'surgeries.patient_name',
                 'operations.name as operation_name',
                 'surgeries.surgeried_at',
                 'surgeries.released_at',
-                'surgery_doctor.amount'
+                'doctor_surgery.amount'
             )
             ->get();
 
