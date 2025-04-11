@@ -167,7 +167,7 @@ class InvoiceController extends Controller
     }
     public function print($id)
     {
-        $invoice = Invoice::with('doctor')->findOrFail($id);
+        $invoice = Invoice::with('doctor','payments')->findOrFail($id);
 
         $surgeryData = DB::table('doctor_surgery')
             ->where('doctor_surgery.invoice_id', $id)

@@ -75,12 +75,6 @@ class PaymentController extends Controller
             'description' => 'nullable|string|max:500'
         ]);
 
-        //     dd('validated');
-        // } catch (\Illuminate\Validation\ValidationException $e) {
-        //     dd($e->errors()); // تمام ارورهای دقیق رو نشون می‌ده
-        // }
-
-
         // شروع تراکنش دیتابیس
         DB::beginTransaction();
 
