@@ -59,8 +59,8 @@
                                     <td>{{ number_format($invoice->amount) }}</td>
                                     <td>{{ $invoice->getCreatedAtShamsi()->format('H:i - Y/m/d') }}</td>
                                     <td>
-                                        <span class="badge {{ $invoice->status ? 'bg-success' : 'bg-danger' }}">
-                                            {{ $invoice->status ? 'پرداخت شده' : 'پرداخت نشده' }}
+                                        <span class="badge {{ $invoice->status ? 'bg-success' : 'bg-warning' }}">
+                                            {{ $invoice->status ? 'پرداخت شده' : 'تسویه نشده' }}
                                         </span>
                                     </td>
                                     <td>
@@ -70,9 +70,13 @@
                                             </button>
                                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                                 <li>
-                                                    <a class="dropdown-item" href="#" onclick="">
-                                                        <i class="fa fa-trash text-danger"></i> حذف
-                                                    </a>
+                                                    <form action="{{ route('admin.DeleteInvoice', $invoice->id) }}" method="POST" class="d-inline">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <a href="#" class="dropdown-item" onclick="event.preventDefault(); if(confirm('آیا از حذف این فاکتور مطمئن هستید؟')) this.closest('form').submit();">
+                                                            <i class="fa fa-trash text-danger"></i> حذف
+                                                        </a>
+                                                    </form>
                                                 </li>
                                                 <li>
                                                     <a class="dropdown-item" href="{{ route('admin.Payment.Create', $invoice->id) }}">

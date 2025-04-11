@@ -6,6 +6,7 @@
     <div class="container mt-5">
         <div class="col-md-10 mx-auto">
 
+            <!-- خلاصه وضعیت پرداخت -->
             <div class="card shadow-sm mb-4 border-primary">
                 <div class="card-body py-3">
                     <div class="row text-center">
@@ -41,118 +42,86 @@
                     </div>
                 @else
                     <div class="card-body">
-                        <ul class="nav nav-pills mb-4" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link active" data-bs-toggle="pill" href="#cash" role="tab">پرداخت نقدی</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" data-bs-toggle="pill" href="#cheque" ro le="tab">پرداخت چکی</a>
-                            </li>
-                        </ul>
+                        <form method="POST" action="{{ route('admin.StorePayment') }}" enctype="multipart/form-data" id="paymentForm">
+                            @csrf
+                            <input type="hidden" name="invoice_id" value="{{ $invoice->id }}">
 
-                        <div class="tab-content">
-                            {{-- نقدی --}}
-                            <div class="tab-pane fade show active" id="cash" role="tabadmin">
-                                <form method="POST" action="{{ route('admin.StoreCashPayment') }}" enctype="multipart/form-data" id="cashForm">
-                                    @csrf
-                                    <input type="hidden" name="invoice_id" value="{{ $invoice->id }}">
-
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <label>شماره فیش</label>
-                                            <input type="text" name="receipt_number" class="form-control" required>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label>مبلغ (حداکثر {{ number_format($remainingAmount) }} تومان)</label>
-                                            <input type="number"
-                                                   name="amount"
-                                                   class="form-control"
-                                                   required
-                                                   min="1000"
-                                                   step="1000"
-                                                   max="{{ $remainingAmount }}"
-                                                   oninput="validateAmount(this, {{ $remainingAmount }})">
-                                            @error('amount')
-                                                <div class="text-danger mt-1">{{ $message }}</div>
-                                            @enderror
-                                        </div>
+                            <!-- انتخاب نوع پرداخت -->
+                            <div class="row mb-4">
+                                <div class="col-md-6 mx-auto">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="pay_type" id="cashPayment" value="cash" checked>
+                                        <label class="form-check-label" for="cashPayment">پرداخت نقدی</label>
                                     </div>
-
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <label>عکس رسید</label>
-                                            <input type="file" name="receipt" class="form-control" accept="image/*" required>
-                                            <small class="text-muted">فرمت‌های مجاز: jpg, png (حداکثر 2MB)</small>
-                                        </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="pay_type" id="chequePayment" value="cheque">
+                                        <label class="form-check-label" for="chequePayment">پرداخت چکی</label>
                                     </div>
-
-                                    <div class="mb-3">
-                                        <label>توضیحات</label>
-                                        <textarea name="description" class="form-control" rows="2"></textarea>
-                                    </div>
-
-                                    <div class="text-center">
-                                        <button type="submit" class="btn btn-success px-4">
-                                            <i class="fas fa-check-circle me-2"></i>
-                                            ثبت پرداخت نقدی
-                                        </button>
-                                    </div>
-                                </form>
+                                </div>
                             </div>
 
-                            {{-- چکی --}}
-                            <div class="tab-pane fade" id="cheque" role="tabadmin">
-                                <form method="POST" action="{{ route('admin.StoreChequePayment') }}" enctype="multipart/form-data" id="chequeForm">
-                                    @csrf
-                                    <input type="hidden" name="invoice_id" value="{{ $invoice->id }}">
-
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <label>شماره چک</label>
-                                            <input type="text" name="cheque_number" class="form-control" required>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label>مبلغ (حداکثر {{ number_format($remainingAmount) }} تومان)</label>
-                                            <input type="number"
-                                                   name="amount"
-                                                   class="form-control"
-                                                   required
-                                                   min="1000"
-                                                   step="1000"
-                                                   max="{{ $remainingAmount }}"
-                                                   oninput="validateAmount(this, {{ $remainingAmount }})">
-                                            @error('amount')
-                                                <div class="text-danger mt-1">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                    </div>
-
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <label>تاریخ چک</label>
-                                            <input type="text" name="due_date" class="form-control" data-jdp value="{{ \Morilog\Jalali\Jalalian::now()->format('Y/m/d') }}" required>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label>تصویر چک</label>
-                                            <input type="file" name="receipt" class="form-control" accept="image/*" required>
-                                            <small class="text-muted">فرمت‌های مجاز: jpg, png (حداکثر 2MB)</small>
-                                        </div>
-                                    </div>
-
-                                    <div class="mb-3">
-                                        <label>توضیحات</label>
-                                        <textarea name="cheque_description" class="form-control" rows="2"></textarea>
-                                    </div>
-
-                                    <div class="text-center">
-                                        <button type="submit" class="btn btn-info px-4">
-                                            <i class="fas fa-file-invoice me-2"></i>
-                                            ثبت پرداخت چکی
-                                        </button>
-                                    </div>
-                                </form>
+                            <!-- فیلدهای مشترک -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label>مبلغ (حداکثر {{ number_format($remainingAmount) }} تومان)</label>
+                                    <input type="number"
+                                           name="amount"
+                                           class="form-control"
+                                           required
+                                           min="1000"
+                                           step="1000"
+                                           max="{{ $remainingAmount }}"
+                                           oninput="validateAmount(this, {{ $remainingAmount }})">
+                                    @error('amount')
+                                        <div class="text-danger mt-1">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="col-md-6">
+                                    <label>تصویر رسید</label>
+                                    <input type="file" name="receipt" class="form-control" accept="image/*">
+                                    <small class="text-muted">فرمت‌های مجاز: jpg, png (حداکثر 2MB)</small>
+                                    @error('receipt')
+                                        <div class="text-danger mt-1">{{ $message }}</div>
+                                    @enderror
+                                </div>
                             </div>
-                        </div>
+
+                            <!-- فیلدهای نقدی -->
+                            <div id="cashFields">
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label>شماره فیش</label>
+                                        <input type="number" name="receipt_number" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- فیلدهای چکی -->
+                            <div id="chequeFields" style="display: none;">
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label>شماره چک</label>
+                                        <input type="number" name="cheque_number" class="form-control">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>تاریخ چک</label>
+                                        <input type="text" name="due_date" class="form-control" data-jdp value="{{ \Morilog\Jalali\Jalalian::now()->format('Y/m/d') }}">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label>توضیحات</label>
+                                <textarea name="description" class="form-control" rows="2"></textarea>
+                            </div>
+
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-success px-4">
+                                    <i class="fas fa-check-circle me-2"></i>
+                                    ثبت پرداخت
+                                </button>
+                            </div>
+                        </form>
                     </div>
                 @endif
             </div>
@@ -160,6 +129,16 @@
     </div>
 
     <script>
+        // نمایش/پنهان کردن فیلدها بر اساس نوع پرداخت
+        document.querySelectorAll('input[name="pay_type"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                document.getElementById('cashFields').style.display =
+                    this.value === 'cash' ? 'block' : 'none';
+                document.getElementById('chequeFields').style.display =
+                    this.value === 'cheque' ? 'block' : 'none';
+            });
+        });
+
         function validateAmount(input, maxAmount) {
             const value = parseInt(input.value);
 
@@ -179,17 +158,8 @@
             input.reportValidity();
         }
 
-        // اعتبارسنجی فرم‌ها قبل از ارسال
-        document.getElementById('cashForm')?.addEventListener('submit', function(e) {
-            const amountInput = this.querySelector('input[name="amount"]');
-            validateAmount(amountInput, {{ $remainingAmount }});
-
-            if (!this.checkValidity()) {
-                e.preventDefault();
-            }
-        });
-
-        document.getElementById('chequeForm')?.addEventListener('submit', function(e) {
+        // اعتبارسنجی فرم قبل از ارسال
+        document.getElementById('paymentForm')?.addEventListener('submit', function(e) {
             const amountInput = this.querySelector('input[name="amount"]');
             validateAmount(amountInput, {{ $remainingAmount }});
 

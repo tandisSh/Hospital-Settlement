@@ -6,6 +6,7 @@ use App\Models\Invoice;
 use App\Models\Payment;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class PaymentController extends Controller
@@ -28,108 +29,112 @@ class PaymentController extends Controller
             'remainingAmount' => $remainingAmount
         ]);
     }
-    public function storeCashPayment(Request $request)
+    public function storePayment(Request $request)
     {
         $invoice = Invoice::with('payments')->findOrFail($request->invoice_id);
 
+        // بررسی وضعیت صورتحساب
         if ($invoice->status == 1) {
-            return redirect()->route('admin.InvoiceList')->with('error', 'این صورتحساب تسویه شده است.');
+            Alert::error('خطا', 'این صورتحساب قبلاً تسویه شده است.');
+            return redirect()->route('admin.InvoiceList');
         }
 
+        // محاسبه مبلغ باقیمانده
         $totalPaid = $invoice->payments->sum('amount');
         $remainingAmount = $invoice->amount - $totalPaid;
 
-        $validated = $request->validate([
+        // اعتبارسنجی داده‌های ورودی
+         $validated = $request->validate([
+            'pay_type' => 'required|in:cash,cheque',
             'amount' => [
                 'required',
                 'numeric',
                 'min:1000',
                 function ($attribute, $value, $fail) use ($remainingAmount) {
                     if ($value > $remainingAmount) {
-                        $fail('مبلغ پرداختی نمی‌تواند بیشتر از '.number_format($remainingAmount).' تومان باشد.');
+                        $fail('مبلغ پرداختی نمی‌تواند بیشتر از ' . number_format($remainingAmount) . ' تومان باشد.');
                     }
                 }
             ],
-            'receipt_number' => 'required|string|max:255',
-            'receipt' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+            'receipt_number' => 'required_if:pay_type,cash|string|max:255|nullable',
+            'cheque_number' => 'required_if:pay_type,cheque|nullable|string|max:255',
+
+            'due_date' => [
+                'required_if:pay_type,cheque',
+                function ($attribute, $value, $fail) use ($request) {
+                    if ($request->pay_type === 'cheque') {
+                        try {
+                            \Morilog\Jalali\Jalalian::fromFormat('Y/m/d', $value);
+                        } catch (\Exception $e) {
+                            $fail('فرمت تاریخ معتبر نیست. لطفا تاریخ را به صورت شمسی وارد کنید (مثال: 1402/05/15)');
+                        }
+                    }
+                }
+            ],
+            'receipt' => 'required_if:pay_type,cheque|image|mimes:jpeg,png,jpg|max:2048',
             'description' => 'nullable|string|max:500'
         ]);
 
-        $payment = Payment::create([
-            'invoice_id' => $invoice->id,
-            'amount' => $request->amount,
-            'pay_type' => 'cash',
-            'receipt_number' => $request->receipt_number,
-            'date' => now(),
-            'due_date' => null,
-            'receipt' => $this->uploadReceipt($request->file('receipt')),
-            'description' => $request->description
-        ]);
+        //     dd('validated');
+        // } catch (\Illuminate\Validation\ValidationException $e) {
+        //     dd($e->errors()); // تمام ارورهای دقیق رو نشون می‌ده
+        // }
 
-        $this->updateInvoiceStatus($invoice);
 
-        Alert::success('موفق!', 'پرداخت نقدی با موفقیت ثبت شد.');
-        return redirect()->route('admin.InvoiceList')
-               ->with('success', 'پرداخت نقدی با موفقیت ثبت شد.');
-    }
+        // شروع تراکنش دیتابیس
+        DB::beginTransaction();
 
-    public function storeChequePayment(Request $request)
-    {
-        $invoice = Invoice::with('payments')->findOrFail($request->invoice_id);
+        try {
+            // آماده سازی داده‌های پرداخت
+            $paymentData = [
+                'invoice_id' => $invoice->id,
+                'amount' => $request->amount,
+                'pay_type' => $request->pay_type,
+                'description' => $request->description,
+                'date' => now(),
+                'receipt' => $request->hasFile('receipt')
+                    ? $this->uploadReceipt($request->file('receipt'))
+                    : null
+            ];
 
-        if ($invoice->status == 1) {
-            return redirect()->route('admin.InvoiceList')->with('error', 'این صورتحساب تسویه شده است.');
+            // پرداخت نقدی
+            if ($request->pay_type === 'cash') {
+                $paymentData['receipt_number'] = $request->receipt_number;
+                $paymentData['cheque_number'] = null;
+                $paymentData['due_date'] = null;
+            }
+            // پرداخت چکی
+            else {
+                $paymentData['cheque_number'] = $request->cheque_number;
+                $paymentData['receipt_number'] = null;
+
+                // تبدیل تاریخ شمسی به میلادی
+                $jDate = \Morilog\Jalali\Jalalian::fromFormat('Y/m/d', $request->due_date);
+                $paymentData['due_date'] = $jDate->toCarbon()->toDateString();
+            }
+
+            // ایجاد رکورد پرداخت
+            $payment = Payment::create($paymentData);
+
+            // به‌روزرسانی وضعیت صورتحساب
+            $this->updateInvoiceStatus($invoice);
+
+            // کامیت تراکنش
+            DB::commit();
+
+            $message = $request->pay_type === 'cash'
+                ? 'پرداخت نقدی با موفقیت ثبت شد.'
+                : 'پرداخت چکی با موفقیت ثبت شد.';
+
+            Alert::success('موفقیت', $message);
+            return redirect()->route('admin.InvoiceList');
+        } catch (\Exception $e) {
+            // برگشت تراکنش در صورت خطا
+            DB::rollBack();
+
+            Alert::error('خطا', 'خطایی در ثبت پرداخت رخ داد: ' . $e->getMessage());
+            return back()->withInput();
         }
-
-        $totalPaid = $invoice->payments->sum('amount');
-        $remainingAmount = $invoice->amount - $totalPaid;
-
-        $validated = $request->validate([
-            'amount' => [
-                'required',
-                'numeric',
-                'min:1000',
-                function ($attribute, $value, $fail) use ($remainingAmount) {
-                    if ($value > $remainingAmount) {
-                        $fail('مبلغ پرداختی نمی‌تواند بیشتر از '.number_format($remainingAmount).' تومان باشد.');
-                    }
-                }
-            ],
-            'cheque_number' => 'required|string|max:255',
-            'due_date' => [
-                'required',
-                function ($attribute, $value, $fail) {
-                    try {
-                        \Morilog\Jalali\Jalalian::fromFormat('Y/m/d', $value);
-                    } catch (\Exception $e) {
-                        $fail('فرمت تاریخ معتبر نیست. لطفا تاریخ را به صورت شمسی وارد کنید (مثال: 1402/05/15)');
-                    }
-                }
-            ],
-            'receipt' => 'required|image|mimes:jpeg,png,jpg|max:2048',
-            'cheque_description' => 'nullable|string|max:500'
-        ]);
-
-        // تبدیل تاریخ شمسی به میلادی
-        $jDate = \Morilog\Jalali\Jalalian::fromFormat('Y/m/d', $request->due_date);
-        $gregorianDate = $jDate->toCarbon()->toDateString();
-
-        $payment = Payment::create([
-            'invoice_id' => $invoice->id,
-            'amount' => $request->amount,
-            'pay_type' => 'cheque',
-            'cheque_number' => $request->cheque_number,
-            'date' => now(),
-            'due_date' => $gregorianDate, // ذخیره به صورت میلادی
-            'receipt' => $this->uploadReceipt($request->file('receipt')),
-            'description' => $request->cheque_description
-        ]);
-
-        $this->updateInvoiceStatus($invoice);
-
-        Alert::success('موفق!', 'پرداخت چکی با موفقیت ثبت شد.');
-        return redirect()->route('admin.InvoiceList')
-               ->with('success', 'پرداخت چکی با موفقیت ثبت شد.');
     }
     private function updateInvoiceStatus(Invoice $invoice)
     {
@@ -147,7 +152,7 @@ class PaymentController extends Controller
     }
     private function uploadReceipt($file)
     {
-        $fileName = 'receipt_'.time().'_'.uniqid().'.'.$file->getClientOriginalExtension();
+        $fileName = 'receipt_' . time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
         $file->move(public_path('uploads/receipts'), $fileName);
         return $fileName;
     }

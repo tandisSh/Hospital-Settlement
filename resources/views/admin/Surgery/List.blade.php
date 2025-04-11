@@ -32,14 +32,6 @@
                                                 <td class="text-center">{{ $surgery->patient_name }}</td>
                                                 <td class="text-center">{{ $surgery->patient_national_code }}</td>
                                                 <td class="text-center">{{ $surgery->getSurgeriedAtShamsi()->format('Y/m/d') }}</td>
-                                                {{-- <td class="text-center">
-                                                    @foreach($surgery->doctors->take(2) as $doctor)
-                                                        <span class="badge bg-info">{{ $doctor->name }}</span>
-                                                    @endforeach
-                                                    @if($surgery->doctors->count() > 2)
-                                                        <span class="badge bg-secondary">+{{ $surgery->doctors->count() - 2 }}</span>
-                                                    @endif
-                                                </td> --}}
                                                 <td class="text-center">{{ $surgery->getCreatedAtShamsi()->format('H:i - Y/m/d') }}</td>
                                                 <td class="text-center">
                                                     <div class="d-flex gap-2 justify-content-center">

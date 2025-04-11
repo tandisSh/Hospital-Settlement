@@ -139,7 +139,7 @@
                                                         <button type="submit" class="btn btn-success" id="submit-btn"
                                                             disabled>
                                                             <i class="fas fa-file-invoice-dollar me-2"></i>
-                                                            پرداخت صورتحساب
+                                                            ثبت صورتحساب
                                                         </button>
                                                     </td>
                                                 </tr>
@@ -156,7 +156,7 @@
             @elseif(isset($doctor))
                 <div class="alert alert-warning mb-0">
                     <i class="fas fa-warning me-2"></i>
-                    هیچ عملیات جراحی برای این پزشک یافت نشد
+                    هیچ عمل جراحی برای این پزشک یافت نشد
                 </div>
             @endif
         </div>

@@ -103,7 +103,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     });
     Route::prefix('payment')->group(function () {
         Route::get('/create/{invoice}', [PaymentController::class, 'create'])->name('admin.Payment.Create');
-        Route::post('/store-cash', [PaymentController::class, 'storeCashPayment'])->name('admin.StoreCashPayment');
-        Route::post('/store-cheque', [PaymentController::class, 'storeChequePayment'])->name('admin.StoreChequePayment');
+
+        Route::post('/store', [PaymentController::class, 'storePayment'])->name('admin.StorePayment');
     });
 });

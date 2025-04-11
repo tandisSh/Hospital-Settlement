@@ -135,41 +135,32 @@ class InvoiceController extends Controller
     }
     public function destroy($invoiceId)
     {
-        // یافتن فاکتور با توجه به ID
         $invoice = Invoice::findOrFail($invoiceId);
-
-        // بررسی اینکه آیا فاکتور قابل حذف است یا نه
-        if ($invoice->status != 0) {
-            // در صورتی که وضعیت فاکتور قابل حذف نباشد
-            Alert::error('خطا', 'این فاکتور قابل حذف نیست');
-            return redirect()->back();
-        }
 
         // شروع تراکنش برای اطمینان از عدم وقوع خطا
         DB::beginTransaction();
 
         try {
-            // حذف فاکتور
-            $invoice->delete();
+            // 1. حذف پرداخت‌های مرتبط با این صورتحساب
+            $invoice->payments()->delete();
 
-            // بروزرسانی جدول `doctor_surgery` و ست کردن `invoice_id` به `null`
+            // 2. بروزرسانی جدول `doctor_surgery` و ست کردن `invoice_id` به `null`
             foreach ($invoice->surgeries as $surgery) {
                 foreach ($surgery->doctors as $doctor) {
                     $doctor->pivot->update(['invoice_id' => null]);
                 }
             }
 
+            // 3. حذف فاکتور
+            $invoice->delete();
+
             // تایید تراکنش
             DB::commit();
 
-            // نمایش پیام موفقیت
-            Alert::success('موفقیت', 'فاکتور با موفقیت حذف شد');
+            Alert::success('موفقیت', 'فاکتور و پرداخت‌های مرتبط با موفقیت حذف شدند');
             return redirect()->route('admin.Invoice.List');
         } catch (\Exception $e) {
-            // در صورتی که خطایی رخ دهد، تراکنش برگشت می‌خورد
             DB::rollBack();
-
-            // نمایش پیام خطا
             Alert::error('خطا', 'خطایی در حذف فاکتور رخ داده است: ' . $e->getMessage());
             return redirect()->back();
         }
