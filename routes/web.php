@@ -97,7 +97,6 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
         Route::get('/pay', [InvoiceController::class, 'pay'])->name('admin.InvoicePay');
         Route::get('/search-pay', [InvoiceController::class, 'searchPay'])->name('admin.SearchInvoicePay');
         Route::post('/store', [InvoiceController::class, 'store'])->name('admin.StoreInvoice');
-        Route::get('/invoice-list', [InvoiceController::class, 'invoiceList'])->name('admin.Invoice.List');
         Route::delete('/delete/{id}', [InvoiceController::class, 'destroy'])->name('admin.DeleteInvoice');
         Route::get('/invoices/print/{id}', [InvoiceController::class, 'print'])->name('admin.InvoicePrint');
     });

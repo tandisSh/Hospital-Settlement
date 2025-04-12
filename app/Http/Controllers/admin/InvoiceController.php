@@ -16,16 +16,10 @@ use Illuminate\Support\Facades\DB;
 class InvoiceController extends Controller
 {
 
-    public function invoiceList()
-    {
-        $user = Auth::user();
-        $invoices = Invoice::orderBy('created_at', 'desc')->get();
-        return view('admin.Invoice.List', compact('invoices', 'user'));
-    }
     public function index()
     {
         $user = Auth::user();
-        $invoices = Invoice::all();
+        $invoices = Invoice::orderBy('created_at', 'desc')->get();
         return view('admin.Invoice.List', compact('invoices', 'user'));
     }
     public function pay()
@@ -131,7 +125,7 @@ class InvoiceController extends Controller
         }
 
         Alert::success('موفقیت', 'صورتحساب با موفقیت ایجاد شد');
-        return redirect()->route('admin.Invoice.List');
+        return redirect()->route('admin.InvoiceList');
     }
     public function destroy($invoiceId)
     {
@@ -158,7 +152,7 @@ class InvoiceController extends Controller
             DB::commit();
 
             Alert::success('موفقیت', 'فاکتور و پرداخت‌های مرتبط با موفقیت حذف شدند');
-            return redirect()->route('admin.Invoice.List');
+            return redirect()->route('admin.InvoiceList');
         } catch (\Exception $e) {
             DB::rollBack();
             Alert::error('خطا', 'خطایی در حذف فاکتور رخ داده است: ' . $e->getMessage());

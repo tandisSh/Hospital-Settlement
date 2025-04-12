@@ -16,7 +16,8 @@ class PaymentController extends Controller
         $invoice = Invoice::with('doctor', 'payments')->findOrFail($invoiceId);
 
         if ($invoice->status == 1) {
-            return redirect()->route('admin.InvoiceList')->with('error', 'این صورتحساب تسویه شده است.');
+            Alert::error('خطا', 'این صورتحساب قبلاً تسویه شده است.');
+            return redirect()->route('admin.InvoiceList');
         }
 
         $totalPaid = $invoice->payments->sum('amount');

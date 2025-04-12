@@ -83,10 +83,13 @@
                 </table>
             </div>
             <div class="row mt-3">
-                <div class="col-md-6">
-                    <p><strong>جمع کل:</strong> {{ number_format($surgeryData->sum('amount')) }} ریال</p>
+                <div class="col-md-4">
+                    <p><strong> مبلغ کل صورتحساب:</strong> {{ number_format($surgeryData->sum('amount')) }} ریال</p>
                 </div>
-                <div class="col-md-6 text-end">
+                <div class="col-md-4">
+                    <p><strong> مبلغ  پرداخت شده:</strong> {{ number_format($item->sum('amount')) }} ریال</p>
+                </div>
+                <div class="col-md-4 text-end">
                     <p><strong>تاریخ چاپ:</strong> {{ \Morilog\Jalali\Jalalian::now()->format('Y/m/d') }}</p>
                 </div>
             </div>
