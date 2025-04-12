@@ -46,6 +46,7 @@
                                 <th>ردیف</th>
                                 <th>نام پزشک</th>
                                 <th>مبلغ کل(تومان)</th>
+                                <th>مبلغ باقی مانده(تومان)</th>
                                 <th>تاریخ ثبت</th>
                                 <th>وضعیت</th>
                                 <th style="width: 150px;">عملیات</th>
@@ -57,6 +58,7 @@
                                     <td>{{ $index + 1 }}</td>
                                     <td>{{ $invoice->doctor->name }}</td>
                                     <td>{{ number_format($invoice->amount) }}</td>
+                                    <td>{{ number_format($invoice->amount - $invoice->payments->sum('amount')) }}</td>
                                     <td>{{ $invoice->getCreatedAtShamsi()->format('H:i - Y/m/d') }}</td>
                                     <td>
                                         <span class="badge {{ $invoice->status ? 'bg-success' : 'bg-warning' }}">
@@ -85,6 +87,12 @@
                                                     <a class="dropdown-item"
                                                         href="{{ route('admin.Payment.Create', $invoice->id) }}">
                                                         <i class="fa fa-dollar-sign"></i> مالی
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('admin.Payment.show', $invoice->id) }}">
+                                                        <i class="fa fa-dollar-sign"></i> گزارش پرداخت ها
                                                     </a>
                                                 </li>
                                                 <li>

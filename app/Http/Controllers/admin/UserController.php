@@ -17,13 +17,11 @@ class UserController extends Controller
         $user = Auth::user();
         return view('admin.User.profile', compact('user'));
     }
-
     public function editProfile()
     {
         $user = Auth::user();
         return view('admin.User.editUser', compact('user'));
     }
-
     public function updateProfile(Request $request)
     {
         $user = Auth::user();

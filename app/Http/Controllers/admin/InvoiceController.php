@@ -19,7 +19,7 @@ class InvoiceController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $invoices = Invoice::orderBy('created_at', 'desc')->get();
+        $invoices = Invoice::with('payments')->orderBy('created_at', 'desc')->get();
         return view('admin.Invoice.List', compact('invoices', 'user'));
     }
     public function pay()

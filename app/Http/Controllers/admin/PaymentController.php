@@ -45,7 +45,7 @@ class PaymentController extends Controller
         $remainingAmount = $invoice->amount - $totalPaid;
 
         // اعتبارسنجی داده‌های ورودی
-         $validated = $request->validate([
+        $validated = $request->validate([
             'pay_type' => 'required|in:cash,cheque',
             'amount' => [
                 'required',
@@ -150,5 +150,24 @@ class PaymentController extends Controller
         $fileName = 'receipt_' . time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
         $file->move(public_path('uploads/receipts'), $fileName);
         return $fileName;
+    }
+    public function destroy($id)
+    {
+        $payment = Payment::findOrFail($id);
+        $invoiceId = $payment->invoice_id;
+
+        $payment->delete();
+
+        // آیدی رو به مدل تبدیل می‌کنیم
+        $invoice = Invoice::findOrFail($invoiceId);
+        $this->updateInvoiceStatus($invoice);
+
+        return redirect()->route('admin.Payment.show', ['id' => $invoiceId])
+            ->with('success', 'پرداخت با موفقیت حذف شد.');
+    }
+    public function show($id)
+    {
+        $invoice = Invoice::with('payments')->findOrFail($id);
+        return view('admin.Payment.print', compact("invoice"));
     }
 }

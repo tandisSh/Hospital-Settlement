@@ -102,7 +102,8 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     });
     Route::prefix('payment')->group(function () {
         Route::get('/create/{invoice}', [PaymentController::class, 'create'])->name('admin.Payment.Create');
-
         Route::post('/store', [PaymentController::class, 'storePayment'])->name('admin.StorePayment');
+        Route::delete('/destroy/{id}', [PaymentController::class, 'destroy'])->name('admin.DestroyPayment');
+        Route::get('/show/{id}', [PaymentController::class, 'show'])->name('admin.Payment.show');
     });
 });
