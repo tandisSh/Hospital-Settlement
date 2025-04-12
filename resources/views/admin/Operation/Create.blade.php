@@ -15,7 +15,8 @@
                             <div class="row g-2">
                                 <div class="col-12">
                                     <label class="form-label small">نام عمل:</label>
-                                    <input name="name" type="text" class="form-control form-control-sm @error('name') is-invalid @enderror"
+                                    <input name="name" type="text"
+                                        class="form-control form-control-sm @error('name') is-invalid @enderror"
                                         value="{{ old('name') }}" required />
                                     @error('name')
                                         <div class="invalid-feedback">
@@ -26,7 +27,8 @@
 
                                 <div class="col-6">
                                     <label class="form-label small">مبلغ (تومان):</label>
-                                    <input name="price" type="number" class="form-control form-control-sm @error('price') is-invalid @enderror"
+                                    <input name="price" type="number"
+                                        class="form-control form-control-sm @error('price') is-invalid @enderror"
                                         value="{{ old('price') }}" required />
                                     @error('price')
                                         <div class="invalid-feedback">
@@ -37,9 +39,12 @@
 
                                 <div class="col-6">
                                     <label class="form-label small">وضعیت:</label>
-                                    <select name="status" class="form-control form-control-sm @error('status') is-invalid @enderror" required>
-                                        <option value="1" {{ old('status', '1') == '1' ? 'selected' : '' }}>فعال</option>
-                                        <option value="0" {{ old('status', '1') == '0' ? 'selected' : '' }}>غیرفعال</option>
+                                    <select name="status"
+                                        class="form-control form-control-sm @error('status') is-invalid @enderror" required>
+                                        <option value="1" {{ old('status', '1') == '1' ? 'selected' : '' }}>فعال
+                                        </option>
+                                        <option value="0" {{ old('status', '1') == '0' ? 'selected' : '' }}>غیرفعال
+                                        </option>
                                     </select>
                                     @error('status')
                                         <div class="invalid-feedback">

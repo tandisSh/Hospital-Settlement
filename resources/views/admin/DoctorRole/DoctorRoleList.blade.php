@@ -12,17 +12,19 @@
                                 {{-- <a href="{{ route('DoctorRole.Create') }}" class="btn btn-primary btn-sm px-3">افزودن نقش جدید +</a> --}}
                             </div>
 
-                            @if(session('success'))
+                            @if (session('success'))
                                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                                     {{ session('success') }}
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                        aria-label="Close"></button>
                                 </div>
                             @endif
 
-                            @if(session('error'))
+                            @if (session('error'))
                                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
                                     {{ session('error') }}
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                        aria-label="Close"></button>
                                 </div>
                             @endif
 
@@ -43,7 +45,7 @@
                                     <tbody>
                                         @foreach ($roles as $index => $role)
                                             <tr>
-                                                <td class="text-center align-middle">{{  $index + 1}}</td>
+                                                <td class="text-center align-middle">{{ $index + 1 }}</td>
                                                 <td class="text-center align-middle">{{ $role->id }}</td>
                                                 <td class="text-center align-middle">{{ $role->title }}</td>
                                                 <td class="text-center align-middle d-none d-md-table-cell">
@@ -59,7 +61,8 @@
                                                         {{ $role->status ? 'فعال' : 'غیرفعال' }}
                                                     </span>
                                                 </td>
-                                                <td class="text-center align-middle">{{ $role->getCreatedAtShamsi()->format('H:i - Y/m/d') }}</td>
+                                                <td class="text-center align-middle">
+                                                    {{ $role->getCreatedAtShamsi()->format('H:i - Y/m/d') }}</td>
                                                 <td class="text-center align-middle">
                                                     <div class="d-flex gap-2 justify-content-center">
                                                         <a href="{{ route('DoctorRole.Edit', $role->id) }}"
@@ -123,23 +126,23 @@
     </div>
 
     @push('scripts')
-    <script>
-        // Search functionality
-        document.getElementById('searchInput').addEventListener('keyup', function() {
-            let searchText = this.value.toLowerCase();
-            let tableRows = document.querySelectorAll('tbody tr');
+        <script>
+            // Search functionality
+            document.getElementById('searchInput').addEventListener('keyup', function() {
+                let searchText = this.value.toLowerCase();
+                let tableRows = document.querySelectorAll('tbody tr');
 
-            tableRows.forEach(row => {
-                let text = row.textContent.toLowerCase();
-                row.style.display = text.includes(searchText) ? '' : 'none';
+                tableRows.forEach(row => {
+                    let text = row.textContent.toLowerCase();
+                    row.style.display = text.includes(searchText) ? '' : 'none';
+                });
             });
-        });
 
-        // Initialize tooltips
-        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-            return new bootstrap.Tooltip(tooltipTriggerEl)
-        });
-    </script>
+            // Initialize tooltips
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+            var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl)
+            });
+        </script>
     @endpush
 @endsection

@@ -86,7 +86,8 @@
                                                 id="invoice-form">
                                                 @csrf
                                                 <input type="hidden" name="doctor_id" value="{{ $doctor->id }}">
-                                                <input type="hidden" name="selected_total_amount" id="selected-total-amount" value="0">
+                                                <input type="hidden" name="selected_total_amount"
+                                                    id="selected-total-amount" value="0">
                                                 @foreach ($surgeries as $index => $surgery)
                                                     <tr>
                                                         <td>
@@ -112,7 +113,6 @@
                                                         </td>
                                                         <td>
                                                             <span
-
                                                                 class="badge bg-secondary">{{ $surgery['role_name'] }}</span>
                                                         </td>
                                                         <td>{{ number_format($surgery['amount']) }}</td>

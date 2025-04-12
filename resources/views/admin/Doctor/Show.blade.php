@@ -54,7 +54,7 @@
                                 <div class="border rounded p-2 h-100 bg-light">
                                     <h6 class="fw-bold text-primary small mb-1">وضعیت</h6>
                                     <p class="mb-0 small">
-                                        @if($doctor->status)
+                                        @if ($doctor->status)
                                             <span class="badge bg-success">فعال</span>
                                         @else
                                             <span class="badge bg-danger">غیرفعال</span>
@@ -103,7 +103,8 @@
                         <form action="{{ route('Doctor.Delete', $doctor->id) }}" method="POST" class="d-inline">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('آیا از حذف این پزشک اطمینان دارید؟')">
+                            <button type="submit" class="btn btn-danger btn-sm"
+                                onclick="return confirm('آیا از حذف این پزشک اطمینان دارید؟')">
                                 <i class="fas fa-trash ml-1"></i>
                                 حذف پزشک
                             </button>

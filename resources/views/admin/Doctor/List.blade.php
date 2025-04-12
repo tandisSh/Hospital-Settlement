@@ -38,7 +38,8 @@
                                                         {{ $doctor->status ? 'فعال' : 'غیرفعال' }}
                                                     </span>
                                                 </td>
-                                                <td class="text-center">{{ $doctor->getCreatedAtShamsi()->format('H:i - Y/m/d') }}</td>
+                                                <td class="text-center">
+                                                    {{ $doctor->getCreatedAtShamsi()->format('H:i - Y/m/d') }}</td>
                                                 <td class="text-center">
                                                     <div class="d-flex gap-2 justify-content-center">
                                                         <a href="{{ route('Doctor.Show', $doctor->id) }}"

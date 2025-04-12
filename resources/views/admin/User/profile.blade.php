@@ -10,8 +10,8 @@
                     </div>
                     <div class="card-body text-center">
                         <div class="mb-3">
-                            <img src="{{ asset('assets/images/avatar.jpg') }}"
-                                 class="rounded-circle shadow-sm" width="120" height="120" alt="Profile Picture">
+                            <img src="{{ asset('assets/images/avatar.jpg') }}" class="rounded-circle shadow-sm" width="120"
+                                height="120" alt="Profile Picture">
                         </div>
 
                         <table class="table table-bordered">
@@ -30,7 +30,7 @@
                         </table>
                         <div class="card-footer bg-light d-flex justify-content-center">
                             <button type="submit" class="btn btn-primary btn-lg">
-                                <a class="text-black" href="{{route('editProfile')}}">ویرایش پروفایل</a>
+                                <a class="text-black" href="{{ route('editProfile') }}">ویرایش پروفایل</a>
                             </button>
                         </div>
                     </div>

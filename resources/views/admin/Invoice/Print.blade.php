@@ -87,7 +87,7 @@
                     <p><strong> مبلغ کل صورتحساب:</strong> {{ number_format($surgeryData->sum('amount')) }} ریال</p>
                 </div>
                 <div class="col-md-4">
-                    <p><strong> مبلغ  پرداخت شده:</strong> {{ number_format($item->sum('amount')) }} ریال</p>
+                    <p><strong> مبلغ پرداخت شده:</strong> {{ number_format($item->sum('amount')) }} ریال</p>
                 </div>
                 <div class="col-md-4 text-end">
                     <p><strong>تاریخ چاپ:</strong> {{ \Morilog\Jalali\Jalalian::now()->format('Y/m/d') }}</p>

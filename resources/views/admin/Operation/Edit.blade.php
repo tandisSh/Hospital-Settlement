@@ -19,13 +19,15 @@
                         </div>
                     @endif
 
-                    <form action="{{ route('operations.update', $operation->id) }}" method="POST" class="needs-validation p-3" novalidate>
+                    <form action="{{ route('operations.update', $operation->id) }}" method="POST" class="needs-validation p-3"
+                        novalidate>
                         @csrf
                         <div class="card-body">
                             <div class="row g-2">
                                 <div class="col-12">
                                     <label class="form-label small">نام عمل:</label>
-                                    <input name="name" type="text" class="form-control form-control-sm @error('name') is-invalid @enderror"
+                                    <input name="name" type="text"
+                                        class="form-control form-control-sm @error('name') is-invalid @enderror"
                                         value="{{ old('name', $operation->name) }}" required />
                                     @error('name')
                                         <div class="invalid-feedback">
@@ -36,7 +38,8 @@
 
                                 <div class="col-6">
                                     <label class="form-label small">مبلغ (تومان):</label>
-                                    <input name="price" type="number" class="form-control form-control-sm @error('price') is-invalid @enderror"
+                                    <input name="price" type="number"
+                                        class="form-control form-control-sm @error('price') is-invalid @enderror"
                                         value="{{ old('price', $operation->price) }}" required />
                                     @error('price')
                                         <div class="invalid-feedback">
@@ -47,10 +50,12 @@
 
                                 <div class="col-6">
                                     <label class="form-label small">وضعیت:</label>
-                                    <select name="status" class="form-control form-control-sm @error('status') is-invalid @enderror"
-                                        required>
-                                        <option value="1" {{ old('status', $operation->status) ? 'selected' : '' }}>فعال</option>
-                                        <option value="0" {{ old('status', $operation->status) ? '' : 'selected' }}>غیرفعال</option>
+                                    <select name="status"
+                                        class="form-control form-control-sm @error('status') is-invalid @enderror" required>
+                                        <option value="1" {{ old('status', $operation->status) ? 'selected' : '' }}>
+                                            فعال</option>
+                                        <option value="0" {{ old('status', $operation->status) ? '' : 'selected' }}>
+                                            غیرفعال</option>
                                     </select>
                                     @error('status')
                                         <div class="invalid-feedback">

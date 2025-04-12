@@ -16,9 +16,8 @@
                                 <div class="col-12">
                                     <label class="form-label small">عنوان:</label>
                                     <input name="title" type="text"
-                                           class="form-control form-control-sm @error('title') is-invalid @enderror"
-                                           value="{{ old('title') }}"
-                                           required />
+                                        class="form-control form-control-sm @error('title') is-invalid @enderror"
+                                        value="{{ old('title') }}" required />
                                     @error('title')
                                         <div class="invalid-feedback">
                                             {{ $message }}
@@ -30,9 +29,10 @@
                                 <div class="col-6">
                                     <label class="form-label small">وضعیت:</label>
                                     <select class="form-control form-control-sm @error('status') is-invalid @enderror"
-                                            name="status">
+                                        name="status">
                                         <option value="1" {{ old('status', 1) == '1' ? 'selected' : '' }}>فعال</option>
-                                        <option value="0" {{ old('status', 1) == '0' ? 'selected' : '' }}>غیرفعال</option>
+                                        <option value="0" {{ old('status', 1) == '0' ? 'selected' : '' }}>غیرفعال
+                                        </option>
                                     </select>
                                     @error('status')
                                         <div class="invalid-feedback">
@@ -44,13 +44,9 @@
                                 <!-- سهمیه (Quota) -->
                                 <div class="col-6">
                                     <label class="form-label small">سهمیه (%):</label>
-                                    <input type="number"
-                                           name="quota"
-                                           class="form-control form-control-sm @error('quota') is-invalid @enderror"
-                                           min="1"
-                                           max="100"
-                                           value="{{ old('quota', 1) }}"
-                                           required />
+                                    <input type="number" name="quota"
+                                        class="form-control form-control-sm @error('quota') is-invalid @enderror"
+                                        min="1" max="100" value="{{ old('quota', 1) }}" required />
                                     @error('quota')
                                         <div class="invalid-feedback">
                                             {{ $message }}
@@ -61,12 +57,9 @@
                                 <!-- گزینه "الزامی" -->
                                 <div class="col-12">
                                     <div class="form-check">
-                                        <input type="checkbox"
-                                               name="required"
-                                               id="required"
-                                               value="1"
-                                               class="form-check-input @error('required') is-invalid @enderror"
-                                               {{ old('required', 0) ? 'checked' : '' }} />
+                                        <input type="checkbox" name="required" id="required" value="1"
+                                            class="form-check-input @error('required') is-invalid @enderror"
+                                            {{ old('required', 0) ? 'checked' : '' }} />
                                         <label class="form-check-label small" for="required">الزامی</label>
                                         @error('required')
                                             <div class="invalid-feedback">

@@ -65,26 +65,32 @@
                                     </td>
                                     <td>
                                         <div class="dropdown">
-                                            <button class="btn btn-secondary btn-sm px-2" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <button class="btn btn-secondary btn-sm px-2" type="button"
+                                                id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                                                 ...
                                             </button>
                                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                                 <li>
-                                                    <form action="{{ route('admin.DeleteInvoice', $invoice->id) }}" method="POST" class="d-inline">
+                                                    <form action="{{ route('admin.DeleteInvoice', $invoice->id) }}"
+                                                        method="POST" class="d-inline">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <a href="#" class="dropdown-item" onclick="event.preventDefault(); if(confirm('آیا از حذف این فاکتور مطمئن هستید؟')) this.closest('form').submit();">
+                                                        <a href="#" class="dropdown-item"
+                                                            onclick="event.preventDefault(); if(confirm('آیا از حذف این فاکتور مطمئن هستید؟')) this.closest('form').submit();">
                                                             <i class="fa fa-trash text-danger"></i> حذف
                                                         </a>
                                                     </form>
                                                 </li>
                                                 <li>
-                                                    <a class="dropdown-item" href="{{ route('admin.Payment.Create', $invoice->id) }}">
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('admin.Payment.Create', $invoice->id) }}">
                                                         <i class="fa fa-dollar-sign"></i> مالی
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a class="dropdown-item" href="{{ route('admin.InvoicePrint', $invoice->id) }}" target="blank">
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('admin.InvoicePrint', $invoice->id) }}"
+                                                        target="blank">
                                                         <i class="fa fa-print"></i> چاپ
                                                     </a>
                                                 </li>

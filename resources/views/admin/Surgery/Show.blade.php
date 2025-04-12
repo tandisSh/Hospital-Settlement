@@ -53,14 +53,16 @@
                             <div class="col-md-3 mb-2">
                                 <div class="border rounded p-2 h-100 bg-light">
                                     <h6 class="fw-bold text-primary small mb-1">بیمه پایه</h6>
-                                    <p class="mb-0 small">{{ $surgery->basicInsurance ? $surgery->basicInsurance->name : 'ندارد' }}</p>
+                                    <p class="mb-0 small">
+                                        {{ $surgery->basicInsurance ? $surgery->basicInsurance->name : 'ندارد' }}</p>
                                 </div>
                             </div>
 
                             <div class="col-md-3 mb-2">
                                 <div class="border rounded p-2 h-100 bg-light">
                                     <h6 class="fw-bold text-primary small mb-1">بیمه تکمیلی</h6>
-                                    <p class="mb-0 small">{{ $surgery->suppInsurance ? $surgery->suppInsurance->name : 'ندارد' }}</p>
+                                    <p class="mb-0 small">
+                                        {{ $surgery->suppInsurance ? $surgery->suppInsurance->name : 'ندارد' }}</p>
                                 </div>
                             </div>
                         </div>
@@ -79,7 +81,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach($surgery->operations as $operation)
+                                        @foreach ($surgery->operations as $operation)
                                             <tr>
                                                 <td class="small">{{ $operation->name }}</td>
                                                 <td class="small">{{ number_format($operation->pivot->amount) }} </td>
@@ -87,7 +89,8 @@
                                         @endforeach
                                         <tr class="table-primary">
                                             <td class="fw-bold small">مجموع هزینه عمل‌ها</td>
-                                            <td class="fw-bold small">{{ number_format($surgery->operations->sum('pivot.amount')) }} </td>
+                                            <td class="fw-bold small">
+                                                {{ number_format($surgery->operations->sum('pivot.amount')) }} </td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -110,25 +113,28 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach($surgery->doctors as $doctor)
+                                        @foreach ($surgery->doctors as $doctor)
                                             <tr>
                                                 <td class="small">{{ $doctor->name }}</td>
                                                 <td class="small">
                                                     @switch($doctor->pivot->doctor_role_id)
                                                         @case(2)
                                                             <span class="small">جراح</span>
-                                                            @break
+                                                        @break
+
                                                         @case(1)
                                                             <span class="small">متخصص بیهوشی</span>
-                                                            @break
+                                                        @break
+
                                                         @case(3)
                                                             <span class="small">مشاور</span>
-                                                            @break
+                                                        @break
                                                     @endswitch
                                                 </td>
                                                 <td class="small">{{ number_format($doctor->pivot->amount) }} </td>
                                                 <td class="small">
-                                                    <span class="badge {{ $doctor->pivot->invoice_id ? 'bg-success' : 'bg-warning text-dark' }}">
+                                                    <span
+                                                        class="badge {{ $doctor->pivot->invoice_id ? 'bg-success' : 'bg-warning text-dark' }}">
                                                         {{ $doctor->pivot->invoice_id ? 'ثبت شده' : 'ثبت نشده' }}
                                                     </span>
                                                 </td>
@@ -139,7 +145,7 @@
                             </div>
                         </div>
 
-                        @if($surgery->description)
+                        @if ($surgery->description)
                             <div class="mt-3">
                                 <h5 class="fw-bold mb-2 text-primary fs-6">
                                     <i class="fas fa-info-circle ml-1"></i>
@@ -176,7 +182,8 @@
                         <form action="{{ route('surgery.delete', $surgery->id) }}" method="POST" class="d-inline">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('آیا از حذف این جراحی اطمینان دارید؟')">
+                            <button type="submit" class="btn btn-danger btn-sm"
+                                onclick="return confirm('آیا از حذف این جراحی اطمینان دارید؟')">
                                 <i class="fas fa-trash ml-1"></i>
                                 حذف جراحی
                             </button>

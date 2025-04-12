@@ -9,13 +9,13 @@
                         <h5 class="card-title mb-0">ویرایش پروفایل</h5>
                     </div>
 
-                    @if(session('success'))
+                    @if (session('success'))
                         <div class="alert alert-success m-3">
                             {{ session('success') }}
                         </div>
                     @endif
 
-                    @if(session('error'))
+                    @if (session('error'))
                         <div class="alert alert-danger m-3">
                             {{ session('error') }}
                         </div>
@@ -27,8 +27,9 @@
                             <div class="row g-2 mb-3">
                                 <div class="col-6">
                                     <label class="form-label small">نام:</label>
-                                    <input name="name" type="text" class="form-control form-control-sm @error('name') is-invalid @enderror"
-                                           value="{{ old('name', Auth::user()->name) }}" required />
+                                    <input name="name" type="text"
+                                        class="form-control form-control-sm @error('name') is-invalid @enderror"
+                                        value="{{ old('name', Auth::user()->name) }}" required />
                                     @error('name')
                                         <div class="invalid-feedback">
                                             {{ $message }}
@@ -37,8 +38,9 @@
                                 </div>
                                 <div class="col-6">
                                     <label class="form-label small">ایمیل:</label>
-                                    <input name="email" type="email" class="form-control form-control-sm @error('email') is-invalid @enderror"
-                                           value="{{ old('email', Auth::user()->email) }}" required />
+                                    <input name="email" type="email"
+                                        class="form-control form-control-sm @error('email') is-invalid @enderror"
+                                        value="{{ old('email', Auth::user()->email) }}" required />
                                     @error('email')
                                         <div class="invalid-feedback">
                                             {{ $message }}
@@ -50,8 +52,9 @@
                             <div class="row g-2 mb-3">
                                 <div class="col-6">
                                     <label class="form-label small">شماره تلفن:</label>
-                                    <input name="phone" type="text" class="form-control form-control-sm @error('phone') is-invalid @enderror"
-                                           value="{{ old('phone', Auth::user()->phone) }}" />
+                                    <input name="phone" type="text"
+                                        class="form-control form-control-sm @error('phone') is-invalid @enderror"
+                                        value="{{ old('phone', Auth::user()->phone) }}" />
                                     @error('phone')
                                         <div class="invalid-feedback">
                                             {{ $message }}

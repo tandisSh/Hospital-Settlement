@@ -11,7 +11,7 @@
 </head>
 
 <body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
-    @include('sweetalert::alert', ['cdn' => "https://cdn.jsdelivr.net/npm/sweetalert2@9"])
+    @include('sweetalert::alert', ['cdn' => 'https://cdn.jsdelivr.net/npm/sweetalert2@9'])
     <div class="app-wrapper">
         @include('admin.layouts.Header')
         @include('admin.layouts.Sidebar')

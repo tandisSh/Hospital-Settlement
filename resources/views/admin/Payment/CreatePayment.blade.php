@@ -27,7 +27,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="row mb-3">
                 <div class="col-md-6">
                     <p class="mb-1"><strong>لیست پرداخت ها</p>

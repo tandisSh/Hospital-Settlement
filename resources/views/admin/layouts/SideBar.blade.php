@@ -66,7 +66,7 @@
                         <li class="nav-item">
                             <a href="{{ route('admin.InvoiceList') }}" class="nav-link">
                                 <i class="nav-icon fas fa-file-invoice-dollar"></i>
-                                <p>لیست صورتحساب پزشکان  </p>
+                                <p>لیست صورتحساب پزشکان </p>
                             </a>
                         </li>
                     </ul>
