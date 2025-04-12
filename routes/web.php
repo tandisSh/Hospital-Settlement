@@ -10,13 +10,11 @@ use App\Http\Controllers\admin\SurgeryController;
 use App\Http\Controllers\admin\UserController;
 use App\Http\Controllers\admin\InvoiceController;
 use App\Http\Controllers\admin\PaymentController;
+use App\Http\Controllers\admin\dashboard;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-
-Route::get('/', function () {
-    return view('admin.index');
-})->name('admin');
+Route::get('/', [dashboard::class, 'index'])->name('admin');
 
 Route::namespace('Auth')->group(function () {
     Route::get('/Login', [AuthController::class, "LoginForm"])->name('login');
