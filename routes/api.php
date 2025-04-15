@@ -13,5 +13,6 @@ Route::prefix('doctor')->group(function () {
 
         Route::post('/logout', [AuthController::class, 'logout']);
         Route::get('/surgeries/list', [SurgeryController::class, 'list']);
+        Route::get('/surgery/{id}', [SurgeryController::class, 'show']);
     });
 });

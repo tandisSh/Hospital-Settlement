@@ -23,5 +23,25 @@ class SurgeryController extends Controller
         'surgeries' => $surgeries,
     ]);
 }
+public function show(Request $request, $id)
+{
+    $doctor = $request->user();
+
+    $surgery = Surgery::with(['basicInsurance', 'suppInsurance', 'doctors', 'operations'])
+                      ->whereHas('doctors', function ($query) use ($doctor) {
+                          $query->where('doctors.id', $doctor->id);
+                      })
+                      ->where('id', $id)
+                      ->first();
+
+    if (! $surgery) {
+        return response()->json(['message' => 'جراحی پیدا نشد یا مربوط به شما نیست'], 404);
+    }
+
+    return response()->json([
+        'message' => 'اطلاعات جراحی',
+        'surgery' => $surgery,
+    ]);
+}
 
 }
