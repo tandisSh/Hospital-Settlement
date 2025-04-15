@@ -5,7 +5,7 @@
 @section('content')
     <div class="d-flex justify-content-center mt-5">
         <div class="col-md-10">
-            <div class="card mb-4 shadow-lg rounded">
+            {{-- <div class="card mb-4 shadow-lg rounded">
                 <div class="card-body">
                     <form method="GET" action="" class="mb-4">
                         <div class="row">
@@ -31,7 +31,7 @@
                         </div>
                     </form>
                 </div>
-            </div>
+            </div> --}}
 
             <div class="card mb-4 shadow-lg rounded">
                 <div

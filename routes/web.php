@@ -14,7 +14,9 @@ use App\Http\Controllers\admin\dashboard;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [dashboard::class, 'index'])->name('admin');
+Route::middleware(['auth'])->group(function (){
+    Route::get('/', [dashboard::class, 'index'])->name('admin');
+});
 
 Route::namespace('Auth')->group(function () {
     Route::get('/Login', [AuthController::class, "LoginForm"])->name('login');
