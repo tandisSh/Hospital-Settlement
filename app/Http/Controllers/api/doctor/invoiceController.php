@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\api\doctor;
+namespace App\Http\Controllers\Api\Doctor;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Resources\InvoiceResource;
 use App\Models\Invoice;
 
-class invoiceController extends Controller
+class InvoiceController extends Controller
 {
     public function index(Request $request)
     {
@@ -15,7 +15,7 @@ class invoiceController extends Controller
 
         $invoices = Invoice::where('doctor_id', $doctor->id)
             ->whereHas('payments')
-            ->with('payments') 
+            ->with('payments')
             ->orderBy('created_at', 'desc')
             ->get();
 

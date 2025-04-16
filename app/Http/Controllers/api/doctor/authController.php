@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\api\doctor;
+namespace App\Http\Controllers\Api\Doctor;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Doctor;
 
-class authController extends Controller
+class AuthController extends Controller
 {
     public function login(Request $request)
     {

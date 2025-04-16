@@ -1,21 +1,21 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController;
-use App\Http\Controllers\admin\DoctorController;
-use App\Http\Controllers\admin\DoctorRoleController;
-use App\Http\Controllers\admin\InsuranceController;
-use App\Http\Controllers\admin\OperationsController;
-use App\Http\Controllers\admin\SpecialityController;
-use App\Http\Controllers\admin\SurgeryController;
-use App\Http\Controllers\admin\UserController;
+use App\Http\Controllers\Admin\DoctorController;
+use App\Http\Controllers\Admin\DoctorRoleController;
+use App\Http\Controllers\Admin\InsuranceController;
+use App\Http\Controllers\Admin\OperationsController;
+use App\Http\Controllers\Admin\SpecialityController;
+use App\Http\Controllers\Admin\SurgeryController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\admin\InvoiceController;
 use App\Http\Controllers\admin\PaymentController;
-use App\Http\Controllers\admin\dashboard;
+use App\Http\Controllers\admin\DashboardController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth'])->group(function (){
-    Route::get('/', [dashboard::class, 'index'])->name('admin');
+    Route::get('/', [DashboardController::class, 'index'])->name('admin');
 });
 
 Route::namespace('Auth')->group(function () {

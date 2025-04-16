@@ -27,7 +27,11 @@ class Doctor extends Model
         'status' => 'boolean',
         'password' => 'hashed',
     ];
-
+    
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
     protected static function booted(): void
     {
         static::deleting(function (Doctor $doctor) {

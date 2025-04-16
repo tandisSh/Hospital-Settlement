@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\api\doctor;
+namespace App\Http\Controllers\Api\Doctor;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PaymentResource;
 use App\Models\Payment;
 use Illuminate\Http\Request;
 
-class paymentController extends Controller
+class PaymentController extends Controller
 {
 
     public function index(Request $request)

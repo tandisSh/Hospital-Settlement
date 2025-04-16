@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\admin;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Doctor;
@@ -10,7 +10,7 @@ use App\Models\Payment;
 use App\Models\Surgery;
 use Illuminate\Http\Request;
 
-class dashboard extends Controller
+class DashboardController extends Controller
 {
     public function index()
     {
@@ -26,7 +26,7 @@ class dashboard extends Controller
             ->orderBy('due_date')
             ->get();
 
-        return view('admin.index', compact(
+        return view('Admin.index', compact(
             'doctors',
             'doctorCount',
             'invoiceCount',
