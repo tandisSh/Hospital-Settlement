@@ -20,21 +20,48 @@ class authController extends Controller
         $doctor = Doctor::where('mobile', $request->mobile)->first();
 
         if (! $doctor || ! Hash::check($request->password, $doctor->password)) {
-            return response()->json(['message' => 'اطلاعات وارد شده صحیح نیست'], 401);
+            // return response()->json(['message' => 'اطلاعات وارد شده صحیح نیست'], 422);
+
+            // return response()->error(
+            //     [
+            //          'message' =>'اطلاعات وارد شده صحیح نیست',
+            //     ],
+            //     '422'
+            //     );
+                return response()->error('اطلاعات وارد شده صحیح نیست', 422);
+
         }
 
         $token = $doctor->createToken('mobile')->plainTextToken;
 
-        return response()->json([
-            'message'=>'با موفقیت وارد شدید',
-            'doctor' => $doctor,
-            'token' => $token,
-        ]);
+        // return response()->json([
+        //     'success' => true,
+        //     'message'=>'با موفقیت وارد شدید',
+        //     'data' => [
+        //         'doctor' => $doctor,
+        //         'token' => $token,
+        //     ]
+        // ]);
+        return response()->success(
+            [
+                        'doctor' => $doctor,
+                        'token' => $token,
+            ],
+            'با موفقیت وارد شدید'
+            );
     }
+
     public function logout(Request $request)
     {
         $request->user()->tokens()->delete();
 
-        return response()->json(['message' => 'با موفقیت خارج شدید']);
+        // return response()->json(['message' => 'با موفقیت خارج شدید']);
+        return response()->success(
+            [
+                         'message' =>'با موفقیت خارج شدید',
+            ],
+            200
+            );
+
     }
 }

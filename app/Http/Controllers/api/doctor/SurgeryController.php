@@ -18,10 +18,17 @@ class SurgeryController extends Controller
                          ->orderBy('created_at', 'desc')
                          ->get();
 
-    return response()->json([
-        'message' => 'لیست جراحی‌ها',
-        'surgeries' => $surgeries,
-    ]);
+    // return response()->json([
+    //     'message' => 'لیست جراحی‌ها',
+    //     'surgeries' => $surgeries,
+    // ]);
+    return response()->success(
+        [
+                    'massage' =>"لیست جراحی‌ها ",
+                    'surgeries' => $surgeries,
+        ],
+        'لیست جراحی‌ها با موفقیت  بازیابی شد'
+        );
 }
 public function show(Request $request, $id)
 {
@@ -35,13 +42,23 @@ public function show(Request $request, $id)
                       ->first();
 
     if (! $surgery) {
-        return response()->json(['message' => 'جراحی پیدا نشد یا مربوط به شما نیست'], 404);
+        // return response()->json(['message' => 'جراحی پیدا نشد یا مربوط به شما نیست'], 404);
+
+        return response()->error('جراحی پیدا نشد یا مربوط به شما نیست',404);
     }
 
-    return response()->json([
-        'message' => 'اطلاعات جراحی',
-        'surgery' => $surgery,
-    ]);
+    // return response()->json([
+    //     'message' => 'اطلاعات جراحی',
+    //     'surgery' => $surgery,
+    // ]);
+    return response()->success(
+        [
+                    'massage' =>"اطلاعات جراحی‌ها ",
+                    'surgery' => $surgery,
+        ]
+
+        ,' جراحی‌ با موفقیت  بازیابی شد'
+        );
 }
 
 }

@@ -14,11 +14,12 @@ class invoiceController extends Controller
         $doctor = $request->user();
 
         $invoices = Invoice::where('doctor_id', $doctor->id)
+            ->whereHas('payments')
+            ->with('payments') 
             ->orderBy('created_at', 'desc')
             ->get();
 
         return InvoiceResource::collection($invoices);
     }
+
 }
-
-
