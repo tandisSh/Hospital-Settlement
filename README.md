@@ -31,10 +31,10 @@
 
 ## بخش هایی از وب سایت
 
-![پیش‌نمایش داشبورد](screenshots/dashboard.svg)
+![پیش‌نمایش داشبورد](screenshots/dashboard.png)
 
-![پیش‌نمایش داشبورد](screenshots/doctors.svg)
+![پیش‌نمایش داشبورد](screenshots/doctors.png)
 
-![پیش‌نمایش داشبورد](screenshots/invoice.svg)
+![پیش‌نمایش داشبورد](screenshots/invoice.png)
 
-![پیش‌نمایش داشبورد](screenshots/payment.svg)
+![پیش‌نمایش داشبورد](screenshots/payment.png)
